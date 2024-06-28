@@ -1,0 +1,43 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package default_package;
+
+import java.sql.Connection;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+
+/**
+ *
+ * @author Lenovo-x130
+ */
+public class tables {
+
+    public static void main(String[] args) {
+        Connection con = null;
+        Statement st = null;
+        try {
+            con = DBConnection.getConnection();
+            st = con.createStatement();
+//            st.executeUpdate("create table users (id int(11) AUTO_INCREMENT PRIMARY KEY, name varchar(200),email varchar(200),contact varchar(200),role varchar(200),password varchar(20),securityQuestion varchar(500),answer varchar(200),status varchar(20) )");
+
+//            st.executeUpdate("create table machineries (id int(11) AUTO_INCREMENT PRIMARY KEY,machineryType varchar(200),numberPlate varchar(200),price int,imagePath varchar(200),status varchar(20) )");
+            
+//            st.executeUpdate("create table customer (id int(11) AUTO_INCREMENT PRIMARY KEY,name varchar(200),mobileNumber varchar(20),nationality varchar(200),gender varchar(25),email varchar(200),idProof varchar(200),address varchar(500),booking_date varchar(50),numberPlate varchar(200),machineryType varchar(100),pricePerDay varchar(100),daysStayed int,totalAmount varchar(200),return_date varchar(50) )");
+            
+            JOptionPane.showMessageDialog(null, "Table Created Successfully");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        } finally {
+            try {
+                con.close();
+                st.close();
+
+            } catch (Exception e) {
+            }
+        }
+    }
+
+}
