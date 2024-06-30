@@ -5,6 +5,8 @@
  */
 package JFrames;
 
+//import MiniFrames.*;
+import java.awt.Color;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -15,15 +17,18 @@ import javax.swing.JOptionPane;
  *
  * @author Lenovo-x130
  */
-public class Home_page extends javax.swing.JFrame {
+public class ManageInventory extends javax.swing.JFrame {
 
     
     // Gets the window's screen position
     int xx, xy;
 
+    //Global variable for Hover Effect
+    Color mouseEnterColor = new Color(255, 153, 0);
+    Color mouseExitColor = new Color(51, 51, 51);
     
     
-    public Home_page() {
+    public ManageInventory() {
         initComponents();
         init();
     }
@@ -43,10 +48,37 @@ public class Home_page extends javax.swing.JFrame {
         lbl_close = new javax.swing.JLabel();
         txtTime = new javax.swing.JLabel();
         txtDate = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        lbl_menu = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        parentPanel = new javax.swing.JPanel();
+        panel_menu = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        lbl_dashboard = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        lbl_viewIssuedGood = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        lbl_manageInventory = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        lbl_manageUsers = new javax.swing.JLabel();
+        jPanel10 = new javax.swing.JPanel();
+        lbl_issueGood = new javax.swing.JLabel();
+        jPanel11 = new javax.swing.JPanel();
+        lbl_returnGood = new javax.swing.JLabel();
+        jPanel12 = new javax.swing.JPanel();
+        lbl_viewRecords = new javax.swing.JLabel();
+        jPanel14 = new javax.swing.JPanel();
+        lbl_logout = new javax.swing.JLabel();
+        jPanel13 = new javax.swing.JPanel();
+        lbl_defaulterList = new javax.swing.JLabel();
+        panel_manageInventory = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(1366, 766));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -65,10 +97,11 @@ public class Home_page extends javax.swing.JFrame {
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("BLESSED SHOP");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 10, -1, -1));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 10, 280, -1));
 
-        lbl_close.setFont(new java.awt.Font("Arial", 1, 40)); // NOI18N
+        lbl_close.setFont(new java.awt.Font("Arial", 1, 48)); // NOI18N
         lbl_close.setForeground(new java.awt.Color(255, 255, 255));
         lbl_close.setText("X");
         lbl_close.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -80,15 +113,268 @@ public class Home_page extends javax.swing.JFrame {
 
         txtTime.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         txtTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jPanel2.add(txtTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 0, 180, 30));
+        jPanel2.add(txtTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 10, 180, 30));
 
         txtDate.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         txtDate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jPanel2.add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 30, 210, 30));
+        jPanel2.add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 40, 210, 30));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1370, 60));
+        jPanel3.setBackground(new java.awt.Color(51, 51, 51));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 5, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, 5, 50));
+
+        lbl_menu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/icons8_menu_48px_1.png"))); // NOI18N
+        lbl_menu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_menuMouseClicked(evt);
+            }
+        });
+        jPanel2.add(lbl_menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 70, 50));
+
+        jLabel2.setFont(new java.awt.Font("Verdana", 0, 20)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/male_user_50px.png"))); // NOI18N
+        jLabel2.setText("Welcome, Admin");
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 10, -1, -1));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1370, 70));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1370, -1));
+
+        parentPanel.setLayout(null);
+
+        panel_menu.setBackground(new java.awt.Color(51, 51, 51));
+        panel_menu.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel4.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel4.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Features");
+        jPanel4.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 16, 230, 30));
+
+        panel_menu.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 220, 60));
+
+        jPanel5.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel5.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/icons8_Home_26px_2.png"))); // NOI18N
+        jLabel5.setText("   Home Page");
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel5MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel5MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel5MouseExited(evt);
+            }
+        });
+        jPanel5.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 16, 190, 30));
+
+        panel_menu.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 250, 60));
+
+        jPanel6.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lbl_dashboard.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
+        lbl_dashboard.setForeground(new java.awt.Color(153, 153, 153));
+        lbl_dashboard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/icons8_Library_32px.png"))); // NOI18N
+        lbl_dashboard.setText("  Dashboard");
+        lbl_dashboard.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lbl_dashboardMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lbl_dashboardMouseExited(evt);
+            }
+        });
+        jPanel6.add(lbl_dashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 16, 230, 30));
+
+        panel_menu.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 250, 60));
+
+        jPanel7.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lbl_viewIssuedGood.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
+        lbl_viewIssuedGood.setForeground(new java.awt.Color(153, 153, 153));
+        lbl_viewIssuedGood.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/icons8_List_of_Thumbnails_50px.png"))); // NOI18N
+        lbl_viewIssuedGood.setText("View Issued Goods");
+        lbl_viewIssuedGood.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_viewIssuedGoodMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lbl_viewIssuedGoodMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lbl_viewIssuedGoodMouseExited(evt);
+            }
+        });
+        jPanel7.add(lbl_viewIssuedGood, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 6, 240, 40));
+
+        panel_menu.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 490, 250, 60));
+
+        jPanel8.setBackground(new java.awt.Color(255, 153, 0));
+        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lbl_manageInventory.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
+        lbl_manageInventory.setForeground(new java.awt.Color(153, 153, 153));
+        lbl_manageInventory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/icons8_List_of_Thumbnails_50px.png"))); // NOI18N
+        lbl_manageInventory.setText("Manage Inventory");
+        jPanel8.add(lbl_manageInventory, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 6, 240, 40));
+
+        panel_menu.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 190, 250, 60));
+
+        jPanel9.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lbl_manageUsers.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
+        lbl_manageUsers.setForeground(new java.awt.Color(153, 153, 153));
+        lbl_manageUsers.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/icons8_Read_Online_26px.png"))); // NOI18N
+        lbl_manageUsers.setText("  Manage Users");
+        lbl_manageUsers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_manageUsersMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lbl_manageUsersMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lbl_manageUsersMouseExited(evt);
+            }
+        });
+        jPanel9.add(lbl_manageUsers, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 16, 230, 30));
+
+        panel_menu.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 250, 60));
+
+        jPanel10.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lbl_issueGood.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
+        lbl_issueGood.setForeground(new java.awt.Color(153, 153, 153));
+        lbl_issueGood.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/icons8_Sell_26px.png"))); // NOI18N
+        lbl_issueGood.setText("  Issue Goods");
+        lbl_issueGood.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_issueGoodMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lbl_issueGoodMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lbl_issueGoodMouseExited(evt);
+            }
+        });
+        jPanel10.add(lbl_issueGood, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 16, 230, 30));
+
+        panel_menu.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 250, 60));
+
+        jPanel11.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel11.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lbl_returnGood.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
+        lbl_returnGood.setForeground(new java.awt.Color(153, 153, 153));
+        lbl_returnGood.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/icons8_Return_Purchase_26px.png"))); // NOI18N
+        lbl_returnGood.setText("  Return Goods");
+        lbl_returnGood.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_returnGoodMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lbl_returnGoodMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lbl_returnGoodMouseExited(evt);
+            }
+        });
+        jPanel11.add(lbl_returnGood, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 16, 230, 30));
+
+        panel_menu.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 370, 250, 60));
+
+        jPanel12.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lbl_viewRecords.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
+        lbl_viewRecords.setForeground(new java.awt.Color(153, 153, 153));
+        lbl_viewRecords.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/icons8_View_Details_26px.png"))); // NOI18N
+        lbl_viewRecords.setText("  View Records");
+        lbl_viewRecords.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_viewRecordsMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lbl_viewRecordsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lbl_viewRecordsMouseExited(evt);
+            }
+        });
+        jPanel12.add(lbl_viewRecords, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 16, 230, 30));
+
+        panel_menu.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 430, 250, 60));
+
+        jPanel14.setBackground(new java.awt.Color(153, 51, 0));
+        jPanel14.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lbl_logout.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
+        lbl_logout.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_logout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/icons8_Exit_26px_2.png"))); // NOI18N
+        lbl_logout.setText("  Log Out");
+        lbl_logout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_logoutMouseClicked(evt);
+            }
+        });
+        jPanel14.add(lbl_logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 16, 230, 30));
+
+        panel_menu.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 610, 250, 60));
+
+        jPanel13.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lbl_defaulterList.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
+        lbl_defaulterList.setForeground(new java.awt.Color(153, 153, 153));
+        lbl_defaulterList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/icons8_Conference_26px.png"))); // NOI18N
+        lbl_defaulterList.setText("  Defaulter List");
+        lbl_defaulterList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_defaulterListMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lbl_defaulterListMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lbl_defaulterListMouseExited(evt);
+            }
+        });
+        jPanel13.add(lbl_defaulterList, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 16, 230, 30));
+
+        panel_menu.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 550, 250, 60));
+
+        parentPanel.add(panel_menu);
+        panel_menu.setBounds(0, 0, 250, 700);
+
+        panel_manageInventory.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        parentPanel.add(panel_manageInventory);
+        panel_manageInventory.setBounds(250, 0, 1120, 700);
+
+        getContentPane().add(parentPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1370, 700));
 
         setSize(new java.awt.Dimension(1366, 766));
         setLocationRelativeTo(null);
@@ -108,7 +394,7 @@ public class Home_page extends javax.swing.JFrame {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(Home_page.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(ManageInventory.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
                     Date date = new Date();
@@ -145,6 +431,135 @@ public class Home_page extends javax.swing.JFrame {
         this.setLocation(x - xx, y - xy);
     }//GEN-LAST:event_jPanel2MouseDragged
 
+    private void lbl_viewIssuedGoodMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_viewIssuedGoodMouseClicked
+        ViewIssuedGoodsDetails viewIssued = new ViewIssuedGoodsDetails();
+        viewIssued.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_lbl_viewIssuedGoodMouseClicked
+
+    private void lbl_viewIssuedGoodMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_viewIssuedGoodMouseEntered
+        jPanel7.setBackground(mouseEnterColor);
+    }//GEN-LAST:event_lbl_viewIssuedGoodMouseEntered
+
+    private void lbl_viewIssuedGoodMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_viewIssuedGoodMouseExited
+        jPanel7.setBackground(mouseExitColor);
+    }//GEN-LAST:event_lbl_viewIssuedGoodMouseExited
+
+    private void lbl_manageUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_manageUsersMouseClicked
+        ManageUsers users = new ManageUsers();
+        users.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_lbl_manageUsersMouseClicked
+
+    private void lbl_manageUsersMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_manageUsersMouseEntered
+        jPanel9.setBackground(mouseEnterColor);
+    }//GEN-LAST:event_lbl_manageUsersMouseEntered
+
+    private void lbl_manageUsersMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_manageUsersMouseExited
+        jPanel9.setBackground(mouseExitColor);
+    }//GEN-LAST:event_lbl_manageUsersMouseExited
+
+    private void lbl_issueGoodMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_issueGoodMouseClicked
+        IssueGoods issue = new IssueGoods();
+        issue.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_lbl_issueGoodMouseClicked
+
+    private void lbl_issueGoodMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_issueGoodMouseEntered
+        jPanel10.setBackground(mouseEnterColor);
+    }//GEN-LAST:event_lbl_issueGoodMouseEntered
+
+    private void lbl_issueGoodMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_issueGoodMouseExited
+        jPanel10.setBackground(mouseExitColor);
+    }//GEN-LAST:event_lbl_issueGoodMouseExited
+
+    private void lbl_returnGoodMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_returnGoodMouseClicked
+        ReturnGood ret = new ReturnGood();
+        ret.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_lbl_returnGoodMouseClicked
+
+    private void lbl_returnGoodMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_returnGoodMouseEntered
+        jPanel11.setBackground(mouseEnterColor);
+    }//GEN-LAST:event_lbl_returnGoodMouseEntered
+
+    private void lbl_returnGoodMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_returnGoodMouseExited
+        jPanel11.setBackground(mouseExitColor);
+    }//GEN-LAST:event_lbl_returnGoodMouseExited
+
+    private void lbl_viewRecordsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_viewRecordsMouseClicked
+        ViewAllRecords view = new ViewAllRecords();
+        view.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_lbl_viewRecordsMouseClicked
+
+    private void lbl_viewRecordsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_viewRecordsMouseEntered
+        jPanel12.setBackground(mouseEnterColor);
+    }//GEN-LAST:event_lbl_viewRecordsMouseEntered
+
+    private void lbl_viewRecordsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_viewRecordsMouseExited
+        jPanel12.setBackground(mouseExitColor);
+    }//GEN-LAST:event_lbl_viewRecordsMouseExited
+
+    private void lbl_logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_logoutMouseClicked
+        LoginPage login = new LoginPage();
+        login.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_lbl_logoutMouseClicked
+
+    private void lbl_defaulterListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_defaulterListMouseClicked
+        DefaulterList dl = new DefaulterList();
+        dl.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_lbl_defaulterListMouseClicked
+
+    private void lbl_defaulterListMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_defaulterListMouseEntered
+        jPanel13.setBackground(mouseEnterColor);
+    }//GEN-LAST:event_lbl_defaulterListMouseEntered
+
+    private void lbl_defaulterListMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_defaulterListMouseExited
+        jPanel13.setBackground(mouseExitColor);
+    }//GEN-LAST:event_lbl_defaulterListMouseExited
+
+    private void lbl_menuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_menuMouseClicked
+
+        if (panel_menu.isVisible()) {
+            panel_menu.setVisible(false);
+            // Adjust panel_display when panel_menu disappears
+            panel_manageInventory.setBounds(0, 0, parentPanel.getWidth(), parentPanel.getHeight());
+
+        } else {
+            panel_menu.setVisible(true);
+            // Adjust panel_display when panel_menu reappears
+            panel_manageInventory.setBounds(panel_menu.getWidth(), 0, parentPanel.getWidth() - panel_menu.getWidth(), 700);
+
+        }
+        // Force panel_display to re-layout its components
+        parentPanel.repaint();
+    }//GEN-LAST:event_lbl_menuMouseClicked
+
+    private void lbl_dashboardMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_dashboardMouseEntered
+        jPanel6.setBackground(mouseEnterColor);
+    }//GEN-LAST:event_lbl_dashboardMouseEntered
+
+    private void lbl_dashboardMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_dashboardMouseExited
+        jPanel6.setBackground(mouseExitColor);
+    }//GEN-LAST:event_lbl_dashboardMouseExited
+
+    private void jLabel5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseEntered
+        jPanel5.setBackground(mouseEnterColor);
+    }//GEN-LAST:event_jLabel5MouseEntered
+
+    private void jLabel5MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseExited
+        jPanel5.setBackground(mouseExitColor);
+    }//GEN-LAST:event_jLabel5MouseExited
+
+    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
+        Home_page home = new Home_page();
+        home.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jLabel5MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -162,29 +577,58 @@ public class Home_page extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Home_page.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ManageInventory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Home_page.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ManageInventory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Home_page.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ManageInventory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Home_page.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ManageInventory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Home_page().setVisible(true);
+                new ManageInventory().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JLabel lbl_close;
+    private javax.swing.JLabel lbl_dashboard;
+    private javax.swing.JLabel lbl_defaulterList;
+    private javax.swing.JLabel lbl_issueGood;
+    private javax.swing.JLabel lbl_logout;
+    private javax.swing.JLabel lbl_manageInventory;
+    private javax.swing.JLabel lbl_manageUsers;
+    private javax.swing.JLabel lbl_menu;
+    private javax.swing.JLabel lbl_returnGood;
+    private javax.swing.JLabel lbl_viewIssuedGood;
+    private javax.swing.JLabel lbl_viewRecords;
+    private javax.swing.JPanel panel_manageInventory;
+    private javax.swing.JPanel panel_menu;
+    private javax.swing.JPanel parentPanel;
     private javax.swing.JLabel txtDate;
     private javax.swing.JLabel txtTime;
     // End of variables declaration//GEN-END:variables
