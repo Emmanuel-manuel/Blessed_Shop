@@ -23,7 +23,7 @@ public class tables {
             st = con.createStatement();
 //            st.executeUpdate("create table users (id int(11) AUTO_INCREMENT PRIMARY KEY, name varchar(200),email varchar(200),contact varchar(200),role varchar(200),password varchar(20),securityQuestion varchar(500),answer varchar(200),status varchar(20) )");
 
-//            st.executeUpdate("create table machineries (id int(11) AUTO_INCREMENT PRIMARY KEY,machineryType varchar(200),numberPlate varchar(200),price int,imagePath varchar(200),status varchar(20) )");
+//            st.executeUpdate("create table employee_details (id int(11) AUTO_INCREMENT PRIMARY KEY, user_id int(20),name varchar(200),email varchar(20),contact int(13) )");
             
 //            st.executeUpdate("create table customer (id int(11) AUTO_INCREMENT PRIMARY KEY,name varchar(200),mobileNumber varchar(20),nationality varchar(200),gender varchar(25),email varchar(200),idProof varchar(200),address varchar(500),booking_date varchar(50),numberPlate varchar(200),machineryType varchar(100),pricePerDay varchar(100),daysStayed int,totalAmount varchar(200),return_date varchar(50) )");
             
