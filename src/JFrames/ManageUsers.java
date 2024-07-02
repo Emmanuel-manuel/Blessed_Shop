@@ -18,174 +18,175 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public class ManageUsers extends javax.swing.JFrame {
 
     // Global Variables
-    String studentName,Class,branch;
-    String studentId;
+    String userName, email, contact;
+    String userId;
     DefaultTableModel model;
-    
+
 //    Initialize components
     ManageInventory manageInventory = new ManageInventory();
-    
+
     // Gets the window's screen position
     int xx, xy;
 
     //Global variable for Hover Effect
     Color mouseEnterColor = new Color(255, 153, 0);
     Color mouseExitColor = new Color(51, 51, 51);
-    
-    
+
     public ManageUsers() {
         initComponents();
         init();
-        setStudentDetailsToTable();
+        setUserDetailsToTable();
     }
 
-    
     //to pull the student details from the db to the table
-    public void setStudentDetailsToTable(){
-        
-        try{
+    public void setUserDetailsToTable() {
+
+        try {
             Connection con = DBConnection.getConnection();
-            
+
             Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("select * from student_details");
-            
-            while(rs.next()){
-                String studentId = rs.getString("student_id");
-                String studentName = rs.getString("name");
-                String Class = rs.getString("class");
-                String branch = rs.getString("branch");
-                
-                Object[] obj = {studentId, studentName, Class, branch};
-                model = (DefaultTableModel) tbl_studentDetails.getModel();
+            ResultSet rs = st.executeQuery("select * from employee_details");
+
+            while (rs.next()) {
+                String userId = rs.getString("user_id");
+                String userName = rs.getString("name");
+                String email = rs.getString("email");
+                String contact = rs.getString("contact");
+
+                Object[] obj = {userId, userName, email, contact};
+                model = (DefaultTableModel) tbl_userDetails.getModel();
                 //adds a row array
                 model.addRow(obj);
             }
-            
-        }catch (Exception e){
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     //to add student to the database in student_details table
-    public boolean addStudent(){
-        
+    public boolean addStudent() {
+
         boolean isAdded = false;
-        
-        studentId = txt_studentId.getText();
-        studentName = txt_studentName.getText();
-        Class = cbo_class.getSelectedItem().toString();
-        branch = cbo_branch.getSelectedItem().toString();
-        
-        try{
+
+        userId = txt_userId.getText();
+        userName = txt_userName.getText();
+        email = txt_email.getText();
+        contact = txt_contact.getText();
+
+        try {
+//            Connection con = DBConnection.getConnection();
+//            String sql = "insert into employee_details values(?,?,?,?)";
+//            PreparedStatement pst = con.prepareStatement(sql);
+
             Connection con = DBConnection.getConnection();
-            String sql = "insert into student_details values(?,?,?,?,?)";
+            String sql = "insert into employee_details (user_id, name, email, contact) values(?, ?, ?, ?)";
             PreparedStatement pst = con.prepareStatement(sql);
-            
+
             //sets the values from the textfield to the colums in the db
-            pst.setString(1, studentId);
-            pst.setString(2, studentName);
-            pst.setString(3, Class);
-            pst.setString(4, branch);
-            
+            pst.setString(1, userId);
+            pst.setString(2, userName);
+            pst.setString(3, email);
+            pst.setString(4, contact);
+
             //If a database row is added to output a success message
             int rowCount = pst.executeUpdate();
-            
-            if (rowCount > 0){
+
+            if (rowCount > 0) {
                 isAdded = true;
-            }else {
+            } else {
                 isAdded = false;
             }
-            
-        }catch (Exception e){
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
         //returns the 'isAdded' variable value
         return isAdded;
-        
+
     }
-    
+
     //method to Update the student details
-    public boolean updateStudent(){
-        
+    public boolean updateStudent() {
+
         boolean isUpdated = false;
-        
-//        studentId = Integer.parseInt(txt_studentId.getText());
-        studentId = txt_studentId.getText();
-        studentName = txt_studentName.getText();
-        Class = cbo_class.getSelectedItem().toString();
-        branch = cbo_branch.getSelectedItem().toString();
-        
-        try{
+
+        userId = txt_userId.getText();
+        userName = txt_userName.getText();
+        email = txt_email.getText();
+        contact = txt_contact.getText();
+
+        try {
             Connection con = DBConnection.getConnection();
-            String sql = "update student_details set name = ?, class = ?, branch = ? where student_id = ?";
+            String sql = "update employee_details set name = ?, email = ?, contact = ? where user_id = ?";
             PreparedStatement pst = con.prepareStatement(sql);
-            
+
             //sets the values from the textfield to the colums in the db
-            pst.setString(1, studentName);
-            pst.setString(2, Class);
-            pst.setString(3, branch);
-            pst.setString(4, studentId);
-            
+            pst.setString(1, userName);
+            pst.setString(2, email);
+            pst.setString(3, contact);
+            pst.setString(4, userId);
+
             //If a database row is added to output a success message
             int rowCount = pst.executeUpdate();
-            
-            if (rowCount > 0){
+
+            if (rowCount > 0) {
                 isUpdated = true;
-            }else {
+            } else {
                 isUpdated = false;
             }
-            
-        }catch (Exception e){
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
         //returns the 'isAdded' variable value
         return isUpdated;
-        
+
     }
-    
+
     //method to delete student detail
-    public boolean deleteStudent(){
-        
+    public boolean deleteStudent() {
+
         boolean isDeleted = false;
-        
+
 //        studentId = Integer.parseInt(txt_studentId.getText());
-        studentId = txt_studentId.getText();
-        
-        try{
+        userId = txt_userId.getText();
+
+        try {
             Connection con = DBConnection.getConnection();
-            String sql = "delete from student_details where student_id = ?";
+            String sql = "delete from employee_details where user_id = ?";
             PreparedStatement pst = con.prepareStatement(sql);
-            
+
             //sets the values from the textfield to the colums in the db
-            pst.setString(1, studentId);
-            
+            pst.setString(1, userId);
+
             //If a database row is added to output a success message
             int rowCount = pst.executeUpdate();
-            
-            if (rowCount > 0){
+
+            if (rowCount > 0) {
                 isDeleted = true;
-            }else {
+            } else {
                 isDeleted = false;
             }
-            
-        }catch (Exception e){
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
         //returns the 'isAdded' variable value
         return isDeleted;
     }
-    
-    
+
     //method to clear jtable before adding new data on it
-    public void clearTable(){
-        DefaultTableModel model = (DefaultTableModel) tbl_studentDetails.getModel();
+    public void clearTable() {
+        DefaultTableModel model = (DefaultTableModel) tbl_userDetails.getModel();
         model.setRowCount(0);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -231,11 +232,11 @@ public class ManageUsers extends javax.swing.JFrame {
         panel_display = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        txt_studentId = new app.bolivia.swing.JCTextField();
+        txt_userId = new app.bolivia.swing.JCTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        txt_studentName = new app.bolivia.swing.JCTextField();
+        txt_userName = new app.bolivia.swing.JCTextField();
         btn_delete = new rojerusan.RSMaterialButtonCircle();
         btn_add = new rojerusan.RSMaterialButtonCircle();
         btn_update = new rojerusan.RSMaterialButtonCircle();
@@ -248,7 +249,7 @@ public class ManageUsers extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jPanel16 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tbl_studentDetails = new rojeru_san.complementos.RSTableMetro();
+        tbl_userDetails = new rojeru_san.complementos.RSTableMetro();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -554,21 +555,21 @@ public class ManageUsers extends javax.swing.JFrame {
         jLabel9.setText("Enter User Id");
         jPanel15.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 180, 180, -1));
 
-        txt_studentId.setBackground(new java.awt.Color(102, 153, 255));
-        txt_studentId.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
-        txt_studentId.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
-        txt_studentId.setPlaceholder("Enter User Id ....");
-        txt_studentId.addFocusListener(new java.awt.event.FocusAdapter() {
+        txt_userId.setBackground(new java.awt.Color(102, 153, 255));
+        txt_userId.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_userId.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
+        txt_userId.setPlaceholder("Enter User Id ....");
+        txt_userId.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                txt_studentIdFocusLost(evt);
+                txt_userIdFocusLost(evt);
             }
         });
-        txt_studentId.addActionListener(new java.awt.event.ActionListener() {
+        txt_userId.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_studentIdActionPerformed(evt);
+                txt_userIdActionPerformed(evt);
             }
         });
-        jPanel15.add(txt_studentId, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 210, 260, 40));
+        jPanel15.add(txt_userId, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 210, 260, 40));
 
         jLabel5.setFont(new java.awt.Font("Verdana", 0, 20)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -585,21 +586,21 @@ public class ManageUsers extends javax.swing.JFrame {
         jLabel10.setText("Enter User Name");
         jPanel15.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 290, 180, -1));
 
-        txt_studentName.setBackground(new java.awt.Color(102, 153, 255));
-        txt_studentName.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
-        txt_studentName.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
-        txt_studentName.setPlaceholder("Enter User Name ....");
-        txt_studentName.addFocusListener(new java.awt.event.FocusAdapter() {
+        txt_userName.setBackground(new java.awt.Color(102, 153, 255));
+        txt_userName.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_userName.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
+        txt_userName.setPlaceholder("Enter User Name ....");
+        txt_userName.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                txt_studentNameFocusLost(evt);
+                txt_userNameFocusLost(evt);
             }
         });
-        txt_studentName.addActionListener(new java.awt.event.ActionListener() {
+        txt_userName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_studentNameActionPerformed(evt);
+                txt_userNameActionPerformed(evt);
             }
         });
-        jPanel15.add(txt_studentName, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 320, 260, 40));
+        jPanel15.add(txt_userName, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 320, 260, 40));
 
         btn_delete.setBackground(new java.awt.Color(255, 102, 51));
         btn_delete.setText("DELETE");
@@ -674,7 +675,7 @@ public class ManageUsers extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/AddNewBookIcons/icons8_Student_Registration_100px_2.png"))); // NOI18N
         jLabel3.setText("  Manage Users'");
-        jPanel15.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, -1));
+        jPanel15.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 320, -1));
 
         jPanel16.setBackground(new java.awt.Color(255, 255, 255));
         jPanel16.setForeground(new java.awt.Color(255, 255, 255));
@@ -683,18 +684,18 @@ public class ManageUsers extends javax.swing.JFrame {
         jPanel16.setLayout(jPanel16Layout);
         jPanel16Layout.setHorizontalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 210, Short.MAX_VALUE)
+            .addGap(0, 190, Short.MAX_VALUE)
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jPanel15.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 210, 4));
+        jPanel15.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 90, 190, 4));
 
-        panel_display.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 766));
+        panel_display.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 370, 766));
 
-        tbl_studentDetails.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_userDetails.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -702,24 +703,24 @@ public class ManageUsers extends javax.swing.JFrame {
                 "User Id", "Name", "Email", "Contact"
             }
         ));
-        tbl_studentDetails.setColorBackgoundHead(new java.awt.Color(102, 153, 255));
-        tbl_studentDetails.setColorBordeFilas(new java.awt.Color(102, 153, 255));
-        tbl_studentDetails.setColorFilasBackgound2(new java.awt.Color(255, 255, 255));
-        tbl_studentDetails.setColorSelBackgound(new java.awt.Color(255, 153, 0));
-        tbl_studentDetails.setFont(new java.awt.Font("Yu Gothic UI Light", 0, 25)); // NOI18N
-        tbl_studentDetails.setFuenteFilas(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
-        tbl_studentDetails.setFuenteFilasSelect(new java.awt.Font("Yu Gothic UI", 1, 20)); // NOI18N
-        tbl_studentDetails.setFuenteHead(new java.awt.Font("Yu Gothic UI Semibold", 1, 20)); // NOI18N
-        tbl_studentDetails.setIntercellSpacing(new java.awt.Dimension(0, 0));
-        tbl_studentDetails.setRowHeight(22);
-        tbl_studentDetails.addMouseListener(new java.awt.event.MouseAdapter() {
+        tbl_userDetails.setColorBackgoundHead(new java.awt.Color(102, 153, 255));
+        tbl_userDetails.setColorBordeFilas(new java.awt.Color(102, 153, 255));
+        tbl_userDetails.setColorFilasBackgound2(new java.awt.Color(255, 255, 255));
+        tbl_userDetails.setColorSelBackgound(new java.awt.Color(255, 153, 0));
+        tbl_userDetails.setFont(new java.awt.Font("Yu Gothic UI Light", 0, 25)); // NOI18N
+        tbl_userDetails.setFuenteFilas(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        tbl_userDetails.setFuenteFilasSelect(new java.awt.Font("Yu Gothic UI", 1, 20)); // NOI18N
+        tbl_userDetails.setFuenteHead(new java.awt.Font("Yu Gothic UI Semibold", 1, 20)); // NOI18N
+        tbl_userDetails.setIntercellSpacing(new java.awt.Dimension(0, 0));
+        tbl_userDetails.setRowHeight(22);
+        tbl_userDetails.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tbl_studentDetailsMouseClicked(evt);
+                tbl_userDetailsMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(tbl_studentDetails);
+        jScrollPane2.setViewportView(tbl_userDetails);
 
-        panel_display.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 0, 720, 680));
+        panel_display.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 0, 750, 680));
 
         parentPanel.add(panel_display);
         panel_display.setBounds(250, 0, 1120, 700);
@@ -732,9 +733,9 @@ public class ManageUsers extends javax.swing.JFrame {
 
     public void init() {
         setTime();
-        
+
     }
-    
+
 //    Displays Current Date & Time
     public void setTime() {
         new Thread(new Runnable() {
@@ -758,8 +759,7 @@ public class ManageUsers extends javax.swing.JFrame {
         }).start();
     }
 
- 
-    
+
     private void lbl_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMouseClicked
         int a = JOptionPane.showConfirmDialog(null, "Do you really want to Close Application?", "Select", JOptionPane.YES_NO_OPTION);
         if (a == 0) {
@@ -768,13 +768,13 @@ public class ManageUsers extends javax.swing.JFrame {
     }//GEN-LAST:event_lbl_closeMouseClicked
 
     private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
-        
+
         xx = evt.getX();
         xy = evt.getY();
     }//GEN-LAST:event_jPanel2MouseClicked
 
     private void jPanel2MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseDragged
-        
+
         int x = evt.getXOnScreen();
         int y = evt.getYOnScreen();
         this.setLocation(x - xx, y - xy);
@@ -799,9 +799,8 @@ public class ManageUsers extends javax.swing.JFrame {
         ManageInventory inventory = new ManageInventory();
         inventory.setVisible(true);
         dispose();
-        
+
 //        Displaying only JPanels
-        
 //        JPanel panel_manageInventory = manageInventory.getPanel_manageInventory();
 //
 //        if (panel_menu.isVisible()) {
@@ -936,49 +935,49 @@ public class ManageUsers extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_lbl_homePageMouseClicked
 
-    private void txt_studentIdFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_studentIdFocusLost
+    private void txt_userIdFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_userIdFocusLost
 
-    }//GEN-LAST:event_txt_studentIdFocusLost
+    }//GEN-LAST:event_txt_userIdFocusLost
 
-    private void txt_studentIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_studentIdActionPerformed
+    private void txt_userIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_userIdActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_studentIdActionPerformed
+    }//GEN-LAST:event_txt_userIdActionPerformed
 
-    private void txt_studentNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_studentNameFocusLost
+    private void txt_userNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_userNameFocusLost
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_studentNameFocusLost
+    }//GEN-LAST:event_txt_userNameFocusLost
 
-    private void txt_studentNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_studentNameActionPerformed
+    private void txt_userNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_userNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_studentNameActionPerformed
+    }//GEN-LAST:event_txt_userNameActionPerformed
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
-        if (deleteStudent() == true){
-            JOptionPane.showMessageDialog(this, "Student Deleted Successfully...");
+        if (deleteStudent() == true) {
+            JOptionPane.showMessageDialog(this, "User Deleted Successfully...");
             clearTable();
-            setStudentDetailsToTable();
-        }else {
-            JOptionPane.showMessageDialog(this, "Student Deletion failed, Please check your Database Connection...");
+            setUserDetailsToTable();
+        } else {
+            JOptionPane.showMessageDialog(this, "User Deletion failed, Please check your Database Connection...");
         }
     }//GEN-LAST:event_btn_deleteActionPerformed
 
     private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
-        if (addStudent() == true){
-            JOptionPane.showMessageDialog(this, "Student Added Successfully...");
+        if (addStudent() == true) {
+            JOptionPane.showMessageDialog(this, "User Added Successfully...");
             clearTable();
-            setStudentDetailsToTable();
-        }else {
-            JOptionPane.showMessageDialog(this, "Student Addition failed, Please check your Database Connection...");
+            setUserDetailsToTable();
+        } else {
+            JOptionPane.showMessageDialog(this, "User Addition failed, Please check your Database Connection...");
         }
     }//GEN-LAST:event_btn_addActionPerformed
 
     private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
-        if (updateStudent() == true){
-            JOptionPane.showMessageDialog(this, "Student Updated Successfully...");
+        if (updateStudent() == true) {
+            JOptionPane.showMessageDialog(this, "User Updated Successfully...");
             clearTable();
-            setStudentDetailsToTable();
-        }else {
-            JOptionPane.showMessageDialog(this, "Student Updation failed, Please check your Database Connection...");
+            setUserDetailsToTable();
+        } else {
+            JOptionPane.showMessageDialog(this, "User Updation failed, Please check your Database Connection...");
         }
     }//GEN-LAST:event_btn_updateActionPerformed
 
@@ -990,17 +989,17 @@ public class ManageUsers extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_emailActionPerformed
 
-    private void tbl_studentDetailsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_studentDetailsMouseClicked
+    private void tbl_userDetailsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_userDetailsMouseClicked
 
-        int rowNo = tbl_studentDetails.getSelectedRow();
-        TableModel model = tbl_studentDetails.getModel();
+        int rowNo = tbl_userDetails.getSelectedRow();
+        TableModel model = tbl_userDetails.getModel();
 
-        txt_studentId.setText(model.getValueAt(rowNo, 0).toString());
-        txt_studentName.setText(model.getValueAt(rowNo, 1).toString());
-        cbo_class.setSelectedItem(model.getValueAt(rowNo, 2).toString());
-        cbo_branch.setSelectedItem(model.getValueAt(rowNo, 3).toString());
+        txt_userId.setText(model.getValueAt(rowNo, 0).toString());
+        txt_userName.setText(model.getValueAt(rowNo, 1).toString());
+        txt_email.setText(model.getValueAt(rowNo, 2).toString());
+        txt_contact.setText(model.getValueAt(rowNo, 3).toString());
 
-    }//GEN-LAST:event_tbl_studentDetailsMouseClicked
+    }//GEN-LAST:event_tbl_userDetailsMouseClicked
 
     /**
      * @param args the command line arguments
@@ -1086,12 +1085,12 @@ public class ManageUsers extends javax.swing.JFrame {
     private javax.swing.JPanel panel_display;
     private javax.swing.JPanel panel_menu;
     private javax.swing.JPanel parentPanel;
-    private rojeru_san.complementos.RSTableMetro tbl_studentDetails;
+    private rojeru_san.complementos.RSTableMetro tbl_userDetails;
     private javax.swing.JLabel txtDate;
     private javax.swing.JLabel txtTime;
     private app.bolivia.swing.JCTextField txt_contact;
     private app.bolivia.swing.JCTextField txt_email;
-    private app.bolivia.swing.JCTextField txt_studentId;
-    private app.bolivia.swing.JCTextField txt_studentName;
+    private app.bolivia.swing.JCTextField txt_userId;
+    private app.bolivia.swing.JCTextField txt_userName;
     // End of variables declaration//GEN-END:variables
 }
