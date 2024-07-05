@@ -43,7 +43,7 @@ public class ManageUsers extends javax.swing.JFrame {
         setUserDetailsToTable();
     }
 
-    //to pull the student details from the db to the table
+    //to pull the users' details from the db to the table
     public void setUserDetailsToTable() {
 
         try {
@@ -69,8 +69,8 @@ public class ManageUsers extends javax.swing.JFrame {
         }
     }
 
-    //to add student to the database in student_details table
-    public boolean addStudent() {
+    //to add user to the database in users table
+    public boolean addUser() {
 
         boolean isAdded = false;
 
@@ -111,8 +111,8 @@ public class ManageUsers extends javax.swing.JFrame {
 
     }
 
-    //method to Update the student details
-    public boolean updateStudent() {
+    //method to Update the user details
+    public boolean updateUser() {
 
         boolean isUpdated = false;
 
@@ -149,8 +149,8 @@ public class ManageUsers extends javax.swing.JFrame {
 
     }
 
-    //method to delete student detail
-    public boolean deleteStudent() {
+    //method to delete user detail
+    public boolean deleteUser() {
 
         boolean isDeleted = false;
 
@@ -185,6 +185,18 @@ public class ManageUsers extends javax.swing.JFrame {
     public void clearTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_userDetails.getModel();
         model.setRowCount(0);
+    }
+    
+    private void clearComponents() {
+        txt_userId.setText("");
+        txt_userName.setText("");
+        txt_email.setText("");
+        txt_contact.setText("");
+//        jDateDOB.setDate(null);
+//        cboGender.setSelectedIndex(0);
+//        jlabelimage.setIcon(null);
+//        tbl_details.clearSelection();
+//        imagePath = null;
     }
 
     /**
@@ -569,6 +581,11 @@ public class ManageUsers extends javax.swing.JFrame {
                 txt_userIdActionPerformed(evt);
             }
         });
+        txt_userId.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_userIdKeyTyped(evt);
+            }
+        });
         jPanel15.add(txt_userId, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 210, 260, 40));
 
         jLabel5.setFont(new java.awt.Font("Verdana", 0, 20)); // NOI18N
@@ -662,6 +679,11 @@ public class ManageUsers extends javax.swing.JFrame {
         txt_contact.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_contactActionPerformed(evt);
+            }
+        });
+        txt_contact.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_contactKeyTyped(evt);
             }
         });
         jPanel15.add(txt_contact, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 550, 270, 40));
@@ -952,7 +974,7 @@ public class ManageUsers extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_userNameActionPerformed
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
-        if (deleteStudent() == true) {
+        if (deleteUser() == true) {
             JOptionPane.showMessageDialog(this, "User Deleted Successfully...");
             clearTable();
             setUserDetailsToTable();
@@ -962,20 +984,22 @@ public class ManageUsers extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_deleteActionPerformed
 
     private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
-        if (addStudent() == true) {
+        if (addUser() == true) {
             JOptionPane.showMessageDialog(this, "User Added Successfully...");
             clearTable();
             setUserDetailsToTable();
+            clearComponents();
         } else {
             JOptionPane.showMessageDialog(this, "User Addition failed, Please check your Database Connection...");
         }
     }//GEN-LAST:event_btn_addActionPerformed
 
     private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
-        if (updateStudent() == true) {
+        if (updateUser() == true) {
             JOptionPane.showMessageDialog(this, "User Updated Successfully...");
             clearTable();
             setUserDetailsToTable();
+            clearComponents();
         } else {
             JOptionPane.showMessageDialog(this, "User Updation failed, Please check your Database Connection...");
         }
@@ -1000,6 +1024,18 @@ public class ManageUsers extends javax.swing.JFrame {
         txt_contact.setText(model.getValueAt(rowNo, 3).toString());
 
     }//GEN-LAST:event_tbl_userDetailsMouseClicked
+
+    private void txt_userIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_userIdKeyTyped
+        if (!Character.isDigit(evt.getKeyChar())) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_userIdKeyTyped
+
+    private void txt_contactKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_contactKeyTyped
+        if (!Character.isDigit(evt.getKeyChar())) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_contactKeyTyped
 
     /**
      * @param args the command line arguments

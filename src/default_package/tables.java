@@ -25,7 +25,9 @@ public class tables {
 
 //            st.executeUpdate("create table employee_details (id int(11) AUTO_INCREMENT PRIMARY KEY, user_id int(20),name varchar(200),email varchar(100),contact int(13) )");
             
-//            st.executeUpdate("create table customer (id int(11) AUTO_INCREMENT PRIMARY KEY,name varchar(200),mobileNumber varchar(20),nationality varchar(200),gender varchar(25),email varchar(200),idProof varchar(200),address varchar(500),booking_date varchar(50),numberPlate varchar(200),machineryType varchar(100),pricePerDay varchar(100),daysStayed int,totalAmount varchar(200),return_date varchar(50) )");
+//            st.executeUpdate("create table products (id int(11) AUTO_INCREMENT PRIMARY KEY,product_name varchar(200) )");
+
+            st.executeUpdate("create table inventory (id int(11) AUTO_INCREMENT PRIMARY KEY,product_name varchar(200), price_per_product int(20),qty_delivered int(20),yesterday_bal int(20),total_price int(20), date varchar(100) )");
             
             JOptionPane.showMessageDialog(null, "Table Created Successfully");
         } catch (Exception e) {

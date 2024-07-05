@@ -288,6 +288,11 @@ public class SignupPage extends javax.swing.JFrame {
                 txt_contactActionPerformed(evt);
             }
         });
+        txt_contact.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_contactKeyTyped(evt);
+            }
+        });
         jPanel2.add(txt_contact, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 550, 270, 40));
 
         jLabel14.setFont(new java.awt.Font("Verdana", 0, 20)); // NOI18N
@@ -418,6 +423,12 @@ public class SignupPage extends javax.swing.JFrame {
     private void txt_password1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_password1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_password1ActionPerformed
+
+    private void txt_contactKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_contactKeyTyped
+        if (!Character.isDigit(evt.getKeyChar())) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_contactKeyTyped
 
     /**
      * @param args the command line arguments
