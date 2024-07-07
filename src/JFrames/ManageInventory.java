@@ -12,7 +12,6 @@ import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -35,13 +34,13 @@ public class ManageInventory extends javax.swing.JFrame {
     Color mouseExitColor = new Color(51, 51, 51);
 
     String productName, pricePerProduct, qty, qtyBal, total, today_date;
-    
+
     DefaultTableModel model;
 
     public ManageInventory() {
         initComponents();
         init();
-        setUserDetailsToTable();
+        setPoductDetailsToTable();
     }
 
     @SuppressWarnings("unchecked")
@@ -137,11 +136,11 @@ public class ManageInventory extends javax.swing.JFrame {
 
         txtTime.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         txtTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jPanel2.add(txtTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 10, 180, 30));
+        jPanel2.add(txtTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, 180, 30));
 
         txtDate.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         txtDate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jPanel2.add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 40, 210, 30));
+        jPanel2.add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 40, 180, 30));
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -420,16 +419,16 @@ public class ManageInventory extends javax.swing.JFrame {
                 cbo_productsActionPerformed(evt);
             }
         });
-        panel_manageInventory.add(cbo_products, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 280, -1));
+        panel_manageInventory.add(cbo_products, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 260, -1));
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel3.setText("Total:");
-        panel_manageInventory.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 420, 170, 30));
+        panel_manageInventory.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 410, 170, 30));
 
         jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel6.setText("Product:");
         jLabel6.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        panel_manageInventory.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 120, 30));
+        panel_manageInventory.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 120, 30));
 
         txtprice.setEditable(false);
         txtprice.setBackground(new java.awt.Color(255, 255, 255));
@@ -441,11 +440,11 @@ public class ManageInventory extends javax.swing.JFrame {
                 txtpriceKeyTyped(evt);
             }
         });
-        panel_manageInventory.add(txtprice, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 160, 30));
+        panel_manageInventory.add(txtprice, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 160, 30));
 
         jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel7.setText("Price per Product:");
-        panel_manageInventory.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 150, 30));
+        panel_manageInventory.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 150, 30));
 
         txtQty.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         txtQty.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -456,11 +455,11 @@ public class ManageInventory extends javax.swing.JFrame {
                 txtQtyKeyTyped(evt);
             }
         });
-        panel_manageInventory.add(txtQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 160, 30));
+        panel_manageInventory.add(txtQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 160, 30));
 
         jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel8.setText("Quantity Delivered:");
-        panel_manageInventory.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 170, 30));
+        panel_manageInventory.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 170, 30));
 
         txtYesterdayQty.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         txtYesterdayQty.setText("0");
@@ -472,23 +471,23 @@ public class ManageInventory extends javax.swing.JFrame {
                 txtYesterdayQtyKeyTyped(evt);
             }
         });
-        panel_manageInventory.add(txtYesterdayQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 370, 160, 30));
+        panel_manageInventory.add(txtYesterdayQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 160, 30));
 
         tot_price.setEditable(false);
         tot_price.setFont(new java.awt.Font("Times New Roman", 1, 22)); // NOI18N
         tot_price.setForeground(new java.awt.Color(0, 102, 102));
-        panel_manageInventory.add(tot_price, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 450, 160, -1));
+        panel_manageInventory.add(tot_price, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 160, -1));
 
         jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel9.setText("Yesterday's Return:");
-        panel_manageInventory.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, 170, 30));
+        panel_manageInventory.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 170, 30));
 
         tbl_inventory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Product", "Price per Item", "Delivered Qty", "Yesterday's Return", "Total Price", "Date"
+                "Product", "Price/ Item", "Qty_Delivered", "Yesterday's Return", "Qty_Total", "Total Price", "Date"
             }
         ));
         tbl_inventory.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -498,7 +497,7 @@ public class ManageInventory extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tbl_inventory);
 
-        panel_manageInventory.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 82, 790, 610));
+        panel_manageInventory.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 80, 820, 610));
 
         btnSave.setBackground(new java.awt.Color(102, 255, 102));
         btnSave.setFont(new java.awt.Font("Yu Gothic Medium", 0, 14)); // NOI18N
@@ -508,7 +507,7 @@ public class ManageInventory extends javax.swing.JFrame {
                 btnSaveActionPerformed(evt);
             }
         });
-        panel_manageInventory.add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 530, 160, -1));
+        panel_manageInventory.add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 520, 160, -1));
 
         btnDelete.setBackground(new java.awt.Color(255, 51, 0));
         btnDelete.setFont(new java.awt.Font("Yu Gothic Medium", 0, 14)); // NOI18N
@@ -518,7 +517,7 @@ public class ManageInventory extends javax.swing.JFrame {
                 btnDeleteActionPerformed(evt);
             }
         });
-        panel_manageInventory.add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 610, 160, -1));
+        panel_manageInventory.add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 600, 160, -1));
 
         btnUpdate.setBackground(new java.awt.Color(0, 204, 204));
         btnUpdate.setFont(new java.awt.Font("Yu Gothic Medium", 0, 14)); // NOI18N
@@ -528,7 +527,7 @@ public class ManageInventory extends javax.swing.JFrame {
                 btnUpdateActionPerformed(evt);
             }
         });
-        panel_manageInventory.add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 570, 160, -1));
+        panel_manageInventory.add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 560, 160, -1));
 
         btnPrint.setBackground(new java.awt.Color(153, 153, 255));
         btnPrint.setFont(new java.awt.Font("Yu Gothic Medium", 0, 14)); // NOI18N
@@ -538,7 +537,7 @@ public class ManageInventory extends javax.swing.JFrame {
                 btnPrintActionPerformed(evt);
             }
         });
-        panel_manageInventory.add(btnPrint, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 610, -1, 30));
+        panel_manageInventory.add(btnPrint, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 600, -1, 30));
 
         parentPanel.add(panel_manageInventory);
         panel_manageInventory.setBounds(250, 0, 1120, 700);
@@ -568,11 +567,15 @@ public class ManageInventory extends javax.swing.JFrame {
                     }
 
                     Date date = new Date();
+
                     SimpleDateFormat tf = new SimpleDateFormat("h:mm:ss aa");
-                    SimpleDateFormat df = new SimpleDateFormat("EEEE, dd/MM/yyyy");
+//                    SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                    //displays day and date
+                    SimpleDateFormat dd = new SimpleDateFormat("EEEE, dd/MM/yyyy");
                     String time = tf.format(date);
                     txtTime.setText(time.split(" ")[0] + " " + time.split(" ")[1]);
-                    txtDate.setText(df.format(date));
+
+                    txtDate.setText(dd.format(date));
                 }
             }
         }).start();
@@ -620,15 +623,22 @@ public class ManageInventory extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tbl_inventory.getModel();
         model.setRowCount(0);
     }
-    
+
     //to pull the users' details from the db to the table
-    public void setUserDetailsToTable() {
+    public void setPoductDetailsToTable() {
 
         try {
             Connection con = DBConnection.getConnection();
 
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("select * from inventory");
+            // Get the current date from the JLabel in the desired format
+            String today_date = txtDate.getText();
+
+            String sql = "SELECT * FROM inventory WHERE date = ?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, today_date);
+
+            ResultSet rs = st.executeQuery();
+            st.setString(1, today_date);
 
             while (rs.next()) {
 //                String productName, pricePerProduct, qty, qtyBal, total, today_date;
@@ -636,20 +646,24 @@ public class ManageInventory extends javax.swing.JFrame {
                 String pricePerProduct = rs.getString("price_per_product");
                 String qty = rs.getString("qty_delivered");
                 String qtyBal = rs.getString("yesterday_bal");
+                String total_qty = rs.getString("total_qty");
                 String total = rs.getString("total_price");
-                String today_date = rs.getString("date");
+                String t_date = rs.getString("date");
 
-                Object[] obj = {productName, pricePerProduct, qty, qtyBal, total, today_date};
+                Object[] obj = {productName, pricePerProduct, qty, qtyBal, total_qty, total, t_date};
                 model = (DefaultTableModel) tbl_inventory.getModel();
                 //adds a row array
                 model.addRow(obj);
             }
 
+            rs.close();
+            st.close();
+            con.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
 //    To calculate the product of Inventory
     private void pro_total() {
 
@@ -677,18 +691,44 @@ public class ManageInventory extends javax.swing.JFrame {
         today_date = txtDate.getText();
 
         try {
+            // Parse quantity fields to integers
+            int qtyValue = Integer.parseInt(qty);
+            int qtyBalValue = Integer.parseInt(qtyBal);
 
+            // Calculate total quantity
+            int totalQty = qtyValue + qtyBalValue;
+
+            //checks for duplicate entry using product name and today's date
+//            checkduplicate();
             Connection con = DBConnection.getConnection();
-            String sql = "insert into inventory (product_name, price_per_product, qty_delivered, yesterday_bal, total_price, date) values(?,?,?,?,?,?)";
+
+            // Check for duplicates
+            String checkSql = "SELECT COUNT(*) FROM inventory WHERE product_name = ? AND date = ?";
+            PreparedStatement checkPst = con.prepareStatement(checkSql);
+            checkPst.setString(1, productName);
+            checkPst.setString(2, today_date);
+            ResultSet rs = checkPst.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+
+            if (count > 0) {
+                JOptionPane.showMessageDialog(null, "Already added this product on this day");
+                clearComponents();
+                return isAdded;
+            }
+
+            String sql = "insert into inventory (product_name, price_per_product, qty_delivered, yesterday_bal, total_qty,"
+                    + " total_price, date) values(?,?,?,?,?,?,?)";
             PreparedStatement pst = con.prepareStatement(sql);
 
             //sets the values from the textfield to the colums in the db
             pst.setString(1, productName);
             pst.setString(2, pricePerProduct);
-            pst.setString(3, qty);
-            pst.setString(4, qtyBal);
-            pst.setString(5, total);
-            pst.setString(6, today_date);
+            pst.setInt(3, qtyValue);
+            pst.setInt(4, qtyBalValue);
+            pst.setInt(5, totalQty);
+            pst.setString(6, total);
+            pst.setString(7, today_date);
 
             //If a database row is added to output a success message
             int rowCount = pst.executeUpdate();
@@ -720,19 +760,27 @@ public class ManageInventory extends javax.swing.JFrame {
         today_date = txtDate.getText();
 
         try {
+            // Parse quantity fields to integers
+            int qtyVal = Integer.parseInt(qty);
+            int qtyBalVal = Integer.parseInt(qtyBal);
+
+            // Calculate total quantity
+            int totalQty = qtyVal + qtyBalVal;
+
             Connection con = DBConnection.getConnection();
             String sql = "update inventory set product_name = ?, price_per_product = ?, qty_delivered = ?, yesterday_bal = ?,"
-                    + " total_price = ?, date = ? where product_name = ?";
+                    + " total_qty = ?, total_price = ?, date = ? where product_name = ?";
             PreparedStatement pst = con.prepareStatement(sql);
 
             //sets the values from the textfield to the colums in the db
             pst.setString(1, productName);
             pst.setString(2, pricePerProduct);
-            pst.setString(3, qty);
-            pst.setString(4, qtyBal);
-            pst.setString(5, total);
-            pst.setString(6, today_date);
-            pst.setString(7, productName);
+            pst.setInt(3, qtyVal);
+            pst.setInt(4, qtyBalVal);
+            pst.setInt(5, totalQty);
+            pst.setString(6, total);
+            pst.setString(7, today_date);
+            pst.setString(8, productName);
 
             //If a database row is added to output a success message
             int rowCount = pst.executeUpdate();
@@ -782,6 +830,7 @@ public class ManageInventory extends javax.swing.JFrame {
         return isDeleted;
     }
 
+    //clear the interface components
     private void clearComponents() {
 
         cbo_products.setSelectedIndex(0);
@@ -991,7 +1040,7 @@ public class ManageInventory extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Inventory Added Successfully...");
 
             clearTable();
-            setUserDetailsToTable();
+            setPoductDetailsToTable();
             clearComponents();
         } else {
             JOptionPane.showMessageDialog(this, "Inventory Addition failed, Please check your Database Connection...");
@@ -1009,7 +1058,7 @@ public class ManageInventory extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Inventory Updated Successfully...");
 
             clearTable();
-            setUserDetailsToTable();
+            setPoductDetailsToTable();
             clearComponents();
         } else {
             JOptionPane.showMessageDialog(this, "Inventory Update failed, Please check your Database Connection...");
@@ -1024,7 +1073,7 @@ public class ManageInventory extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Product Deleted Successfully...");
 
             clearTable();
-            setUserDetailsToTable();
+            setPoductDetailsToTable();
             clearComponents();
         } else {
             JOptionPane.showMessageDialog(this, "Product Delete failed, Please check your Database Connection...");
@@ -1043,7 +1092,7 @@ public class ManageInventory extends javax.swing.JFrame {
         txtprice.setText(model.getValueAt(rowNo, 1).toString());
         txtQty.setText(model.getValueAt(rowNo, 2).toString());
         txtYesterdayQty.setText(model.getValueAt(rowNo, 3).toString());
-        tot_price.setText(model.getValueAt(rowNo, 4).toString());
+        tot_price.setText(model.getValueAt(rowNo, 5).toString());
     }//GEN-LAST:event_tbl_inventoryMouseClicked
 
     /**

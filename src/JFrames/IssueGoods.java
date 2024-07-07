@@ -6,7 +6,11 @@
 package JFrames;
 
 //import MiniFrames.*;
+import default_package.DBConnection;
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -19,16 +23,16 @@ import javax.swing.JOptionPane;
  */
 public class IssueGoods extends javax.swing.JFrame {
 //    Initialize components
+
     ManageInventory manageInventory = new ManageInventory();
-    
+
     // Gets the window's screen position
     int xx, xy;
 
     //Global variable for Hover Effect
     Color mouseEnterColor = new Color(255, 153, 0);
     Color mouseExitColor = new Color(51, 51, 51);
-    
-    
+
     public IssueGoods() {
         initComponents();
         init();
@@ -77,6 +81,19 @@ public class IssueGoods extends javax.swing.JFrame {
         jPanel13 = new javax.swing.JPanel();
         lbl_defaulterList = new javax.swing.JLabel();
         panel_display = new javax.swing.JPanel();
+        cbo_products = new rojerusan.RSComboMetro();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        txtprice = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        tot_price = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        txtQty = new javax.swing.JTextField();
+        cbo_assignee = new rojerusan.RSComboMetro();
+        jLabel10 = new javax.swing.JLabel();
+        btnSave = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -372,6 +389,107 @@ public class IssueGoods extends javax.swing.JFrame {
         panel_menu.setBounds(0, 0, 250, 700);
 
         panel_display.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        cbo_products.setForeground(new java.awt.Color(0, 0, 0));
+        cbo_products.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select" }));
+        cbo_products.setColorBorde(new java.awt.Color(102, 102, 102));
+        cbo_products.setColorFondo(new java.awt.Color(255, 153, 0));
+        cbo_products.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        cbo_products.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_productsActionPerformed(evt);
+            }
+        });
+        panel_display.add(cbo_products, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 280, -1));
+
+        jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel6.setText("Product:");
+        jLabel6.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        panel_display.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 120, 30));
+
+        jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel7.setText("Price per Product:");
+        panel_display.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 150, 30));
+
+        txtprice.setEditable(false);
+        txtprice.setBackground(new java.awt.Color(255, 255, 255));
+        txtprice.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        txtprice.setForeground(new java.awt.Color(0, 102, 102));
+        txtprice.setText("00.00");
+        txtprice.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtpriceKeyTyped(evt);
+            }
+        });
+        panel_display.add(txtprice, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 160, 30));
+
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel3.setText("Total:");
+        panel_display.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, 170, 30));
+
+        tot_price.setEditable(false);
+        tot_price.setFont(new java.awt.Font("Times New Roman", 1, 22)); // NOI18N
+        tot_price.setForeground(new java.awt.Color(0, 102, 102));
+        panel_display.add(tot_price, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 380, 160, -1));
+
+        jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel9.setText("Quantity To Give:");
+        panel_display.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 170, 30));
+
+        txtQty.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        txtQty.setText("0");
+        txtQty.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtQtyKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtQtyKeyTyped(evt);
+            }
+        });
+        panel_display.add(txtQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 160, 30));
+
+        cbo_assignee.setForeground(new java.awt.Color(0, 0, 0));
+        cbo_assignee.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Route" }));
+        cbo_assignee.setColorBorde(new java.awt.Color(102, 102, 102));
+        cbo_assignee.setColorFondo(new java.awt.Color(255, 153, 0));
+        cbo_assignee.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        panel_display.add(cbo_assignee, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 280, -1));
+
+        jLabel10.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel10.setText("Assignee:");
+        jLabel10.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        panel_display.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 120, 30));
+
+        btnSave.setBackground(new java.awt.Color(102, 255, 102));
+        btnSave.setFont(new java.awt.Font("Yu Gothic Medium", 0, 14)); // NOI18N
+        btnSave.setText("SAVE CHANGES");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+        panel_display.add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 530, 160, -1));
+
+        btnUpdate.setBackground(new java.awt.Color(0, 204, 204));
+        btnUpdate.setFont(new java.awt.Font("Yu Gothic Medium", 0, 14)); // NOI18N
+        btnUpdate.setText("UPDATE ENTRIES");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
+        panel_display.add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 570, 160, -1));
+
+        btnDelete.setBackground(new java.awt.Color(255, 51, 0));
+        btnDelete.setFont(new java.awt.Font("Yu Gothic Medium", 0, 14)); // NOI18N
+        btnDelete.setText("DELETE ENTRIES");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+        panel_display.add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 610, 160, -1));
+
         parentPanel.add(panel_display);
         panel_display.setBounds(250, 0, 1120, 700);
 
@@ -383,9 +501,10 @@ public class IssueGoods extends javax.swing.JFrame {
 
     public void init() {
         setTime();
-        
+        loadProducts();
+        loadEmployeeName();
     }
-    
+
 //    Displays Current Date & Time
     public void setTime() {
         new Thread(new Runnable() {
@@ -409,9 +528,74 @@ public class IssueGoods extends javax.swing.JFrame {
         }).start();
     }
 
+    //Load Product name into cbo_products combobox
+    private void loadProducts() {
+        try {
+            Connection con = DBConnection.getConnection();
+            String sql = "SELECT product_name FROM products";
+            PreparedStatement pst = con.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
 
+            while (rs.next()) {
+                String productName = rs.getString("product_name");
+                cbo_products.addItem(productName);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     
-    
+    //Load employee name into cbo_assignee combobox
+    private void loadEmployeeName() {
+        try {
+            Connection con = DBConnection.getConnection();
+            String sql = "SELECT name FROM employee_details";
+            PreparedStatement pst = con.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                String employeeName = rs.getString("name");
+                cbo_assignee.addItem(employeeName);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+// Get product price from the database
+    private void fetchProductPrice(String productName) {
+        try {
+            Connection con = DBConnection.getConnection();
+            String sql = "SELECT price FROM products WHERE product_name = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, productName);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                txtprice.setText(rs.getString("price"));
+            } else {
+                txtprice.setText("");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //    To calculate the product of Inventory
+    private void pro_total() {
+
+        Integer a = Integer.parseInt(txtprice.getText());
+        Integer b = Integer.parseInt(txtQty.getText());
+
+        Integer tot;
+
+        tot = a * b;
+
+        tot_price.setText(String.valueOf(tot));
+    }
+
     private void lbl_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMouseClicked
         int a = JOptionPane.showConfirmDialog(null, "Do you really want to Close Application?", "Select", JOptionPane.YES_NO_OPTION);
         if (a == 0) {
@@ -420,13 +604,13 @@ public class IssueGoods extends javax.swing.JFrame {
     }//GEN-LAST:event_lbl_closeMouseClicked
 
     private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
-        
+
         xx = evt.getX();
         xy = evt.getY();
     }//GEN-LAST:event_jPanel2MouseClicked
 
     private void jPanel2MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseDragged
-        
+
         int x = evt.getXOnScreen();
         int y = evt.getYOnScreen();
         this.setLocation(x - xx, y - xy);
@@ -451,9 +635,8 @@ public class IssueGoods extends javax.swing.JFrame {
         ManageInventory inventory = new ManageInventory();
         inventory.setVisible(true);
         dispose();
-        
+
 //        Displaying only JPanels
-        
 //        JPanel panel_manageInventory = manageInventory.getPanel_manageInventory();
 //
 //        if (panel_menu.isVisible()) {
@@ -588,6 +771,80 @@ public class IssueGoods extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_lbl_homePageMouseClicked
 
+    private void cbo_productsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_productsActionPerformed
+        String selectedProduct = (String) cbo_products.getSelectedItem();
+        if (selectedProduct != null) {
+            fetchProductPrice(selectedProduct);
+        }
+    }//GEN-LAST:event_cbo_productsActionPerformed
+
+    private void txtpriceKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpriceKeyTyped
+        if (!Character.isDigit(evt.getKeyChar())) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtpriceKeyTyped
+
+    private void txtQtyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQtyKeyReleased
+        pro_total();
+    }//GEN-LAST:event_txtQtyKeyReleased
+
+    private void txtQtyKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQtyKeyTyped
+        if (!Character.isDigit(evt.getKeyChar())) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtQtyKeyTyped
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        if (txtQty.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please enter the delivered quantity field");
+
+        } else if (cbo_products.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Please select a Product");
+
+        } else if (addProduct() == true) {
+            JOptionPane.showMessageDialog(this, "Inventory Added Successfully...");
+
+            clearTable();
+            setPoductDetailsToTable();
+            clearComponents();
+        } else {
+            JOptionPane.showMessageDialog(this, "Inventory Addition failed, Please check your Database Connection...");
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        if (txtQty.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please enter the delivered quantity field");
+
+        } else if (cbo_products.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Please select a Product");
+
+        } else if (updateProduct() == true) {
+            JOptionPane.showMessageDialog(this, "Inventory Updated Successfully...");
+
+            clearTable();
+            setPoductDetailsToTable();
+            clearComponents();
+        } else {
+            JOptionPane.showMessageDialog(this, "Inventory Update failed, Please check your Database Connection...");
+        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        if (cbo_products.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Please select the name of the product you want to delete");
+
+        } else if (deleteProduct() == true) {
+            JOptionPane.showMessageDialog(this, "Product Deleted Successfully...");
+
+            clearTable();
+            setPoductDetailsToTable();
+            clearComponents();
+        } else {
+            JOptionPane.showMessageDialog(this, "Product Delete failed, Please check your Database Connection...");
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -625,9 +882,19 @@ public class IssueGoods extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnSave;
+    private javax.swing.JButton btnUpdate;
+    private rojerusan.RSComboMetro cbo_assignee;
+    private rojerusan.RSComboMetro cbo_products;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -657,7 +924,10 @@ public class IssueGoods extends javax.swing.JFrame {
     private javax.swing.JPanel panel_display;
     private javax.swing.JPanel panel_menu;
     private javax.swing.JPanel parentPanel;
+    private javax.swing.JTextField tot_price;
     private javax.swing.JLabel txtDate;
+    private javax.swing.JTextField txtQty;
     private javax.swing.JLabel txtTime;
+    private javax.swing.JTextField txtprice;
     // End of variables declaration//GEN-END:variables
 }

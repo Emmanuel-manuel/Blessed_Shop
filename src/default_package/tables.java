@@ -27,8 +27,10 @@ public class tables {
             
 //            st.executeUpdate("create table products (id int(11) AUTO_INCREMENT PRIMARY KEY,product_name varchar(200) )");
 
-            st.executeUpdate("create table inventory (id int(11) AUTO_INCREMENT PRIMARY KEY,product_name varchar(200), price_per_product int(20),qty_delivered int(20),yesterday_bal int(20),total_price int(20), date varchar(100) )");
-            
+//            st.executeUpdate("create table inventory (id int(11) AUTO_INCREMENT PRIMARY KEY,product_name varchar(200), price_per_product int(20),qty_delivered int(20),yesterday_bal int(20),total_qty int(20),total_price int(20), date varchar(100) )");
+
+//                        st.executeUpdate("create table issued_goods (id int(11) AUTO_INCREMENT PRIMARY KEY,employee_name varchar(200),product_name varchar(200), price_per_product int(20),qty_given int(20),total_price int(20), date varchar(100) )");
+
             JOptionPane.showMessageDialog(null, "Table Created Successfully");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
