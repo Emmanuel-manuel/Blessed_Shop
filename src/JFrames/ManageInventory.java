@@ -12,10 +12,6 @@ import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -40,7 +36,6 @@ public class ManageInventory extends javax.swing.JFrame {
     public ManageInventory() {
         initComponents();
         init();
-        setPoductDetailsToTable();
     }
 
     @SuppressWarnings("unchecked")
@@ -51,11 +46,12 @@ public class ManageInventory extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         lbl_close = new javax.swing.JLabel();
-        txtTime = new javax.swing.JLabel();
-        txtDate = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         lbl_menu = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jPanel15 = new javax.swing.JPanel();
+        txtTime = new javax.swing.JLabel();
+        txtDate = new javax.swing.JLabel();
         parentPanel = new javax.swing.JPanel();
         panel_menu = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -102,6 +98,11 @@ public class ManageInventory extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -134,14 +135,6 @@ public class ManageInventory extends javax.swing.JFrame {
         });
         jPanel2.add(lbl_close, new org.netbeans.lib.awtextra.AbsoluteConstraints(1320, 10, 40, 40));
 
-        txtTime.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        txtTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jPanel2.add(txtTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, 180, 30));
-
-        txtDate.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        txtDate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jPanel2.add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 40, 180, 30));
-
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -170,6 +163,19 @@ public class ManageInventory extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/male_user_50px.png"))); // NOI18N
         jLabel2.setText("Welcome, Admin");
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 10, -1, -1));
+
+        jPanel15.setBackground(new java.awt.Color(102, 153, 255));
+        jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        txtTime.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        txtTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel15.add(txtTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 180, 30));
+
+        txtDate.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        txtDate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel15.add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 190, 30));
+
+        jPanel2.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 0, 240, 70));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1370, 70));
 
@@ -549,37 +555,11 @@ public class ManageInventory extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void init() {
-        setTime();
+//        setTime();
+        Time.setTime(txtTime, txtDate);  // Calling the setTime method from the Time class
         loadProducts();
-
     }
 
-//    Displays Current Date & Time
-    public void setTime() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(ManageInventory.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                    Date date = new Date();
-
-                    SimpleDateFormat tf = new SimpleDateFormat("h:mm:ss aa");
-//                    SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-                    //displays day and date
-                    SimpleDateFormat dd = new SimpleDateFormat("EEEE, dd/MM/yyyy");
-                    String time = tf.format(date);
-                    txtTime.setText(time.split(" ")[0] + " " + time.split(" ")[1]);
-
-                    txtDate.setText(dd.format(date));
-                }
-            }
-        }).start();
-    }
 
     private void loadProducts() {
         try {
@@ -1095,6 +1075,20 @@ public class ManageInventory extends javax.swing.JFrame {
         tot_price.setText(model.getValueAt(rowNo, 5).toString());
     }//GEN-LAST:event_tbl_inventoryMouseClicked
 
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        clearTable();
+        // Delay the loading of the table to ensure txtDate is initialized
+        javax.swing.Timer timer = new javax.swing.Timer(1000, new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                setPoductDetailsToTable();
+            }
+        });
+        timer.setRepeats(false); // Only execute once
+        timer.start();
+//        setPoductDetailsToTable();
+    }//GEN-LAST:event_formWindowActivated
+
     /**
      * @param args the command line arguments
      */
@@ -1152,6 +1146,7 @@ public class ManageInventory extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

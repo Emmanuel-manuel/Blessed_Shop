@@ -6,16 +6,12 @@
 package JFrames;
 
 //import MiniFrames.*;
-import default_package.DBConnection;
+import default_package.*;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -754,33 +750,12 @@ public class ManageUsers extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void init() {
-        setTime();
+        Time.setTime(txtTime, txtDate);  // Calling the setTime method from the Time class
 
     }
 
-//    Displays Current Date & Time
-    public void setTime() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(ManageUsers.class.getName()).log(Level.SEVERE, null, ex);
-                    }
 
-                    Date date = new Date();
-                    SimpleDateFormat tf = new SimpleDateFormat("h:mm:ss aa");
-                    SimpleDateFormat df = new SimpleDateFormat("EEEE, dd/MM/yyyy");
-                    String time = tf.format(date);
-                    txtTime.setText(time.split(" ")[0] + " " + time.split(" ")[1]);
-                    txtDate.setText(df.format(date));
-                }
-            }
-        }).start();
-    }
-
+    
 
     private void lbl_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMouseClicked
         int a = JOptionPane.showConfirmDialog(null, "Do you really want to Close Application?", "Select", JOptionPane.YES_NO_OPTION);

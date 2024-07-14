@@ -7,14 +7,11 @@ package JFrames;
 
 //import MiniFrames.*;
 import default_package.DBConnection;
+import default_package.Time;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -94,6 +91,8 @@ public class IssueGoods extends javax.swing.JFrame {
         btnSave = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        txtTodayInventory = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -409,7 +408,7 @@ public class IssueGoods extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel7.setText("Price per Product:");
-        panel_display.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 150, 30));
+        panel_display.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, 150, 30));
 
         txtprice.setEditable(false);
         txtprice.setBackground(new java.awt.Color(255, 255, 255));
@@ -421,20 +420,20 @@ public class IssueGoods extends javax.swing.JFrame {
                 txtpriceKeyTyped(evt);
             }
         });
-        panel_display.add(txtprice, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 160, 30));
+        panel_display.add(txtprice, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 160, 30));
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel3.setText("Total:");
-        panel_display.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, 170, 30));
+        jLabel3.setText("Total Price:");
+        panel_display.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, 170, 30));
 
         tot_price.setEditable(false);
         tot_price.setFont(new java.awt.Font("Times New Roman", 1, 22)); // NOI18N
         tot_price.setForeground(new java.awt.Color(0, 102, 102));
-        panel_display.add(tot_price, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 380, 160, -1));
+        panel_display.add(tot_price, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 430, 160, -1));
 
         jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel9.setText("Quantity To Give:");
-        panel_display.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 170, 30));
+        panel_display.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, 170, 30));
 
         txtQty.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         txtQty.setText("0");
@@ -446,7 +445,7 @@ public class IssueGoods extends javax.swing.JFrame {
                 txtQtyKeyTyped(evt);
             }
         });
-        panel_display.add(txtQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 160, 30));
+        panel_display.add(txtQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, 160, 30));
 
         cbo_assignee.setForeground(new java.awt.Color(0, 0, 0));
         cbo_assignee.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Route" }));
@@ -490,6 +489,23 @@ public class IssueGoods extends javax.swing.JFrame {
         });
         panel_display.add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 610, 160, -1));
 
+        jLabel11.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel11.setText("Today's Inventory:");
+        panel_display.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 170, 30));
+
+        txtTodayInventory.setEditable(false);
+        txtTodayInventory.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        txtTodayInventory.setText("0");
+        txtTodayInventory.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtTodayInventoryKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtTodayInventoryKeyTyped(evt);
+            }
+        });
+        panel_display.add(txtTodayInventory, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 160, 30));
+
         parentPanel.add(panel_display);
         panel_display.setBounds(250, 0, 1120, 700);
 
@@ -500,41 +516,27 @@ public class IssueGoods extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void init() {
-        setTime();
+        Time.setTime(txtTime, txtDate);  // Calling the setTime method from the Time class
         loadProducts();
         loadEmployeeName();
     }
 
-//    Displays Current Date & Time
-    public void setTime() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(IssueGoods.class.getName()).log(Level.SEVERE, null, ex);
-                    }
 
-                    Date date = new Date();
-                    SimpleDateFormat tf = new SimpleDateFormat("h:mm:ss aa");
-                    SimpleDateFormat df = new SimpleDateFormat("EEEE, dd/MM/yyyy");
-                    String time = tf.format(date);
-                    txtTime.setText(time.split(" ")[0] + " " + time.split(" ")[1]);
-                    txtDate.setText(df.format(date));
-                }
-            }
-        }).start();
-    }
 
     //Load Product name into cbo_products combobox
     private void loadProducts() {
         try {
             Connection con = DBConnection.getConnection();
-            String sql = "SELECT product_name FROM products";
+            
+            // Get the current date from the JLabel in the desired format
+            String today_date = txtDate.getText();
+            
+            String sql = "SELECT product_name FROM inventory where date = ?";
             PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, today_date);
+
             ResultSet rs = pst.executeQuery();
+            pst.setString(1, today_date);
 
             while (rs.next()) {
                 String productName = rs.getString("product_name");
@@ -567,15 +569,19 @@ public class IssueGoods extends javax.swing.JFrame {
     private void fetchProductPrice(String productName) {
         try {
             Connection con = DBConnection.getConnection();
-            String sql = "SELECT price FROM products WHERE product_name = ?";
+            //String sql = "SELECT price_per_product && total_qty FROM inventory WHERE product_name = ?";
+            String sql = "SELECT price_per_product FROM products WHERE product_name = ?";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, productName);
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
                 txtprice.setText(rs.getString("price"));
+                //txtTodayInventory
+                txtTodayInventory.setText(rs.getString("total_qty"));
             } else {
                 txtprice.setText("");
+                txtTodayInventory.setText("0");
             }
 
         } catch (Exception e) {
@@ -845,6 +851,14 @@ public class IssueGoods extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    private void txtTodayInventoryKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTodayInventoryKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTodayInventoryKeyReleased
+
+    private void txtTodayInventoryKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTodayInventoryKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTodayInventoryKeyTyped
+
     /**
      * @param args the command line arguments
      */
@@ -889,6 +903,7 @@ public class IssueGoods extends javax.swing.JFrame {
     private rojerusan.RSComboMetro cbo_products;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -928,6 +943,7 @@ public class IssueGoods extends javax.swing.JFrame {
     private javax.swing.JLabel txtDate;
     private javax.swing.JTextField txtQty;
     private javax.swing.JLabel txtTime;
+    private javax.swing.JTextField txtTodayInventory;
     private javax.swing.JTextField txtprice;
     // End of variables declaration//GEN-END:variables
 }
