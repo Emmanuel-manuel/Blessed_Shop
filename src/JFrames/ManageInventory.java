@@ -560,7 +560,6 @@ public class ManageInventory extends javax.swing.JFrame {
         loadProducts();
     }
 
-
     private void loadProducts() {
         try {
             Connection con = DBConnection.getConnection();
@@ -730,6 +729,9 @@ public class ManageInventory extends javax.swing.JFrame {
     //method to Update the product details
     public boolean updateProduct() {
 
+        // Get the current date from the JLabel in the desired format
+        String today = txtDate.getText();
+
         boolean isUpdated = false;
 
         productName = (String) cbo_products.getSelectedItem();
@@ -737,7 +739,7 @@ public class ManageInventory extends javax.swing.JFrame {
         qty = txtQty.getText();
         qtyBal = txtYesterdayQty.getText();
         total = tot_price.getText();
-        today_date = txtDate.getText();
+//        today_date = txtDate.getText();
 
         try {
             // Parse quantity fields to integers
@@ -749,7 +751,7 @@ public class ManageInventory extends javax.swing.JFrame {
 
             Connection con = DBConnection.getConnection();
             String sql = "update inventory set product_name = ?, price_per_product = ?, qty_delivered = ?, yesterday_bal = ?,"
-                    + " total_qty = ?, total_price = ?, date = ? where product_name = ?";
+                    + " total_qty = ?, total_price = ? where product_name = ? && date = ?";
             PreparedStatement pst = con.prepareStatement(sql);
 
             //sets the values from the textfield to the colums in the db
@@ -759,8 +761,9 @@ public class ManageInventory extends javax.swing.JFrame {
             pst.setInt(4, qtyBalVal);
             pst.setInt(5, totalQty);
             pst.setString(6, total);
-            pst.setString(7, today_date);
-            pst.setString(8, productName);
+//            pst.setString(7, today_date);
+            pst.setString(7, productName);
+            pst.setString(8, today);
 
             //If a database row is added to output a success message
             int rowCount = pst.executeUpdate();
@@ -1038,7 +1041,7 @@ public class ManageInventory extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Inventory Updated Successfully...");
 
             clearTable();
-            setPoductDetailsToTable();
+//            setPoductDetailsToTable();
             clearComponents();
         } else {
             JOptionPane.showMessageDialog(this, "Inventory Update failed, Please check your Database Connection...");
@@ -1086,7 +1089,6 @@ public class ManageInventory extends javax.swing.JFrame {
         });
         timer.setRepeats(false); // Only execute once
         timer.start();
-//        setPoductDetailsToTable();
     }//GEN-LAST:event_formWindowActivated
 
     /**
