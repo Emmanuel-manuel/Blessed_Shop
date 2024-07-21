@@ -13,6 +13,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -29,6 +31,10 @@ public class IssueGoods extends javax.swing.JFrame {
     //Global variable for Hover Effect
     Color mouseEnterColor = new Color(255, 153, 0);
     Color mouseExitColor = new Color(51, 51, 51);
+    
+    DefaultTableModel model;
+    
+    String employeeName, productName, pricePerProduct, qty, total, today_date;
 
     public IssueGoods() {
         initComponents();
@@ -93,9 +99,16 @@ public class IssueGoods extends javax.swing.JFrame {
         btnDelete = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         txtTodayInventory = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbl_issued_goods = new rojerusan.RSTableMetro();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                IssueGoods.this.windowActivated(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -506,6 +519,23 @@ public class IssueGoods extends javax.swing.JFrame {
         });
         panel_display.add(txtTodayInventory, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 160, 30));
 
+        tbl_issued_goods.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Assignee", "Product", "PricePerProduct", "QuantityReceived", "TotalPrice", "Date"
+            }
+        ));
+        tbl_issued_goods.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_issued_goodsMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbl_issued_goods);
+
+        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 2, 790, 430));
+
         parentPanel.add(panel_display);
         panel_display.setBounds(250, 0, 1120, 700);
 
@@ -517,8 +547,17 @@ public class IssueGoods extends javax.swing.JFrame {
 
     public void init() {
         Time.setTime(txtTime, txtDate);  // Calling the setTime method from the Time class
-        loadProducts();
+//        loadProducts();
         loadEmployeeName();
+        // Delay the loading of the PRODUCTS COMBO BOX to ensure txtDate is initialized
+        javax.swing.Timer timer = new javax.swing.Timer(1000, new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                loadProducts();
+            }
+        });
+        timer.setRepeats(false); // Only execute once
+        timer.start();
     }
 
 
@@ -565,18 +604,22 @@ public class IssueGoods extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+
 // Get product price from the database
     private void fetchProductPrice(String productName) {
+        // Get the current date from the JLabel in the desired format
+        String today = txtDate.getText();
         try {
             Connection con = DBConnection.getConnection();
             //String sql = "SELECT price_per_product && total_qty FROM inventory WHERE product_name = ?";
-            String sql = "SELECT price_per_product FROM products WHERE product_name = ?";
+            String sql = "SELECT price_per_product, total_qty FROM inventory WHERE product_name = ? AND date = ?";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, productName);
+            pst.setString(2, today);
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
-                txtprice.setText(rs.getString("price"));
+                txtprice.setText(rs.getString("price_per_product"));
                 //txtTodayInventory
                 txtTodayInventory.setText(rs.getString("total_qty"));
             } else {
@@ -602,6 +645,215 @@ public class IssueGoods extends javax.swing.JFrame {
         tot_price.setText(String.valueOf(tot));
     }
 
+     //method to clear jtable before adding new data on it
+    public void clearTable() {
+        DefaultTableModel model = (DefaultTableModel) tbl_issued_goods.getModel();
+        model.setRowCount(0);
+    }
+    
+    //to pull the inventory details from the db to the table
+    public void setPoductDetailsToTable() {
+
+        try {
+            Connection con = DBConnection.getConnection();
+
+            // Get the current date from the JLabel in the desired format
+            String today_date = txtDate.getText();
+
+            String sql = "SELECT * FROM issued_goods WHERE date = ?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, today_date);
+
+            ResultSet rs = st.executeQuery();
+            st.setString(1, today_date);
+
+            while (rs.next()) {
+//                String productName, pricePerProduct, qty, qtyBal, total, today_date;
+                String employeeName = rs.getString("employee_name");
+                String productName = rs.getString("product_name");
+                String pricePerProduct = rs.getString("price_per_product");
+                String qty = rs.getString("qty_given");
+                String total = rs.getString("total_price");
+                String t_date = rs.getString("date");
+
+                Object[] obj = {employeeName, productName, pricePerProduct, qty, total, t_date};
+                model = (DefaultTableModel) tbl_issued_goods.getModel();
+                //adds a row array
+                model.addRow(obj);
+            }
+
+            rs.close();
+            st.close();
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    
+    //to add products to the database in issued_goods table
+    public boolean addProduct() {
+
+        boolean isAdded = false;
+
+        employeeName = (String) cbo_assignee.getSelectedItem();
+        productName = (String) cbo_products.getSelectedItem();
+        pricePerProduct = txtprice.getText();
+        qty = txtQty.getText();
+        total = tot_price.getText();
+        today_date = txtDate.getText();
+
+        try {
+            // Parse quantity fields to integers
+            int qtyIssued = Integer.parseInt(qty);
+            
+            //checks for duplicate entry using product name and today's date
+//            checkduplicate();
+            Connection con = DBConnection.getConnection();
+
+            // Check for duplicates
+            String checkSql = "SELECT COUNT(*) FROM issued_goods WHERE employee_name = ? AND product_name = ? AND date = ?";
+            PreparedStatement checkPst = con.prepareStatement(checkSql);
+            checkPst.setString(1, employeeName);
+            checkPst.setString(2, productName);
+            checkPst.setString(3, today_date);
+            ResultSet rs = checkPst.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+
+            if (count > 0) {
+                JOptionPane.showMessageDialog(null, "Already issued this product on this day for this Assignee");
+                clearComponents();
+                return isAdded;
+            }
+
+            String sql = "insert into issued_goods (employee_name, product_name, price_per_product, qty_given,"
+                    + " total_price, date) values(?,?,?,?,?,?)";
+            PreparedStatement pst = con.prepareStatement(sql);
+
+            //sets the values from the textfield to the colums in the db
+            pst.setString(1, employeeName);
+            pst.setString(2, productName);
+            pst.setString(3, pricePerProduct);
+            pst.setInt(4, qtyIssued);
+            pst.setString(5, total);
+            pst.setString(6, today_date);
+
+            //If a database row is added to output a success message
+            int rowCount = pst.executeUpdate();
+
+            if (rowCount > 0) {
+                isAdded = true;
+            } else {
+                isAdded = false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //returns the 'isAdded' variable value
+        return isAdded;
+
+    }
+
+    //method to Update the product details
+    public boolean updateProduct() {
+
+        // Get the current date from the JLabel in the desired format
+        String today = txtDate.getText();
+
+        boolean isUpdated = false;
+
+        employeeName = (String) cbo_assignee.getSelectedItem();
+        productName = (String) cbo_products.getSelectedItem();
+        pricePerProduct = txtprice.getText();
+        qty = txtQty.getText();
+        total = tot_price.getText();
+//        today_date = txtDate.getText();
+
+        try {
+            // Parse quantity fields to integers
+            int qtyVal = Integer.parseInt(qty);
+            int totalPrice = Integer.parseInt(total);
+
+            Connection con = DBConnection.getConnection();
+            String sql = "update issued_goods set employee_name = ?, product_name = ?, price_per_product = ?, qty_given = ?,"
+                    + " total_price = ? where employee_name = ? AND product_name = ? AND date = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+
+            //sets the values from the textfield to the colums in the db
+            pst.setString(1, employeeName);
+            pst.setString(2, productName);
+            pst.setString(3, pricePerProduct);
+            pst.setInt(4, qtyVal);
+            pst.setInt(5, totalPrice);
+            
+            pst.setString(6, employeeName);
+            pst.setString(7, productName);
+            pst.setString(8, today);
+
+            //If a database row is added to output a success message
+            int rowCount = pst.executeUpdate();
+
+            if (rowCount > 0) {
+                isUpdated = true;
+            } else {
+                isUpdated = false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //returns the 'isAdded' variable value
+        return isUpdated;
+
+    }
+
+    //method to delete products details
+    public boolean deleteProduct() {
+
+        boolean isDeleted = false;
+
+        productName = (String) cbo_products.getSelectedItem();
+        employeeName = (String) cbo_assignee.getSelectedItem();
+
+        try {
+            Connection con = DBConnection.getConnection();
+            String sql = "delete from issued_goods where employee_name = ? AND product_name = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+
+            //sets the values from the textfield to the colums in the db
+            // Set both parameters
+            pst.setString(1, employeeName);
+            pst.setString(2, productName);
+
+            //If a database row is added to output a success message
+            int rowCount = pst.executeUpdate();
+
+            if (rowCount > 0) {
+                isDeleted = true;
+            } else {
+                isDeleted = false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //returns the 'isAdded' variable value
+        return isDeleted;
+    }
+
+    //clear the interface components
+    private void clearComponents() {
+
+        cbo_assignee.setSelectedIndex(0);
+        cbo_products.setSelectedIndex(0);
+        txtTodayInventory.setText("0");
+        txtprice.setText("00.00");
+        txtQty.setText("0");
+        tot_price.setText("");
+    }
+    
     private void lbl_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMouseClicked
         int a = JOptionPane.showConfirmDialog(null, "Do you really want to Close Application?", "Select", JOptionPane.YES_NO_OPTION);
         if (a == 0) {
@@ -641,30 +893,6 @@ public class IssueGoods extends javax.swing.JFrame {
         ManageInventory inventory = new ManageInventory();
         inventory.setVisible(true);
         dispose();
-
-//        Displaying only JPanels
-//        JPanel panel_manageInventory = manageInventory.getPanel_manageInventory();
-//
-//        if (panel_menu.isVisible()) {
-//
-//            // Ensure panel_manageBooks is added to parentPanel
-//            parentPanel.add(panel_manageInventory);
-//            // Set panel_display to invisible
-//            panel_display.setVisible(false);
-//            // Set panel_manageBooks to visible
-//            panel_manageInventory.setVisible(true);
-//            // Set the bounds of panel_manageBooks to fill the entire parentPanel
-//            panel_manageInventory.setBounds(250, 0, parentPanel.getWidth(), parentPanel.getHeight());
-//
-//        } else {
-//            panel_menu.setVisible(true);
-//            // Adjust panel_display when panel_menu reappears
-//            panel_manageInventory.setBounds(panel_menu.getWidth(), 0, parentPanel.getWidth() - panel_menu.getWidth(), 700);
-//
-//        }
-//
-//        // Force panel_display to re-layout its components
-//        parentPanel.repaint();
 
     }//GEN-LAST:event_lbl_manageInventoryMouseClicked
 
@@ -802,37 +1030,37 @@ public class IssueGoods extends javax.swing.JFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         if (txtQty.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please enter the delivered quantity field");
+            JOptionPane.showMessageDialog(null, "Please enter the quantity to issue field");
 
         } else if (cbo_products.getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(null, "Please select a Product");
 
         } else if (addProduct() == true) {
-            JOptionPane.showMessageDialog(this, "Inventory Added Successfully...");
+            JOptionPane.showMessageDialog(this, "Product Issued Successfully...");
 
             clearTable();
             setPoductDetailsToTable();
             clearComponents();
         } else {
-            JOptionPane.showMessageDialog(this, "Inventory Addition failed, Please check your Database Connection...");
+            JOptionPane.showMessageDialog(this, "Product Issue failed, Please check your Database Connection...");
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         if (txtQty.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please enter the delivered quantity field");
+            JOptionPane.showMessageDialog(null, "Please enter the issue quantity field");
 
         } else if (cbo_products.getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(null, "Please select a Product");
 
         } else if (updateProduct() == true) {
-            JOptionPane.showMessageDialog(this, "Inventory Updated Successfully...");
+            JOptionPane.showMessageDialog(this, "Product Issue Updated Successfully...");
 
             clearTable();
             setPoductDetailsToTable();
             clearComponents();
         } else {
-            JOptionPane.showMessageDialog(this, "Inventory Update failed, Please check your Database Connection...");
+            JOptionPane.showMessageDialog(this, "Issued Goods Updated failed, Please check your Database Connection...");
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -841,13 +1069,13 @@ public class IssueGoods extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please select the name of the product you want to delete");
 
         } else if (deleteProduct() == true) {
-            JOptionPane.showMessageDialog(this, "Product Deleted Successfully...");
+            JOptionPane.showMessageDialog(this, "Issued Goods Deleted Successfully...");
 
             clearTable();
             setPoductDetailsToTable();
             clearComponents();
         } else {
-            JOptionPane.showMessageDialog(this, "Product Delete failed, Please check your Database Connection...");
+            JOptionPane.showMessageDialog(this, "Issued Goods Delete failed, Please check your Database Connection...");
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
@@ -858,6 +1086,31 @@ public class IssueGoods extends javax.swing.JFrame {
     private void txtTodayInventoryKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTodayInventoryKeyTyped
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTodayInventoryKeyTyped
+
+    //delays to populate the jtable for 1000ms to wait for txtDate to be initialized
+    private void windowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_windowActivated
+        clearTable();
+        // Delay the loading of the table to ensure txtDate is initialized
+        javax.swing.Timer timer = new javax.swing.Timer(1000, new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                setPoductDetailsToTable();
+            }
+        });
+        timer.setRepeats(false); // Only execute once
+        timer.start();
+    }//GEN-LAST:event_windowActivated
+
+    private void tbl_issued_goodsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_issued_goodsMouseClicked
+        int rowNo = tbl_issued_goods.getSelectedRow();
+        TableModel model = tbl_issued_goods.getModel();
+
+        cbo_assignee.setSelectedItem(model.getValueAt(rowNo, 0).toString());
+        cbo_products.setSelectedItem(model.getValueAt(rowNo, 1).toString());
+        txtprice.setText(model.getValueAt(rowNo, 2).toString());
+        txtQty.setText(model.getValueAt(rowNo, 3).toString());
+        tot_price.setText(model.getValueAt(rowNo, 4).toString());
+    }//GEN-LAST:event_tbl_issued_goodsMouseClicked
 
     /**
      * @param args the command line arguments
@@ -924,6 +1177,7 @@ public class IssueGoods extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbl_close;
     private javax.swing.JLabel lbl_dashboard;
     private javax.swing.JLabel lbl_defaulterList;
@@ -939,6 +1193,7 @@ public class IssueGoods extends javax.swing.JFrame {
     private javax.swing.JPanel panel_display;
     private javax.swing.JPanel panel_menu;
     private javax.swing.JPanel parentPanel;
+    private rojerusan.RSTableMetro tbl_issued_goods;
     private javax.swing.JTextField tot_price;
     private javax.swing.JLabel txtDate;
     private javax.swing.JTextField txtQty;

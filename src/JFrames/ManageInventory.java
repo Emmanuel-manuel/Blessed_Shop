@@ -603,7 +603,7 @@ public class ManageInventory extends javax.swing.JFrame {
         model.setRowCount(0);
     }
 
-    //to pull the users' details from the db to the table
+    //to pull the inventory details from the db to the table
     public void setPoductDetailsToTable() {
 
         try {
@@ -1078,6 +1078,7 @@ public class ManageInventory extends javax.swing.JFrame {
         tot_price.setText(model.getValueAt(rowNo, 5).toString());
     }//GEN-LAST:event_tbl_inventoryMouseClicked
 
+    //delays to populate the jtable for 1000ms to wait for txtDate to be initialized
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         clearTable();
         // Delay the loading of the table to ensure txtDate is initialized
