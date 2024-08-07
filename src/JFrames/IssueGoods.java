@@ -560,8 +560,7 @@ public class IssueGoods extends javax.swing.JFrame {
         timer.start();
     }
 
-
-
+    
     //Load Product name into cbo_products combobox
     private void loadProducts() {
         try {
@@ -645,6 +644,23 @@ public class IssueGoods extends javax.swing.JFrame {
         tot_price.setText(String.valueOf(tot));
     }
 
+    // Checks the value entered at 'txtQty' should not exceed value at 'txtTodayInventory'
+     private void checkQuantity() {
+        try {
+            int quantity = Integer.parseInt(txtQty.getText());
+            int inventory = Integer.parseInt(txtTodayInventory.getText());
+
+            if (quantity > inventory) {
+                JOptionPane.showMessageDialog(null, "Quantity to issue should not exceed Today's inventory quantity");
+                txtQty.setText("0");
+            }
+        } catch (NumberFormatException e) {
+            // Handle the case where the input is not a valid integer
+            e.printStackTrace();
+        
+        }
+    }
+     
      //method to clear jtable before adding new data on it
     public void clearTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_issued_goods.getModel();
@@ -1019,6 +1035,7 @@ public class IssueGoods extends javax.swing.JFrame {
     }//GEN-LAST:event_txtpriceKeyTyped
 
     private void txtQtyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQtyKeyReleased
+        checkQuantity();
         pro_total();
     }//GEN-LAST:event_txtQtyKeyReleased
 
