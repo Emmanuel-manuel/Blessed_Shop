@@ -6,9 +6,16 @@
 package JFrames;
 
 //import MiniFrames.*;
+import default_package.DBConnection;
+import default_package.Select;
 import default_package.Time;
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -16,16 +23,20 @@ import javax.swing.JOptionPane;
  */
 public class ReturnGood extends javax.swing.JFrame {
 //    Initialize components
+
     ManageInventory manageInventory = new ManageInventory();
-    
+
     // Gets the window's screen position
     int xx, xy;
 
     //Global variable for Hover Effect
     Color mouseEnterColor = new Color(255, 153, 0);
     Color mouseExitColor = new Color(51, 51, 51);
-    
-    
+
+    DefaultTableModel model;
+
+    String employeeName, productName, pricePerProduct, qty, total, today_date;
+
     public ReturnGood() {
         initComponents();
         init();
@@ -74,6 +85,21 @@ public class ReturnGood extends javax.swing.JFrame {
         jPanel13 = new javax.swing.JPanel();
         lbl_defaulterList = new javax.swing.JLabel();
         panel_display = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        cbo_assignee = new rojerusan.RSComboMetro();
+        jLabel6 = new javax.swing.JLabel();
+        cbo_products = new rojerusan.RSComboMetro();
+        jLabel7 = new javax.swing.JLabel();
+        txtprice = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        txtQty = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        tot_price = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbl_return_goods = new rojerusan.RSTableMetro();
+        btnSave = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        txtTodayInventory = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -369,6 +395,126 @@ public class ReturnGood extends javax.swing.JFrame {
         panel_menu.setBounds(0, 0, 250, 700);
 
         panel_display.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel10.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel10.setText("Assignee:");
+        jLabel10.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        panel_display.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 120, 30));
+
+        cbo_assignee.setForeground(new java.awt.Color(0, 0, 0));
+        cbo_assignee.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Route" }));
+        cbo_assignee.setColorBorde(new java.awt.Color(102, 102, 102));
+        cbo_assignee.setColorFondo(new java.awt.Color(255, 153, 0));
+        cbo_assignee.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        cbo_assignee.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_assigneeActionPerformed(evt);
+            }
+        });
+        panel_display.add(cbo_assignee, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 280, -1));
+
+        jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel6.setText("Product:");
+        jLabel6.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        panel_display.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 120, 30));
+
+        cbo_products.setForeground(new java.awt.Color(0, 0, 0));
+        cbo_products.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select" }));
+        cbo_products.setColorBorde(new java.awt.Color(102, 102, 102));
+        cbo_products.setColorFondo(new java.awt.Color(255, 153, 0));
+        cbo_products.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        cbo_products.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_productsActionPerformed(evt);
+            }
+        });
+        panel_display.add(cbo_products, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 280, -1));
+
+        jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel7.setText("Price per Product:");
+        panel_display.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, 150, 30));
+
+        txtprice.setEditable(false);
+        txtprice.setBackground(new java.awt.Color(255, 255, 255));
+        txtprice.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        txtprice.setForeground(new java.awt.Color(0, 102, 102));
+        txtprice.setText("00.00");
+        txtprice.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtpriceKeyTyped(evt);
+            }
+        });
+        panel_display.add(txtprice, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 160, 30));
+
+        jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel9.setText("Quantity To Return:");
+        panel_display.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, 170, 30));
+
+        txtQty.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        txtQty.setText("0");
+        txtQty.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtQtyKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtQtyKeyTyped(evt);
+            }
+        });
+        panel_display.add(txtQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, 160, 30));
+
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel3.setText("Total Price:");
+        panel_display.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, 170, 30));
+
+        tot_price.setEditable(false);
+        tot_price.setFont(new java.awt.Font("Times New Roman", 1, 22)); // NOI18N
+        tot_price.setForeground(new java.awt.Color(0, 102, 102));
+        panel_display.add(tot_price, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 430, 160, -1));
+
+        tbl_return_goods.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Assignee", "Product", "PricePerProduct", "QuantityReturned", "TotalPrice", "Date"
+            }
+        ));
+        tbl_return_goods.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_return_goodsMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbl_return_goods);
+
+        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 2, 790, 430));
+
+        btnSave.setBackground(new java.awt.Color(102, 255, 102));
+        btnSave.setFont(new java.awt.Font("Yu Gothic Medium", 0, 14)); // NOI18N
+        btnSave.setText("SAVE CHANGES");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+        panel_display.add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 530, 160, -1));
+
+        jLabel11.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel11.setText("Today's Received Quatity:");
+        panel_display.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 220, 30));
+
+        txtTodayInventory.setEditable(false);
+        txtTodayInventory.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        txtTodayInventory.setText("0");
+        txtTodayInventory.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtTodayInventoryKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtTodayInventoryKeyTyped(evt);
+            }
+        });
+        panel_display.add(txtTodayInventory, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 160, 30));
+
         parentPanel.add(panel_display);
         panel_display.setBounds(250, 0, 1120, 700);
 
@@ -380,14 +526,235 @@ public class ReturnGood extends javax.swing.JFrame {
 
     public void init() {
         Time.setTime(txtTime, txtDate);  // Calling the setTime method from the Time class
-        
+
+        loadEmployeeName();
+
+        // Delay the loading of the PRODUCTS COMBO BOX to ensure txtDate is initialized
+        javax.swing.Timer timer = new javax.swing.Timer(1000, new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                setPoductDetailsToTable();
+            }
+        });
+        timer.setRepeats(false); // Only execute once
+        timer.start();
     }
-    
+
+//Load Product name into cbo_products combobox
+    private void loadProducts() {
+        cbo_products.removeAllItems();
+
+        today_date = txtDate.getText();
+        employeeName = (String) cbo_assignee.getSelectedItem();
+
+        try {
+            ResultSet rs = Select.getData("select product_name from issued_goods where employee_name='" + employeeName + "' and date = '" + today_date + "' ");
+            while (rs.next()) {
+                cbo_products.addItem(rs.getString(1));
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+    }
+
+    //Load employee name into cbo_assignee combobox
+    private void loadEmployeeName() {
+        try {
+            Connection con = DBConnection.getConnection();
+            String sql = "SELECT name FROM employee_details";
+            PreparedStatement pst = con.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                String employeeName = rs.getString("name");
+                cbo_assignee.addItem(employeeName);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+// Get product price from the database
+    private void fetchProductPrice(String productName) {
+        // Get the current date from the JLabel in the desired format
+        String today = txtDate.getText();
+        try {
+            Connection con = DBConnection.getConnection();
+            //String sql = "SELECT price_per_product && total_qty FROM inventory WHERE product_name = ?";
+            String sql = "SELECT price_per_product, qty_given FROM issued_goods WHERE product_name = ? AND date = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, productName);
+            pst.setString(2, today);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                txtprice.setText(rs.getString("price_per_product"));
+                //txtTodayInventory
+                txtTodayInventory.setText(rs.getString("qty_given"));
+            } else {
+                txtprice.setText("");
+                txtTodayInventory.setText("0");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //    To calculate the product of Inventory
+    private void pro_total() {
+
+        Integer a = Integer.parseInt(txtprice.getText());
+        Integer b = Integer.parseInt(txtQty.getText());
+
+        Integer tot;
+
+        tot = a * b;
+
+        tot_price.setText(String.valueOf(tot));
+    }
+
+    // Checks the value entered at 'txtQty' should not exceed value at 'txtTodayInventory'
+    private void checkQuantity() {
+        try {
+            int quantity = Integer.parseInt(txtQty.getText());
+            int inventory = Integer.parseInt(txtTodayInventory.getText());
+
+            if (quantity > inventory) {
+                JOptionPane.showMessageDialog(null, "Quantity to Return should not exceed Today's Received quantity");
+                txtQty.setText("0");
+            }
+        } catch (NumberFormatException e) {
+            // Handle the case where the input is not a valid integer
+            e.printStackTrace();
+
+        }
+    }
+
+    //method to clear jtable before adding new data on it
+    public void clearTable() {
+        DefaultTableModel model = (DefaultTableModel) tbl_return_goods.getModel();
+        model.setRowCount(0);
+    }
+
+    //to pull the inventory details from the db to the table
+    public void setPoductDetailsToTable() {
+
+        try {
+            Connection con = DBConnection.getConnection();
+
+            // Get the current date from the JLabel in the desired format
+            today_date = txtDate.getText();
+
+            String sql = "SELECT * FROM return_goods WHERE date = ?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, today_date);
+
+            ResultSet rs = st.executeQuery();
+            st.setString(1, today_date);
+
+            while (rs.next()) {
+//                String productName, pricePerProduct, qty, qtyBal, total, today_date;
+                String employeeName = rs.getString("employee_name");
+                String productName = rs.getString("product_name");
+                String pricePerProduct = rs.getString("price_per_product");
+                String qty = rs.getString("qty_returned");
+                String total = rs.getString("total_price");
+                String t_date = rs.getString("date");
+
+                Object[] obj = {employeeName, productName, pricePerProduct, qty, total, t_date};
+                model = (DefaultTableModel) tbl_return_goods.getModel();
+                //adds a row array
+                model.addRow(obj);
+            }
+
+            rs.close();
+            st.close();
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //to add products to the database in issued_goods table
+    public boolean returnProduct() {
+
+        boolean isAdded = false;
+
+        employeeName = (String) cbo_assignee.getSelectedItem();
+        productName = (String) cbo_products.getSelectedItem();
+        pricePerProduct = txtprice.getText();
+        qty = txtQty.getText();
+        total = tot_price.getText();
+        today_date = txtDate.getText();
+
+        try {
+            // Parse quantity fields to integers
+            int qtyReturned = Integer.parseInt(qty);
+
+            //checks for duplicate entry using product name and today's date
+//            checkduplicate();
+            Connection con = DBConnection.getConnection();
+
+            // Check for duplicates
+            String checkSql = "SELECT COUNT(*) FROM return_goods WHERE employee_name = ? AND product_name = ? AND date = ?";
+            PreparedStatement checkPst = con.prepareStatement(checkSql);
+            checkPst.setString(1, employeeName);
+            checkPst.setString(2, productName);
+            checkPst.setString(3, today_date);
+            ResultSet rs = checkPst.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+
+            if (count > 0) {
+                JOptionPane.showMessageDialog(null, "Already returned this product on this day for this Assignee");
+                clearComponents();
+                return isAdded;
+            }
+
+            String sql = "insert into return_goods (employee_name, product_name, price_per_product, qty_returned,"
+                    + " total_price, date) values(?,?,?,?,?,?)";
+            PreparedStatement pst = con.prepareStatement(sql);
+
+            //sets the values from the textfield to the colums in the db
+            pst.setString(1, employeeName);
+            pst.setString(2, productName);
+            pst.setString(3, pricePerProduct);
+            pst.setInt(4, qtyReturned);
+            pst.setString(5, total);
+            pst.setString(6, today_date);
+
+            //If a database row is added to output a success message
+            int rowCount = pst.executeUpdate();
+
+            if (rowCount > 0) {
+                isAdded = true;
+            } else {
+                isAdded = false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //returns the 'isAdded' variable value
+        return isAdded;
+
+    }
+
+//clear the interface components
+    private void clearComponents() {
+
+        cbo_assignee.setSelectedIndex(0);
+//        cbo_products.setSelectedIndex(0);
+        txtTodayInventory.setText("0");
+        txtprice.setText("00.00");
+        txtQty.setText("0");
+        tot_price.setText("");
+    }
 
 
-
-    
-    
     private void lbl_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMouseClicked
         int a = JOptionPane.showConfirmDialog(null, "Do you really want to Close Application?", "Select", JOptionPane.YES_NO_OPTION);
         if (a == 0) {
@@ -396,13 +763,13 @@ public class ReturnGood extends javax.swing.JFrame {
     }//GEN-LAST:event_lbl_closeMouseClicked
 
     private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
-        
+
         xx = evt.getX();
         xy = evt.getY();
     }//GEN-LAST:event_jPanel2MouseClicked
 
     private void jPanel2MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseDragged
-        
+
         int x = evt.getXOnScreen();
         int y = evt.getYOnScreen();
         this.setLocation(x - xx, y - xy);
@@ -427,9 +794,8 @@ public class ReturnGood extends javax.swing.JFrame {
         ManageInventory inventory = new ManageInventory();
         inventory.setVisible(true);
         dispose();
-        
+
 //        Displaying only JPanels
-        
 //        JPanel panel_manageInventory = manageInventory.getPanel_manageInventory();
 //
 //        if (panel_menu.isVisible()) {
@@ -564,6 +930,69 @@ public class ReturnGood extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jLabel5MouseClicked
 
+    private void cbo_productsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_productsActionPerformed
+        String selectedProduct = (String) cbo_products.getSelectedItem();
+        if (selectedProduct != null) {
+            fetchProductPrice(selectedProduct);
+        }
+    }//GEN-LAST:event_cbo_productsActionPerformed
+
+    private void txtpriceKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpriceKeyTyped
+        if (!Character.isDigit(evt.getKeyChar())) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtpriceKeyTyped
+
+    private void txtQtyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQtyKeyReleased
+        checkQuantity();
+        pro_total();
+    }//GEN-LAST:event_txtQtyKeyReleased
+
+    private void txtQtyKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQtyKeyTyped
+        if (!Character.isDigit(evt.getKeyChar())) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtQtyKeyTyped
+
+    private void tbl_return_goodsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_return_goodsMouseClicked
+        int rowNo = tbl_return_goods.getSelectedRow();
+        TableModel model = tbl_return_goods.getModel();
+
+        cbo_assignee.setSelectedItem(model.getValueAt(rowNo, 0).toString());
+        cbo_products.setSelectedItem(model.getValueAt(rowNo, 1).toString());
+        txtprice.setText(model.getValueAt(rowNo, 2).toString());
+        txtQty.setText(model.getValueAt(rowNo, 3).toString());
+        tot_price.setText(model.getValueAt(rowNo, 4).toString());
+    }//GEN-LAST:event_tbl_return_goodsMouseClicked
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        if (txtQty.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please enter the quantity to Return field");
+
+        } else if (returnProduct() == true) {
+            JOptionPane.showMessageDialog(this, "Product Returned Successfully...");
+
+            clearTable();
+            setPoductDetailsToTable();
+            clearComponents();
+        } else {
+            JOptionPane.showMessageDialog(this, "Product Return failed, Please check your Database Connection...");
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void txtTodayInventoryKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTodayInventoryKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTodayInventoryKeyReleased
+
+    private void txtTodayInventoryKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTodayInventoryKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTodayInventoryKeyTyped
+
+    private void cbo_assigneeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_assigneeActionPerformed
+        // TODO add your handling code here:
+        loadProducts();
+    }//GEN-LAST:event_cbo_assigneeActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -601,10 +1030,19 @@ public class ReturnGood extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSave;
+    private rojerusan.RSComboMetro cbo_assignee;
+    private rojerusan.RSComboMetro cbo_products;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -619,6 +1057,7 @@ public class ReturnGood extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbl_close;
     private javax.swing.JLabel lbl_dashboard;
     private javax.swing.JLabel lbl_defaulterList;
@@ -633,7 +1072,12 @@ public class ReturnGood extends javax.swing.JFrame {
     private javax.swing.JPanel panel_display;
     private javax.swing.JPanel panel_menu;
     private javax.swing.JPanel parentPanel;
+    private rojerusan.RSTableMetro tbl_return_goods;
+    private javax.swing.JTextField tot_price;
     private javax.swing.JLabel txtDate;
+    private javax.swing.JTextField txtQty;
     private javax.swing.JLabel txtTime;
+    private javax.swing.JTextField txtTodayInventory;
+    private javax.swing.JTextField txtprice;
     // End of variables declaration//GEN-END:variables
 }

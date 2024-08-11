@@ -870,6 +870,7 @@ public class IssueGoods extends javax.swing.JFrame {
         tot_price.setText("");
     }
     
+    
     private void lbl_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMouseClicked
         int a = JOptionPane.showConfirmDialog(null, "Do you really want to Close Application?", "Select", JOptionPane.YES_NO_OPTION);
         if (a == 0) {
