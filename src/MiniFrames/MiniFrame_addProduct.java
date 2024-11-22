@@ -17,7 +17,7 @@ import javax.swing.JPopupMenu;
  */
 public class MiniFrame_addProduct extends javax.swing.JFrame {
 
-    String productName, productPrice;
+    String productName, product_B_Price, product_S_Price;
     private JPopupMenu suggestionMenu;
 
     /**
@@ -26,6 +26,8 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
     public MiniFrame_addProduct() {
         initComponents();
         suggestionMenu = new JPopupMenu();
+        
+        
     }
 
     /**
@@ -46,8 +48,11 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
         btnSubmit = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        txt_productPrice = new javax.swing.JTextField();
+        txt_product_B_Price = new javax.swing.JTextField();
         btnDel = new javax.swing.JButton();
+        txt_product_S_Price = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        lblMessage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -88,17 +93,24 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
                 txt_productNameKeyReleased(evt);
             }
         });
-        jPanel1.add(txt_productName, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 100, 260, 40));
+        jPanel1.add(txt_productName, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 100, 290, 40));
 
+        btnSubmit.setBackground(new java.awt.Color(153, 255, 153));
         btnSubmit.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         btnSubmit.setText("SUBMIT");
+        btnSubmit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSubmitMouseClicked(evt);
+            }
+        });
         btnSubmit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSubmitActionPerformed(evt);
             }
         });
-        jPanel1.add(btnSubmit, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 210, 120, 30));
+        jPanel1.add(btnSubmit, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 290, 120, 30));
 
+        btnUpdate.setBackground(new java.awt.Color(255, 153, 51));
         btnUpdate.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         btnUpdate.setText("UPDATE");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
@@ -106,22 +118,23 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
                 btnUpdateActionPerformed(evt);
             }
         });
-        jPanel1.add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 210, 120, 30));
+        jPanel1.add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 290, 120, 30));
 
         jLabel3.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
-        jLabel3.setText("Price of the Product: ");
+        jLabel3.setText("Buying Price of the Product: ");
         jLabel3.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel3.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 250, 30));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 260, 30));
 
-        txt_productPrice.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        txt_productPrice.addKeyListener(new java.awt.event.KeyAdapter() {
+        txt_product_B_Price.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        txt_product_B_Price.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txt_productPriceKeyTyped(evt);
+                txt_product_B_PriceKeyTyped(evt);
             }
         });
-        jPanel1.add(txt_productPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 150, 260, 40));
+        jPanel1.add(txt_product_B_Price, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 150, 290, 40));
 
+        btnDel.setBackground(new java.awt.Color(255, 51, 0));
         btnDel.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         btnDel.setText("DELETE");
         btnDel.addActionListener(new java.awt.event.ActionListener() {
@@ -129,11 +142,28 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
                 btnDelActionPerformed(evt);
             }
         });
-        jPanel1.add(btnDel, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 210, 120, 30));
+        jPanel1.add(btnDel, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 290, 120, 30));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 260));
+        txt_product_S_Price.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        txt_product_S_Price.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_product_S_PriceKeyTyped(evt);
+            }
+        });
+        jPanel1.add(txt_product_S_Price, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 200, 290, 40));
 
-        setSize(new java.awt.Dimension(596, 259));
+        jLabel4.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
+        jLabel4.setText("Selling Price of the Product: ");
+        jLabel4.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel4.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 260, 30));
+
+        lblMessage.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        jPanel1.add(lblMessage, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 250, 240, 30));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 330));
+
+        setSize(new java.awt.Dimension(596, 335));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -184,21 +214,27 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
 
     //to add products to the database in student_details table
     public boolean addProduct() {
-
+ 
         boolean isAdded = false;
 
         productName = txt_productName.getText();
-        productPrice = txt_productPrice.getText();
+        product_B_Price = txt_product_B_Price.getText();
+        product_S_Price = txt_product_S_Price.getText();
+//
+    // Convert prices to integers
+        int bPrice = Integer.parseInt(product_B_Price);
+        int sPrice = Integer.parseInt(product_S_Price);
 
         try {
 
             Connection con = DBConnection.getConnection();
-            String sql = "insert into products (product_name, price) values(?,?)";
+            String sql = "insert into products (product_name, b_price, s_price) values(?,?,?)";
             PreparedStatement pst = con.prepareStatement(sql);
 
             //sets the values from the textfield to the colums in the db
             pst.setString(1, productName);
-            pst.setString(2, productPrice);
+            pst.setInt(2, bPrice);
+            pst.setInt(3, sPrice);
 
             //If a database row is added to output a success message
             int rowCount = pst.executeUpdate();
@@ -210,6 +246,7 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
             }
 
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
             e.printStackTrace();
         }
         //returns the 'isAdded' variable value
@@ -217,23 +254,73 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
 
     }
 
+//    private void addProduct() {
+//        String productName = txt_productName.getText().trim();
+//        String productBPrice = txt_product_B_Price.getText().trim();
+//        String productSPrice = txt_product_S_Price.getText().trim();
+//
+//        // Validate inputs
+//        if (productName.isEmpty() || productBPrice.isEmpty() || productSPrice.isEmpty()) {
+//            lblMessage.setText("Please fill all fields.");
+//            return;
+//        }
+//
+//        if (!productBPrice.matches("\\d+") || !productSPrice.matches("\\d+")) {
+//            lblMessage.setText("Prices must be numeric.");
+//            return;
+//        }
+//
+//        // Convert prices to integers
+//        int bPrice = Integer.parseInt(productBPrice);
+//        int sPrice = Integer.parseInt(productSPrice);
+//
+//        // Insert product into the database
+//        Connection con = DBConnection.getConnection();
+//        if (con == null) {
+//            lblMessage.setText("Database connection failed.");
+//            return;
+//        }
+//
+//        String sql = "INSERT INTO products (product_name, b_price, s_price) VALUES (?, ?, ?)";
+//
+//        try (PreparedStatement pst = con.prepareStatement(sql)) {
+//            pst.setString(1, productName);
+//            pst.setInt(2, bPrice);
+//            pst.setInt(3, sPrice);
+//
+//            int rowCount = pst.executeUpdate();
+//            if (rowCount > 0) {
+//                lblMessage.setText("Product added successfully!");
+//                clearComponents();
+//            } else {
+//                lblMessage.setText("Failed to add product.");
+//            }
+//        } catch (Exception e) {
+//            lblMessage.setText("Error: " + e.getMessage());
+//            e.printStackTrace();
+//        }
+//    }
+
+    
     //method to Update the product details
     public boolean updateProduct() {
 
         boolean isUpdated = false;
 
         productName = txt_productName.getText();
-        productPrice = txt_productPrice.getText();
+        product_B_Price = txt_product_B_Price.getText();
+        product_S_Price = txt_product_S_Price.getText();
 
         try {
             Connection con = DBConnection.getConnection();
-            String sql = "update products set product_name = ?, price = ? where product_name = ?";
+            String sql = "update products set product_name = ?, b_price = ?, s_price = ? where product_name = ?";
             PreparedStatement pst = con.prepareStatement(sql);
 
             //sets the values from the textfield to the colums in the db
             pst.setString(1, productName);
-            pst.setString(2, productPrice);
-            pst.setString(3, productName);
+            pst.setString(2, product_B_Price);
+            pst.setString(3, product_S_Price);
+            pst.setString(4, productName);
 
             //If a database row is added to output a success message
             int rowCount = pst.executeUpdate();
@@ -286,7 +373,8 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
 
     private void clearComponents() {
         txt_productName.setText("");
-        txt_productPrice.setText("");
+        txt_product_B_Price.setText("");
+        txt_product_S_Price.setText("");
     }
     
     private void lbl_backMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_backMouseClicked
@@ -295,44 +383,50 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
 
-        if (txt_productName.getText().isEmpty() || txt_productPrice.getText().isEmpty()) {
+        if (txt_productName.getText().isEmpty() || txt_product_B_Price.getText().isEmpty() || txt_product_S_Price.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please fill all the fields");
 
         } else if (addProduct() == true) {
             JOptionPane.showMessageDialog(this, "Product Added Successfully...");
 
             clearComponents();
+            txt_productName.requestFocusInWindow();
         } else {
             JOptionPane.showMessageDialog(this, "Product Addition failed, Please check your Database Connection...");
+            txt_productName.requestFocusInWindow();
         }
     }//GEN-LAST:event_btnSubmitActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         //updateProduct()
-        if (txt_productName.getText().isEmpty() || txt_productPrice.getText().isEmpty()) {
+        if (txt_productName.getText().isEmpty() || txt_product_B_Price.getText().isEmpty() || txt_product_S_Price.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please fill all the fields");
 
         } else if (updateProduct() == true) {
             JOptionPane.showMessageDialog(this, "Product Updated Successfully...");
 
             clearComponents();
+            txt_productName.requestFocusInWindow();
         } else {
             JOptionPane.showMessageDialog(this, "Product Update failed, Please check your Database Connection...");
+            txt_productName.requestFocusInWindow();
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
-    private void txt_productPriceKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_productPriceKeyTyped
+    private void txt_product_B_PriceKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_product_B_PriceKeyTyped
         if (!Character.isDigit(evt.getKeyChar())) {
             evt.consume();
         }
-    }//GEN-LAST:event_txt_productPriceKeyTyped
+    }//GEN-LAST:event_txt_product_B_PriceKeyTyped
 
     private void txt_productNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_productNameKeyReleased
         String text = txt_productName.getText();
         if (!text.isEmpty()) {
             showSuggestions(text);
+            txt_productName.requestFocusInWindow();
         } else {
             suggestionMenu.setVisible(false);
+            txt_productName.requestFocusInWindow();
         }
     }//GEN-LAST:event_txt_productNameKeyReleased
 
@@ -344,10 +438,22 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Product Deleted Successfully...");
 
             clearComponents();
+            txt_productName.requestFocusInWindow();
         } else {
             JOptionPane.showMessageDialog(this, "Product Delete failed, Please check your Database Connection...");
+            txt_productName.requestFocusInWindow();
         }
     }//GEN-LAST:event_btnDelActionPerformed
+
+    private void txt_product_S_PriceKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_product_S_PriceKeyTyped
+        if (!Character.isDigit(evt.getKeyChar())) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_product_S_PriceKeyTyped
+
+    private void btnSubmitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSubmitMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSubmitMouseClicked
 
     /**
      * @param args the command line arguments
@@ -392,10 +498,13 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblMessage;
     private javax.swing.JLabel lbl_back;
     private javax.swing.JTextField txt_productName;
-    private javax.swing.JTextField txt_productPrice;
+    private javax.swing.JTextField txt_product_B_Price;
+    private javax.swing.JTextField txt_product_S_Price;
     // End of variables declaration//GEN-END:variables
 }

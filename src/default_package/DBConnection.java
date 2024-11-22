@@ -23,6 +23,7 @@ public class DBConnection {
             
         } catch (Exception e){
             // handles error by printing where the error is emanating from
+            
             e.printStackTrace();
             
         }

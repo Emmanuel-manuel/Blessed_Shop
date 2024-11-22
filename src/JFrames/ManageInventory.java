@@ -493,7 +493,7 @@ public class ManageInventory extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Product", "Price/ Item", "Qty_Delivered", "Yesterday's Return", "Qty_Total", "Total Price", "Date"
+                "Product", "Price/ Item", "Qty_Delivered", "Yesterday's Return", "Qty_Total", "Total Price", "Today_Rem", "Date"
             }
         ));
         tbl_inventory.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -581,13 +581,13 @@ public class ManageInventory extends javax.swing.JFrame {
     private void fetchProductPrice(String productName) {
         try {
             Connection con = DBConnection.getConnection();
-            String sql = "SELECT price FROM products WHERE product_name = ?";
+            String sql = "SELECT s_price FROM products WHERE product_name = ?";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, productName);
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
-                txtprice.setText(rs.getString("price"));
+                txtprice.setText(rs.getString("s_price"));
             } else {
                 txtprice.setText("");
             }
@@ -617,7 +617,7 @@ public class ManageInventory extends javax.swing.JFrame {
             st.setString(1, today_date);
 
             ResultSet rs = st.executeQuery();
-            st.setString(1, today_date);
+//            st.setString(1, today_date);
 
             while (rs.next()) {
 //                String productName, pricePerProduct, qty, qtyBal, total, today_date;
@@ -627,9 +627,10 @@ public class ManageInventory extends javax.swing.JFrame {
                 String qtyBal = rs.getString("yesterday_bal");
                 String total_qty = rs.getString("total_qty");
                 String total = rs.getString("total_price");
+                String todayRem = rs.getString("today_rem");
                 String t_date = rs.getString("date");
 
-                Object[] obj = {productName, pricePerProduct, qty, qtyBal, total_qty, total, t_date};
+                Object[] obj = {productName, pricePerProduct, qty, qtyBal, total_qty, total, todayRem, t_date};
                 model = (DefaultTableModel) tbl_inventory.getModel();
                 //adds a row array
                 model.addRow(obj);
@@ -657,7 +658,7 @@ public class ManageInventory extends javax.swing.JFrame {
         tot_price.setText(String.valueOf(tot));
     }
 
-    //to add products to the database in student_details table
+    //to add products to the database in inventory table
     public boolean addProduct() {
 
         boolean isAdded = false;
@@ -697,7 +698,7 @@ public class ManageInventory extends javax.swing.JFrame {
             }
 
             String sql = "insert into inventory (product_name, price_per_product, qty_delivered, yesterday_bal, total_qty,"
-                    + " total_price, date) values(?,?,?,?,?,?,?)";
+                    + " today_rem, total_price, date) values(?,?,?,?,?,?,?,?)";
             PreparedStatement pst = con.prepareStatement(sql);
 
             //sets the values from the textfield to the colums in the db
@@ -706,8 +707,9 @@ public class ManageInventory extends javax.swing.JFrame {
             pst.setInt(3, qtyValue);
             pst.setInt(4, qtyBalValue);
             pst.setInt(5, totalQty);
-            pst.setString(6, total);
-            pst.setString(7, today_date);
+            pst.setInt(6, totalQty);// Set today_rem equal to total_qty
+            pst.setString(7, total);
+            pst.setString(8, today_date);
 
             //If a database row is added to output a success message
             int rowCount = pst.executeUpdate();
@@ -751,7 +753,7 @@ public class ManageInventory extends javax.swing.JFrame {
 
             Connection con = DBConnection.getConnection();
             String sql = "update inventory set product_name = ?, price_per_product = ?, qty_delivered = ?, yesterday_bal = ?,"
-                    + " total_qty = ?, total_price = ? where product_name = ? && date = ?";
+                    + " total_qty = ?, today_rem = ?, total_price = ? where product_name = ? && date = ?";
             PreparedStatement pst = con.prepareStatement(sql);
 
             //sets the values from the textfield to the colums in the db
@@ -760,10 +762,10 @@ public class ManageInventory extends javax.swing.JFrame {
             pst.setInt(3, qtyVal);
             pst.setInt(4, qtyBalVal);
             pst.setInt(5, totalQty);
-            pst.setString(6, total);
-//            pst.setString(7, today_date);
-            pst.setString(7, productName);
-            pst.setString(8, today);
+            pst.setInt(6, totalQty);// Set today_rem equal to total_qty
+            pst.setString(7, total);
+            pst.setString(8, productName);
+            pst.setString(9, today);
 
             //If a database row is added to output a success message
             int rowCount = pst.executeUpdate();
@@ -774,10 +776,13 @@ public class ManageInventory extends javax.swing.JFrame {
                 isUpdated = false;
             }
 
+            // Close the resources
+            pst.close();
+            con.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //returns the 'isAdded' variable value
+        //Return whether the update was successful
         return isUpdated;
 
     }

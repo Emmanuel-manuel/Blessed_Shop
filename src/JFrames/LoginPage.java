@@ -4,7 +4,7 @@ import default_package.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 /**
  *
@@ -18,6 +18,16 @@ public class LoginPage extends javax.swing.JFrame {
     public LoginPage() {
         initComponents();
 //        String text_password;
+    
+// Add KeyListener to txt_pass for "Enter" key press to trigger login
+    txt_pass.addKeyListener(new java.awt.event.KeyAdapter() {
+        @Override
+        public void keyPressed(java.awt.event.KeyEvent evt) {
+            if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+                btn_login.doClick();  // Simulates a button click
+            }
+        }
+    });
     }
 
     //Validate textfields not empty
@@ -40,8 +50,8 @@ public class LoginPage extends javax.swing.JFrame {
 
     //verify credentials validity
     public void login() {
-        String name, pwd,pass;
-        
+        String name, pwd, pass;
+
         name = txt_username.getText();
         pwd = txt_pass.getText();
 //        pass = text_password.getPassword();
@@ -58,10 +68,10 @@ public class LoginPage extends javax.swing.JFrame {
             //returns ResultSet value
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
-                
+
                 name = rs.getString("name");
                 pwd = rs.getString("password");
-                
+
                 JOptionPane.showMessageDialog(this, "Login Successfully");
                 Home_page home = new Home_page();
                 home.setVisible(true);
