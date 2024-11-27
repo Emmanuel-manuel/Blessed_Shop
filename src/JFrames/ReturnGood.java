@@ -100,6 +100,7 @@ public class ReturnGood extends javax.swing.JFrame {
         btnSave = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         txtTodayInventory = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -476,7 +477,7 @@ public class ReturnGood extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Assignee", "Product", "PricePerProduct", "QuantityReturned", "TotalPrice", "Date"
+                "Assignee", "Product", "PricePerProduct", "QuantityReturned", "ReturnedGoodsPrice", "Date"
             }
         ));
         tbl_return_goods.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -486,7 +487,7 @@ public class ReturnGood extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tbl_return_goods);
 
-        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 2, 790, 430));
+        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 50, 800, 430));
 
         btnSave.setBackground(new java.awt.Color(102, 255, 102));
         btnSave.setFont(new java.awt.Font("Yu Gothic Medium", 0, 14)); // NOI18N
@@ -514,6 +515,10 @@ public class ReturnGood extends javax.swing.JFrame {
             }
         });
         panel_display.add(txtTodayInventory, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 160, 30));
+
+        jLabel8.setFont(new java.awt.Font("Algerian", 1, 21)); // NOI18N
+        jLabel8.setText("Returned Goods Table");
+        panel_display.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 10, -1, -1));
 
         parentPanel.add(panel_display);
         panel_display.setBounds(250, 0, 1120, 700);
@@ -676,6 +681,51 @@ public class ReturnGood extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    // Updates the 'today_rem' column in the inventory table by adding the returned quantity
+    public boolean update_store_stock() {
+        boolean isUpdated = false;
+
+        try {
+            String productName = (String) cbo_products.getSelectedItem();
+            String todayDate = txtDate.getText();
+            int qtyReturned = Integer.parseInt(txtQty.getText());
+
+            Connection con = DBConnection.getConnection();
+
+            // Fetch the current 'today_rem' value from the inventory table
+            String fetchSql = "SELECT today_rem FROM inventory WHERE product_name = ? AND date = ?";
+            PreparedStatement fetchPst = con.prepareStatement(fetchSql);
+            fetchPst.setString(1, productName);
+            fetchPst.setString(2, todayDate);
+            ResultSet rs = fetchPst.executeQuery();
+
+            if (rs.next()) {
+                int currentTodayRem = rs.getInt("today_rem");
+
+                // Add the returned quantity to the current value
+                int updatedTodayRem = currentTodayRem + qtyReturned;
+
+                // Update the 'today_rem' value in the inventory table
+                String updateSql = "UPDATE inventory SET today_rem = ? WHERE product_name = ? AND date = ?";
+                PreparedStatement updatePst = con.prepareStatement(updateSql);
+                updatePst.setInt(1, updatedTodayRem);
+                updatePst.setString(2, productName);
+                updatePst.setString(3, todayDate);
+
+                int rowCount = updatePst.executeUpdate();
+                if (rowCount > 0) {
+                    isUpdated = true;
+                }
+            }
+
+            rs.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return isUpdated;
     }
 
     //to add products to the database in issued_goods table
@@ -969,7 +1019,7 @@ public class ReturnGood extends javax.swing.JFrame {
         if (txtQty.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please enter the quantity to Return field");
 
-        } else if (returnProduct() == true) {
+        } else if (returnProduct() == true && update_store_stock() == true) {
             JOptionPane.showMessageDialog(this, "Product Returned Successfully...");
 
             clearTable();
@@ -1042,6 +1092,7 @@ public class ReturnGood extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;

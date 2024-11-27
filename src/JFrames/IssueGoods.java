@@ -31,9 +31,9 @@ public class IssueGoods extends javax.swing.JFrame {
     //Global variable for Hover Effect
     Color mouseEnterColor = new Color(255, 153, 0);
     Color mouseExitColor = new Color(51, 51, 51);
-    
+
     DefaultTableModel model;
-    
+
     String employeeName, productName, pricePerProduct, qty, total, today_date;
 
     public IssueGoods() {
@@ -101,6 +101,7 @@ public class IssueGoods extends javax.swing.JFrame {
         txtTodayInventory = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_issued_goods = new rojerusan.RSTableMetro();
+        txt_message = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -536,6 +537,9 @@ public class IssueGoods extends javax.swing.JFrame {
 
         panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 2, 790, 430));
 
+        txt_message.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        panel_display.add(txt_message, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 480, 250, 30));
+
         parentPanel.add(panel_display);
         panel_display.setBounds(250, 0, 1120, 700);
 
@@ -560,15 +564,14 @@ public class IssueGoods extends javax.swing.JFrame {
         timer.start();
     }
 
-    
     //Load Product name into cbo_products combobox
     private void loadProducts() {
         try {
             Connection con = DBConnection.getConnection();
-            
+
             // Get the current date from the JLabel in the desired format
             String today_date = txtDate.getText();
-            
+
             String sql = "SELECT product_name FROM inventory where date = ?";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, today_date);
@@ -585,7 +588,7 @@ public class IssueGoods extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
+
     //Load employee name into cbo_assignee combobox
     private void loadEmployeeName() {
         try {
@@ -610,22 +613,27 @@ public class IssueGoods extends javax.swing.JFrame {
         String today = txtDate.getText();
         try {
             Connection con = DBConnection.getConnection();
-            //String sql = "SELECT price_per_product && total_qty FROM inventory WHERE product_name = ?";
-            String sql = "SELECT price_per_product, total_qty FROM inventory WHERE product_name = ? AND date = ?";
+            //String sql = "SELECT price_per_product && (today_rem)quantity FROM inventory WHERE product_name = ?";
+            String sql = "SELECT price_per_product, today_rem FROM inventory WHERE product_name = ? AND date = ?";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, productName);
             pst.setString(2, today);
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
+                // Set the fetched price and inventory to the respective fields
                 txtprice.setText(rs.getString("price_per_product"));
                 //txtTodayInventory
-                txtTodayInventory.setText(rs.getString("total_qty"));
+                txtTodayInventory.setText(rs.getString("today_rem"));
             } else {
+                // Clear fields if the product is not found
                 txtprice.setText("");
                 txtTodayInventory.setText("0");
             }
 
+            rs.close();
+            pst.close();
+            con.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -645,7 +653,7 @@ public class IssueGoods extends javax.swing.JFrame {
     }
 
     // Checks the value entered at 'txtQty' should not exceed value at 'txtTodayInventory'
-     private void checkQuantity() {
+    private void checkQuantity() {
         try {
             int quantity = Integer.parseInt(txtQty.getText());
             int inventory = Integer.parseInt(txtTodayInventory.getText());
@@ -657,16 +665,62 @@ public class IssueGoods extends javax.swing.JFrame {
         } catch (NumberFormatException e) {
             // Handle the case where the input is not a valid integer
             e.printStackTrace();
-        
+
         }
     }
-     
-     //method to clear jtable before adding new data on it
+
+    // Performs arithmetic operation (Today's Remaining Inventory - Quantity Given)
+    private void subtract() {
+        try {
+            String productName = (String) cbo_products.getSelectedItem();
+            String todayDate = txtDate.getText();
+
+            if (productName == null || productName.isEmpty()) {
+                txt_message.setText("Please select a product.");
+                return;
+            }
+
+            // Retrieve and parse the value entered in txtQty
+            String qtyText = txtQty.getText();
+            int qtyValue = qtyText.isEmpty() ? 0 : Integer.parseInt(qtyText); // Default to 0 if empty
+
+            Connection con = DBConnection.getConnection();
+            String sql = "SELECT today_rem FROM inventory WHERE product_name = ? AND date = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, productName);
+            pst.setString(2, todayDate);
+
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                int todayRem = rs.getInt("today_rem"); // Get the value from the database
+                int updatedInventory = todayRem - qtyValue; // Perform the subtraction
+
+                // Display the updated inventory in txtTodayInventory
+                txtTodayInventory.setText(String.valueOf(updatedInventory));
+            } else {
+                txt_message.setText("Product data not found for the selected date.");
+                txtTodayInventory.setText("0");
+            }
+
+            rs.close();
+            pst.close();
+            con.close();
+        } catch (NumberFormatException e) {
+            // Handle non-integer or empty inputs gracefully
+            txt_message.setText("Invalid input. Please enter a numeric value.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            txt_message.setText("Error fetching product data.");
+        }
+    }
+
+    //method to clear jtable before adding new data on it
     public void clearTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_issued_goods.getModel();
         model.setRowCount(0);
     }
-    
+
     //to pull the inventory details from the db to the table
     public void setPoductDetailsToTable() {
 
@@ -706,7 +760,44 @@ public class IssueGoods extends javax.swing.JFrame {
         }
     }
 
-    
+    public boolean update_today_stock() {
+        boolean isUpdated = false;
+
+        productName = (String) cbo_products.getSelectedItem();
+        String todayInventory = txtTodayInventory.getText();
+        today_date = txtDate.getText();
+
+        try {
+            // Parse today's inventory value
+            int todayRemValue = Integer.parseInt(todayInventory);
+
+            // Establish database connection
+            Connection con = DBConnection.getConnection();
+
+            // SQL query to update the today_rem column
+            String sql = "UPDATE inventory SET today_rem = ? WHERE product_name = ? AND date = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+
+            // Set values for the query
+            pst.setInt(1, todayRemValue);
+            pst.setString(2, productName);
+            pst.setString(3, today_date);
+
+            // Execute the update query
+            int rowCount = pst.executeUpdate();
+
+            if (rowCount > 0) {
+                isUpdated = true;
+            } else {
+                isUpdated = false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return isUpdated;
+    }
+
     //to add products to the database in issued_goods table
     public boolean addProduct() {
 
@@ -722,7 +813,7 @@ public class IssueGoods extends javax.swing.JFrame {
         try {
             // Parse quantity fields to integers
             int qtyIssued = Integer.parseInt(qty);
-            
+
             //checks for duplicate entry using product name and today's date
 //            checkduplicate();
             Connection con = DBConnection.getConnection();
@@ -803,7 +894,7 @@ public class IssueGoods extends javax.swing.JFrame {
             pst.setString(3, pricePerProduct);
             pst.setInt(4, qtyVal);
             pst.setInt(5, totalPrice);
-            
+
             pst.setString(6, employeeName);
             pst.setString(7, productName);
             pst.setString(8, today);
@@ -868,9 +959,10 @@ public class IssueGoods extends javax.swing.JFrame {
         txtprice.setText("00.00");
         txtQty.setText("0");
         tot_price.setText("");
+        txt_message.setText("");
     }
-    
-    
+
+
     private void lbl_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMouseClicked
         int a = JOptionPane.showConfirmDialog(null, "Do you really want to Close Application?", "Select", JOptionPane.YES_NO_OPTION);
         if (a == 0) {
@@ -1036,8 +1128,17 @@ public class IssueGoods extends javax.swing.JFrame {
     }//GEN-LAST:event_txtpriceKeyTyped
 
     private void txtQtyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQtyKeyReleased
-        checkQuantity();
-        pro_total();
+        // Check if the quantity field is empty
+        if (txtQty.getText().isEmpty()) {
+            String productName = (String) cbo_products.getSelectedItem();
+            if (productName != null && !productName.equals("Select Product")) {
+                fetchProductPrice(productName); // Fetch product price and inventory
+            }
+        } else {
+            checkQuantity();  // Perform quantity validation if necessary
+            pro_total();      // Update the total
+            subtract();       // Perform the subtraction operation
+        }
     }//GEN-LAST:event_txtQtyKeyReleased
 
     private void txtQtyKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQtyKeyTyped
@@ -1054,8 +1155,13 @@ public class IssueGoods extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please select a Product");
 
         } else if (addProduct() == true) {
-            JOptionPane.showMessageDialog(this, "Product Issued Successfully...");
-
+            // If product issue is successful
+            if (update_today_stock()) {
+                JOptionPane.showMessageDialog(this, "Product Issued and Inventory Updated Successfully...");
+            } else {
+                JOptionPane.showMessageDialog(this, "Product Issued, but Inventory Update Failed. Please check the database.");
+            }
+            
             clearTable();
             setPoductDetailsToTable();
             clearComponents();
@@ -1217,6 +1323,7 @@ public class IssueGoods extends javax.swing.JFrame {
     private javax.swing.JTextField txtQty;
     private javax.swing.JLabel txtTime;
     private javax.swing.JTextField txtTodayInventory;
+    private javax.swing.JLabel txt_message;
     private javax.swing.JTextField txtprice;
     // End of variables declaration//GEN-END:variables
 }
