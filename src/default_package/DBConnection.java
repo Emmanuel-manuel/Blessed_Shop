@@ -18,7 +18,7 @@ public class DBConnection {
     
     public static Connection getConnection(){
         try{
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.jdbc.Driver"); //Register MySql driver
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/shop","root","");
             
         } catch (Exception e){

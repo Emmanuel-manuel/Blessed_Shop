@@ -74,6 +74,12 @@ public class ViewAllRecords extends javax.swing.JFrame {
         jPanel13 = new javax.swing.JPanel();
         lbl_defaulterList = new javax.swing.JLabel();
         panel_display = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        cbo_assignee = new rojerusan.RSComboMetro();
+        jLabel6 = new javax.swing.JLabel();
+        cbo_products = new rojerusan.RSComboMetro();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbl_return_goods = new rojerusan.RSTableMetro();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -369,6 +375,58 @@ public class ViewAllRecords extends javax.swing.JFrame {
         panel_menu.setBounds(0, 0, 250, 700);
 
         panel_display.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel10.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel10.setText("Assignee:");
+        jLabel10.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        panel_display.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 120, 30));
+
+        cbo_assignee.setForeground(new java.awt.Color(0, 0, 0));
+        cbo_assignee.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Route" }));
+        cbo_assignee.setColorBorde(new java.awt.Color(102, 102, 102));
+        cbo_assignee.setColorFondo(new java.awt.Color(255, 153, 0));
+        cbo_assignee.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        cbo_assignee.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_assigneeActionPerformed(evt);
+            }
+        });
+        panel_display.add(cbo_assignee, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 280, -1));
+
+        jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel6.setText("Product:");
+        jLabel6.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        panel_display.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, 120, 30));
+
+        cbo_products.setForeground(new java.awt.Color(0, 0, 0));
+        cbo_products.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select" }));
+        cbo_products.setColorBorde(new java.awt.Color(102, 102, 102));
+        cbo_products.setColorFondo(new java.awt.Color(255, 153, 0));
+        cbo_products.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        cbo_products.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_productsActionPerformed(evt);
+            }
+        });
+        panel_display.add(cbo_products, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 50, 280, -1));
+
+        tbl_return_goods.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Assignee", "Product", "PricePerProduct", "QuantityReceived", "ReturnedQuantity", "SoldQuantity", "Total Sales", "Date"
+            }
+        ));
+        tbl_return_goods.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_return_goodsMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbl_return_goods);
+
+        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 1070, 430));
+
         parentPanel.add(panel_display);
         panel_display.setBounds(250, 0, 1120, 700);
 
@@ -428,31 +486,6 @@ public class ViewAllRecords extends javax.swing.JFrame {
         inventory.setVisible(true);
         dispose();
         
-//        Displaying only JPanels
-        
-//        JPanel panel_manageInventory = manageInventory.getPanel_manageInventory();
-//
-//        if (panel_menu.isVisible()) {
-//
-//            // Ensure panel_manageBooks is added to parentPanel
-//            parentPanel.add(panel_manageInventory);
-//            // Set panel_display to invisible
-//            panel_display.setVisible(false);
-//            // Set panel_manageBooks to visible
-//            panel_manageInventory.setVisible(true);
-//            // Set the bounds of panel_manageBooks to fill the entire parentPanel
-//            panel_manageInventory.setBounds(250, 0, parentPanel.getWidth(), parentPanel.getHeight());
-//
-//        } else {
-//            panel_menu.setVisible(true);
-//            // Adjust panel_display when panel_menu reappears
-//            panel_manageInventory.setBounds(panel_menu.getWidth(), 0, parentPanel.getWidth() - panel_menu.getWidth(), 700);
-//
-//        }
-//
-//        // Force panel_display to re-layout its components
-//        parentPanel.repaint();
-
     }//GEN-LAST:event_lbl_manageInventoryMouseClicked
 
     private void lbl_manageInventoryMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_manageInventoryMouseEntered
@@ -564,6 +597,29 @@ public class ViewAllRecords extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jLabel5MouseClicked
 
+    private void cbo_assigneeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_assigneeActionPerformed
+        // TODO add your handling code here:
+        loadProducts();
+    }//GEN-LAST:event_cbo_assigneeActionPerformed
+
+    private void cbo_productsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_productsActionPerformed
+        String selectedProduct = (String) cbo_products.getSelectedItem();
+        if (selectedProduct != null) {
+            fetchProductPrice(selectedProduct);
+        }
+    }//GEN-LAST:event_cbo_productsActionPerformed
+
+    private void tbl_return_goodsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_return_goodsMouseClicked
+        int rowNo = tbl_return_goods.getSelectedRow();
+        TableModel model = tbl_return_goods.getModel();
+
+        cbo_assignee.setSelectedItem(model.getValueAt(rowNo, 0).toString());
+        cbo_products.setSelectedItem(model.getValueAt(rowNo, 1).toString());
+        txtprice.setText(model.getValueAt(rowNo, 2).toString());
+        txtQty.setText(model.getValueAt(rowNo, 3).toString());
+        tot_price.setText(model.getValueAt(rowNo, 4).toString());
+    }//GEN-LAST:event_tbl_return_goodsMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -601,10 +657,14 @@ public class ViewAllRecords extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private rojerusan.RSComboMetro cbo_assignee;
+    private rojerusan.RSComboMetro cbo_products;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -619,6 +679,7 @@ public class ViewAllRecords extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbl_close;
     private javax.swing.JLabel lbl_dashboard;
     private javax.swing.JLabel lbl_defaulterList;
@@ -633,6 +694,7 @@ public class ViewAllRecords extends javax.swing.JFrame {
     private javax.swing.JPanel panel_display;
     private javax.swing.JPanel panel_menu;
     private javax.swing.JPanel parentPanel;
+    private rojerusan.RSTableMetro tbl_return_goods;
     private javax.swing.JLabel txtDate;
     private javax.swing.JLabel txtTime;
     // End of variables declaration//GEN-END:variables

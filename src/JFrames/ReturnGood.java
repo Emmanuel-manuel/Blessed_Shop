@@ -35,7 +35,7 @@ public class ReturnGood extends javax.swing.JFrame {
 
     DefaultTableModel model;
 
-    String employeeName, productName, pricePerProduct, qty, total, today_date;
+    String employeeName, productName, pricePerProduct, todayInventory, qty, soldProducts, total, today_date;
 
     public ReturnGood() {
         initComponents();
@@ -101,6 +101,8 @@ public class ReturnGood extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         txtTodayInventory = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        sold_qty = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -449,7 +451,7 @@ public class ReturnGood extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel9.setText("Quantity To Return:");
-        panel_display.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, 170, 30));
+        panel_display.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 20, 170, 30));
 
         txtQty.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         txtQty.setText("0");
@@ -461,23 +463,23 @@ public class ReturnGood extends javax.swing.JFrame {
                 txtQtyKeyTyped(evt);
             }
         });
-        panel_display.add(txtQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, 160, 30));
+        panel_display.add(txtQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 50, 160, 30));
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel3.setText("Total Price:");
-        panel_display.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, 170, 30));
+        panel_display.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 160, 170, 30));
 
         tot_price.setEditable(false);
         tot_price.setFont(new java.awt.Font("Times New Roman", 1, 22)); // NOI18N
         tot_price.setForeground(new java.awt.Color(0, 102, 102));
-        panel_display.add(tot_price, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 430, 160, -1));
+        panel_display.add(tot_price, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 190, 160, -1));
 
         tbl_return_goods.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Assignee", "Product", "PricePerProduct", "QuantityReturned", "ReturnedGoodsPrice", "Date"
+                "Assignee", "Product", "PricePerProduct", "Received Quantity", "Returned Quantity", "Sold Quantity", "Total Sales", "Date"
             }
         ));
         tbl_return_goods.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -487,7 +489,7 @@ public class ReturnGood extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tbl_return_goods);
 
-        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 50, 800, 430));
+        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 1090, 380));
 
         btnSave.setBackground(new java.awt.Color(102, 255, 102));
         btnSave.setFont(new java.awt.Font("Yu Gothic Medium", 0, 14)); // NOI18N
@@ -497,7 +499,7 @@ public class ReturnGood extends javax.swing.JFrame {
                 btnSaveActionPerformed(evt);
             }
         });
-        panel_display.add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 530, 160, -1));
+        panel_display.add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 190, 160, -1));
 
         jLabel11.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel11.setText("Today's Received Quatity:");
@@ -516,9 +518,18 @@ public class ReturnGood extends javax.swing.JFrame {
         });
         panel_display.add(txtTodayInventory, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 160, 30));
 
-        jLabel8.setFont(new java.awt.Font("Algerian", 1, 21)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Algerian", 1, 24)); // NOI18N
         jLabel8.setText("Returned Goods Table");
-        panel_display.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 10, -1, -1));
+        panel_display.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 270, -1, -1));
+
+        jLabel12.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel12.setText("Total Sold:");
+        panel_display.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 90, 170, 30));
+
+        sold_qty.setEditable(false);
+        sold_qty.setFont(new java.awt.Font("Times New Roman", 1, 22)); // NOI18N
+        sold_qty.setForeground(new java.awt.Color(0, 102, 102));
+        panel_display.add(sold_qty, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 120, 160, -1));
 
         parentPanel.add(panel_display);
         panel_display.setBounds(250, 0, 1120, 700);
@@ -608,11 +619,24 @@ public class ReturnGood extends javax.swing.JFrame {
         }
     }
 
+     //    To calculate the sold of Inventory
+    private void total_sold() {
+
+        Integer a = Integer.parseInt(txtTodayInventory.getText());
+        Integer b = Integer.parseInt(txtQty.getText());
+
+        Integer difference;
+
+        difference = a - b;
+
+        sold_qty.setText(String.valueOf(difference));
+    }
+    
     //    To calculate the product of Inventory
     private void pro_total() {
 
         Integer a = Integer.parseInt(txtprice.getText());
-        Integer b = Integer.parseInt(txtQty.getText());
+        Integer b = Integer.parseInt(sold_qty.getText());
 
         Integer tot;
 
@@ -665,11 +689,13 @@ public class ReturnGood extends javax.swing.JFrame {
                 String employeeName = rs.getString("employee_name");
                 String productName = rs.getString("product_name");
                 String pricePerProduct = rs.getString("price_per_product");
+                String todayInventory = rs.getString("received_qty");
                 String qty = rs.getString("qty_returned");
+                String soldProducts = rs.getString("qty_sold");
                 String total = rs.getString("total_price");
                 String t_date = rs.getString("date");
 
-                Object[] obj = {employeeName, productName, pricePerProduct, qty, total, t_date};
+                Object[] obj = {employeeName, productName, pricePerProduct, todayInventory, qty, soldProducts, total, t_date};
                 model = (DefaultTableModel) tbl_return_goods.getModel();
                 //adds a row array
                 model.addRow(obj);
@@ -736,13 +762,16 @@ public class ReturnGood extends javax.swing.JFrame {
         employeeName = (String) cbo_assignee.getSelectedItem();
         productName = (String) cbo_products.getSelectedItem();
         pricePerProduct = txtprice.getText();
+        todayInventory = txtTodayInventory.getText();
         qty = txtQty.getText();
+        soldProducts = sold_qty.getText();
         total = tot_price.getText();
         today_date = txtDate.getText();
 
         try {
             // Parse quantity fields to integers
             int qtyReturned = Integer.parseInt(qty);
+            int qtySold = Integer.parseInt(soldProducts);
 
             //checks for duplicate entry using product name and today's date
 //            checkduplicate();
@@ -764,17 +793,19 @@ public class ReturnGood extends javax.swing.JFrame {
                 return isAdded;
             }
 
-            String sql = "insert into return_goods (employee_name, product_name, price_per_product, qty_returned,"
-                    + " total_price, date) values(?,?,?,?,?,?)";
+            String sql = "insert into return_goods (employee_name, product_name, price_per_product, received_qty,"
+                    + " qty_returned, qty_sold, total_price, date) values(?,?,?,?,?,?,?,?)";
             PreparedStatement pst = con.prepareStatement(sql);
 
             //sets the values from the textfield to the colums in the db
             pst.setString(1, employeeName);
             pst.setString(2, productName);
             pst.setString(3, pricePerProduct);
-            pst.setInt(4, qtyReturned);
-            pst.setString(5, total);
-            pst.setString(6, today_date);
+            pst.setString(4, todayInventory);
+            pst.setInt(5, qtyReturned);
+            pst.setInt(6, qtySold);
+            pst.setString(7, total);
+            pst.setString(8, today_date);
 
             //If a database row is added to output a success message
             int rowCount = pst.executeUpdate();
@@ -802,6 +833,7 @@ public class ReturnGood extends javax.swing.JFrame {
         txtprice.setText("00.00");
         txtQty.setText("0");
         tot_price.setText("");
+        sold_qty.setText("");
     }
 
 
@@ -995,6 +1027,7 @@ public class ReturnGood extends javax.swing.JFrame {
 
     private void txtQtyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQtyKeyReleased
         checkQuantity();
+        total_sold();
         pro_total();
     }//GEN-LAST:event_txtQtyKeyReleased
 
@@ -1086,6 +1119,7 @@ public class ReturnGood extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1123,6 +1157,7 @@ public class ReturnGood extends javax.swing.JFrame {
     private javax.swing.JPanel panel_display;
     private javax.swing.JPanel panel_menu;
     private javax.swing.JPanel parentPanel;
+    private javax.swing.JTextField sold_qty;
     private rojerusan.RSTableMetro tbl_return_goods;
     private javax.swing.JTextField tot_price;
     private javax.swing.JLabel txtDate;
