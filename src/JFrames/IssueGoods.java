@@ -9,9 +9,7 @@ package JFrames;
 import default_package.DBConnection;
 import default_package.Time;
 import java.awt.Color;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -39,6 +37,8 @@ public class IssueGoods extends javax.swing.JFrame {
     public IssueGoods() {
         initComponents();
         init();
+        
+        
     }
 
     /**
@@ -428,7 +428,7 @@ public class IssueGoods extends javax.swing.JFrame {
         txtprice.setBackground(new java.awt.Color(255, 255, 255));
         txtprice.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         txtprice.setForeground(new java.awt.Color(0, 102, 102));
-        txtprice.setText("00.00");
+        txtprice.setText("00");
         txtprice.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtpriceKeyTyped(evt);
@@ -466,6 +466,11 @@ public class IssueGoods extends javax.swing.JFrame {
         cbo_assignee.setColorBorde(new java.awt.Color(102, 102, 102));
         cbo_assignee.setColorFondo(new java.awt.Color(255, 153, 0));
         cbo_assignee.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        cbo_assignee.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_assigneeActionPerformed(evt);
+            }
+        });
         panel_display.add(cbo_assignee, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 280, -1));
 
         jLabel10.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -553,17 +558,46 @@ public class IssueGoods extends javax.swing.JFrame {
         Time.setTime(txtTime, txtDate);  // Calling the setTime method from the Time class
 //        loadProducts();
         loadEmployeeName();
+
         // Delay the loading of the PRODUCTS COMBO BOX to ensure txtDate is initialized
         javax.swing.Timer timer = new javax.swing.Timer(1000, new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 loadProducts();
+                checkAssignee();
             }
         });
         timer.setRepeats(false); // Only execute once
         timer.start();
     }
 
+    private void checkAssignee() {
+
+    // Get the selected item from cbo_assignee
+    String assignee = (String) cbo_assignee.getSelectedItem();
+
+    // Check if the selected assignee is "Route"
+    if ("Route".equalsIgnoreCase(assignee)) {
+        // Get the value from txtTodayInventory
+        String todayInventory = txtTodayInventory.getText();
+
+        // Set the value in txtQty
+        txtQty.setText(todayInventory);
+
+        // Make txtQty non-editable
+        txtQty.setEditable(false);
+        
+        //  Then later To calculate the product of Inventory and unit price to get the Total quantity
+        pro_total();
+        
+        // Performs arithmetic operation (Today's Remaining Inventory - Quantity Given)
+        subtract();
+    } else {
+        // If not "Route", do nothing and make txtQty editable
+        txtQty.setEditable(true);
+    }
+}
+    
     //Load Product name into cbo_products combobox
     private void loadProducts() {
         try {
@@ -956,7 +990,7 @@ public class IssueGoods extends javax.swing.JFrame {
         cbo_assignee.setSelectedIndex(0);
         cbo_products.setSelectedIndex(0);
         txtTodayInventory.setText("0");
-        txtprice.setText("00.00");
+        txtprice.setText("00");
         txtQty.setText("0");
         tot_price.setText("");
         txt_message.setText("");
@@ -1115,10 +1149,14 @@ public class IssueGoods extends javax.swing.JFrame {
     }//GEN-LAST:event_lbl_homePageMouseClicked
 
     private void cbo_productsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_productsActionPerformed
+        
+        
         String selectedProduct = (String) cbo_products.getSelectedItem();
         if (selectedProduct != null) {
             fetchProductPrice(selectedProduct);
         }
+        
+        checkAssignee();
     }//GEN-LAST:event_cbo_productsActionPerformed
 
     private void txtpriceKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpriceKeyTyped
@@ -1235,6 +1273,11 @@ public class IssueGoods extends javax.swing.JFrame {
         txtQty.setText(model.getValueAt(rowNo, 3).toString());
         tot_price.setText(model.getValueAt(rowNo, 4).toString());
     }//GEN-LAST:event_tbl_issued_goodsMouseClicked
+
+    private void cbo_assigneeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_assigneeActionPerformed
+        
+        checkAssignee();
+    }//GEN-LAST:event_cbo_assigneeActionPerformed
 
     /**
      * @param args the command line arguments

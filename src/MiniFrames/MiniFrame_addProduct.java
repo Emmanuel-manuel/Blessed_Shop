@@ -18,6 +18,8 @@ import javax.swing.JPopupMenu;
 public class MiniFrame_addProduct extends javax.swing.JFrame {
 
     String productName, product_B_Price, product_S_Price;
+    int profit;
+    double perc_profit;
     private JPopupMenu suggestionMenu;
 
     /**
@@ -26,8 +28,7 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
     public MiniFrame_addProduct() {
         initComponents();
         suggestionMenu = new JPopupMenu();
-        
-        
+
     }
 
     /**
@@ -146,6 +147,9 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
 
         txt_product_S_Price.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         txt_product_S_Price.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_product_S_PriceKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_product_S_PriceKeyTyped(evt);
             }
@@ -212,29 +216,52 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
         return suggestions;
     }
 
-    //to add products to the database in student_details table
+    // Method to calculate profit and percentage profit
+    private void calculateProfit() {
+        try {
+            // Parse integer values from the text fields
+            int bPrice = Integer.parseInt(txt_product_B_Price.getText());
+            int sPrice = Integer.parseInt(txt_product_S_Price.getText());
+
+            // Calculate profit
+            profit = sPrice - bPrice;
+
+            // Calculate percentage profit
+            perc_profit = ((double) profit / bPrice) * 100;
+
+        } catch (NumberFormatException e) {
+            // Handle invalid input
+            profit = 0;
+            perc_profit = 0.0;
+            JOptionPane.showMessageDialog(null, "Invalid input. Please ensure all values are numeric.");
+        }
+    }
+
+    //to add products to the database in products table
     public boolean addProduct() {
- 
+
         boolean isAdded = false;
 
         productName = txt_productName.getText();
         product_B_Price = txt_product_B_Price.getText();
         product_S_Price = txt_product_S_Price.getText();
 //
-    // Convert prices to integers
+        // Convert prices to integers
         int bPrice = Integer.parseInt(product_B_Price);
         int sPrice = Integer.parseInt(product_S_Price);
 
         try {
 
             Connection con = DBConnection.getConnection();
-            String sql = "insert into products (product_name, b_price, s_price) values(?,?,?)";
+            String sql = "insert into products (product_name, b_price, s_price, profit, perc_profit) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement pst = con.prepareStatement(sql);
 
             //sets the values from the textfield to the colums in the db
             pst.setString(1, productName);
             pst.setInt(2, bPrice);
             pst.setInt(3, sPrice);
+            pst.setInt(4, profit);
+            pst.setDouble(5, perc_profit);
 
             //If a database row is added to output a success message
             int rowCount = pst.executeUpdate();
@@ -300,8 +327,6 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
 //            e.printStackTrace();
 //        }
 //    }
-
-    
     //method to Update the product details
     public boolean updateProduct() {
 
@@ -312,15 +337,26 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
         product_S_Price = txt_product_S_Price.getText();
 
         try {
+            // Parse prices to integers
+            int bPrice = Integer.parseInt(product_B_Price);
+            int sPrice = Integer.parseInt(product_S_Price);
+
+            // Calculate profit and percentage profit
+            profit = sPrice - bPrice;
+            perc_profit = ((double) profit / bPrice) * 100;
+
+            // Update database
             Connection con = DBConnection.getConnection();
-            String sql = "update products set product_name = ?, b_price = ?, s_price = ? where product_name = ?";
+            String sql = "update products set product_name = ?, b_price = ?, s_price = ?, profit = ?, perc_profit = ? where product_name = ?";
             PreparedStatement pst = con.prepareStatement(sql);
 
             //sets the values from the textfield to the colums in the db
             pst.setString(1, productName);
-            pst.setString(2, product_B_Price);
-            pst.setString(3, product_S_Price);
-            pst.setString(4, productName);
+            pst.setInt(2, bPrice);
+            pst.setInt(3, sPrice);
+            pst.setInt(4, profit);
+            pst.setDouble(5, perc_profit);
+            pst.setString(6, productName);
 
             //If a database row is added to output a success message
             int rowCount = pst.executeUpdate();
@@ -338,7 +374,7 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
         return isUpdated;
 
     }
-    
+
     //method to delete products details
     public boolean deleteProduct() {
 
@@ -376,7 +412,7 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
         txt_product_B_Price.setText("");
         txt_product_S_Price.setText("");
     }
-    
+
     private void lbl_backMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_backMouseClicked
         this.dispose();
     }//GEN-LAST:event_lbl_backMouseClicked
@@ -454,6 +490,10 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
     private void btnSubmitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSubmitMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSubmitMouseClicked
+
+    private void txt_product_S_PriceKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_product_S_PriceKeyReleased
+        calculateProfit();
+    }//GEN-LAST:event_txt_product_S_PriceKeyReleased
 
     /**
      * @param args the command line arguments

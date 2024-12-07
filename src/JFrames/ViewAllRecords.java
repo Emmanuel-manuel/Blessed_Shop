@@ -89,7 +89,9 @@ public class ViewAllRecords extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         cbo_products = new rojerusan.RSComboMetro();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbl_return_goods = new rojerusan.RSTableMetro();
+        tbl_viewRecords = new rojerusan.RSTableMetro();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -420,7 +422,7 @@ public class ViewAllRecords extends javax.swing.JFrame {
         });
         panel_display.add(cbo_products, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 50, 280, -1));
 
-        tbl_return_goods.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_viewRecords.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -428,14 +430,22 @@ public class ViewAllRecords extends javax.swing.JFrame {
                 "Assignee", "Product", "PricePerProduct", "QuantityReceived", "ReturnedQuantity", "SoldQuantity", "Total Sales", "Date"
             }
         ));
-        tbl_return_goods.addMouseListener(new java.awt.event.MouseAdapter() {
+        tbl_viewRecords.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tbl_return_goodsMouseClicked(evt);
+                tbl_viewRecordsMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tbl_return_goods);
+        jScrollPane1.setViewportView(tbl_viewRecords);
 
-        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 1070, 430));
+        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 1070, 500));
+
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jLabel3.setText("No. Sold Goods");
+        panel_display.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 600, -1, -1));
+
+        jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jLabel7.setText("Total Sales");
+        panel_display.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 600, -1, -1));
 
         parentPanel.add(panel_display);
         panel_display.setBounds(250, 0, 1120, 700);
@@ -460,12 +470,15 @@ public class ViewAllRecords extends javax.swing.JFrame {
             // Get the current date from the JLabel in the desired format
             today_date = txtDate.getText();
 
-            String sql = "SELECT * FROM return_goods WHERE date = ?";
+            // Query to fetch data from the return_goods table
+        String sql = "SELECT employee_name, product_name, price_per_product, received_qty, qty_returned, qty_sold, total_price, date FROM return_goods";
+        
+//            String sql = "SELECT * FROM return_goods WHERE date = ?";
             PreparedStatement st = con.prepareStatement(sql);
-            st.setString(1, today_date);
+//            st.setString(1, today_date);
 
             ResultSet rs = st.executeQuery();
-            st.setString(1, today_date);
+//            st.setString(1, today_date);
 
             while (rs.next()) {
 //                String productName, pricePerProduct, qty, qtyBal, total, today_date;
@@ -478,17 +491,20 @@ public class ViewAllRecords extends javax.swing.JFrame {
                 String total = rs.getString("total_price");
                 String t_date = rs.getString("date");
 
+                // Add a row to the table
                 Object[] obj = {employeeName, productName, pricePerProduct, todayInventory, qty, soldProducts, total, t_date};
-                model = (DefaultTableModel) tbl_return_goods.getModel();
+                model = (DefaultTableModel) tbl_viewRecords.getModel();
                 //adds a row array
                 model.addRow(obj);
             }
 
+            // Close resources
             rs.close();
             st.close();
             con.close();
         } catch (Exception e) {
             e.printStackTrace();
+             JOptionPane.showMessageDialog(this, "Error retrieving data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -656,7 +672,7 @@ public class ViewAllRecords extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cbo_productsActionPerformed
 
-    private void tbl_return_goodsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_return_goodsMouseClicked
+    private void tbl_viewRecordsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_viewRecordsMouseClicked
 //        int rowNo = tbl_return_goods.getSelectedRow();
 //        TableModel model = tbl_return_goods.getModel();
 //
@@ -665,7 +681,7 @@ public class ViewAllRecords extends javax.swing.JFrame {
 //        txtprice.setText(model.getValueAt(rowNo, 2).toString());
 //        txtQty.setText(model.getValueAt(rowNo, 3).toString());
 //        tot_price.setText(model.getValueAt(rowNo, 4).toString());
-    }//GEN-LAST:event_tbl_return_goodsMouseClicked
+    }//GEN-LAST:event_tbl_viewRecordsMouseClicked
 
     /**
      * @param args the command line arguments
@@ -709,9 +725,11 @@ public class ViewAllRecords extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -741,7 +759,7 @@ public class ViewAllRecords extends javax.swing.JFrame {
     private javax.swing.JPanel panel_display;
     private javax.swing.JPanel panel_menu;
     private javax.swing.JPanel parentPanel;
-    private rojerusan.RSTableMetro tbl_return_goods;
+    private rojerusan.RSTableMetro tbl_viewRecords;
     private javax.swing.JLabel txtDate;
     private javax.swing.JLabel txtTime;
     // End of variables declaration//GEN-END:variables
