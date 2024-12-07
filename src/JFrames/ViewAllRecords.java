@@ -6,9 +6,14 @@
 package JFrames;
 
 //import MiniFrames.*;
+import default_package.DBConnection;
 import default_package.Time;
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -16,19 +21,24 @@ import javax.swing.JOptionPane;
  */
 public class ViewAllRecords extends javax.swing.JFrame {
 //    Initialize components
+
     ManageInventory manageInventory = new ManageInventory();
-    
+
     // Gets the window's screen position
     int xx, xy;
 
     //Global variable for Hover Effect
     Color mouseEnterColor = new Color(255, 153, 0);
     Color mouseExitColor = new Color(51, 51, 51);
-    
-    
+
+    DefaultTableModel model;
+
+    String employeeName, productName, pricePerProduct, todayInventory, qty, soldProducts, total, today_date;
+
     public ViewAllRecords() {
         initComponents();
         init();
+        setPoductDetailsToTable();
     }
 
     /**
@@ -438,14 +448,51 @@ public class ViewAllRecords extends javax.swing.JFrame {
 
     public void init() {
         Time.setTime(txtTime, txtDate);  // Calling the setTime method from the Time class
-        
+
     }
-    
+
+    //to pull the inventory details from the db to the table
+    public void setPoductDetailsToTable() {
+
+        try {
+            Connection con = DBConnection.getConnection();
+
+            // Get the current date from the JLabel in the desired format
+            today_date = txtDate.getText();
+
+            String sql = "SELECT * FROM return_goods WHERE date = ?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, today_date);
+
+            ResultSet rs = st.executeQuery();
+            st.setString(1, today_date);
+
+            while (rs.next()) {
+//                String productName, pricePerProduct, qty, qtyBal, total, today_date;
+                String employeeName = rs.getString("employee_name");
+                String productName = rs.getString("product_name");
+                String pricePerProduct = rs.getString("price_per_product");
+                String todayInventory = rs.getString("received_qty");
+                String qty = rs.getString("qty_returned");
+                String soldProducts = rs.getString("qty_sold");
+                String total = rs.getString("total_price");
+                String t_date = rs.getString("date");
+
+                Object[] obj = {employeeName, productName, pricePerProduct, todayInventory, qty, soldProducts, total, t_date};
+                model = (DefaultTableModel) tbl_return_goods.getModel();
+                //adds a row array
+                model.addRow(obj);
+            }
+
+            rs.close();
+            st.close();
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
-
-    
-    
     private void lbl_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMouseClicked
         int a = JOptionPane.showConfirmDialog(null, "Do you really want to Close Application?", "Select", JOptionPane.YES_NO_OPTION);
         if (a == 0) {
@@ -454,13 +501,13 @@ public class ViewAllRecords extends javax.swing.JFrame {
     }//GEN-LAST:event_lbl_closeMouseClicked
 
     private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
-        
+
         xx = evt.getX();
         xy = evt.getY();
     }//GEN-LAST:event_jPanel2MouseClicked
 
     private void jPanel2MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseDragged
-        
+
         int x = evt.getXOnScreen();
         int y = evt.getYOnScreen();
         this.setLocation(x - xx, y - xy);
@@ -485,7 +532,7 @@ public class ViewAllRecords extends javax.swing.JFrame {
         ManageInventory inventory = new ManageInventory();
         inventory.setVisible(true);
         dispose();
-        
+
     }//GEN-LAST:event_lbl_manageInventoryMouseClicked
 
     private void lbl_manageInventoryMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_manageInventoryMouseEntered
@@ -599,25 +646,25 @@ public class ViewAllRecords extends javax.swing.JFrame {
 
     private void cbo_assigneeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_assigneeActionPerformed
         // TODO add your handling code here:
-        loadProducts();
+//        loadProducts();
     }//GEN-LAST:event_cbo_assigneeActionPerformed
 
     private void cbo_productsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_productsActionPerformed
         String selectedProduct = (String) cbo_products.getSelectedItem();
         if (selectedProduct != null) {
-            fetchProductPrice(selectedProduct);
+//            fetchProductPrice(selectedProduct);
         }
     }//GEN-LAST:event_cbo_productsActionPerformed
 
     private void tbl_return_goodsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_return_goodsMouseClicked
-        int rowNo = tbl_return_goods.getSelectedRow();
-        TableModel model = tbl_return_goods.getModel();
-
-        cbo_assignee.setSelectedItem(model.getValueAt(rowNo, 0).toString());
-        cbo_products.setSelectedItem(model.getValueAt(rowNo, 1).toString());
-        txtprice.setText(model.getValueAt(rowNo, 2).toString());
-        txtQty.setText(model.getValueAt(rowNo, 3).toString());
-        tot_price.setText(model.getValueAt(rowNo, 4).toString());
+//        int rowNo = tbl_return_goods.getSelectedRow();
+//        TableModel model = tbl_return_goods.getModel();
+//
+//        cbo_assignee.setSelectedItem(model.getValueAt(rowNo, 0).toString());
+//        cbo_products.setSelectedItem(model.getValueAt(rowNo, 1).toString());
+//        txtprice.setText(model.getValueAt(rowNo, 2).toString());
+//        txtQty.setText(model.getValueAt(rowNo, 3).toString());
+//        tot_price.setText(model.getValueAt(rowNo, 4).toString());
     }//GEN-LAST:event_tbl_return_goodsMouseClicked
 
     /**

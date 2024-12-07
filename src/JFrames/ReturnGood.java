@@ -466,7 +466,7 @@ public class ReturnGood extends javax.swing.JFrame {
         panel_display.add(txtQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 50, 160, 30));
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel3.setText("Total Price:");
+        jLabel3.setText("Total Selling Price:");
         panel_display.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 160, 170, 30));
 
         tot_price.setEditable(false);
@@ -832,8 +832,8 @@ public class ReturnGood extends javax.swing.JFrame {
         txtTodayInventory.setText("0");
         txtprice.setText("00.00");
         txtQty.setText("0");
-        tot_price.setText("");
         sold_qty.setText("");
+        tot_price.setText("");
     }
 
 
