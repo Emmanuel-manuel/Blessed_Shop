@@ -33,7 +33,7 @@ public class ViewAllRecords extends javax.swing.JFrame {
 
     DefaultTableModel model;
 
-    String employeeName, productName, pricePerProduct, todayInventory, qty, soldProducts, total, today_date;
+    String employeeName, productName, pricePerProduct, todayInventory, qty, soldProducts, total, total_profit, today_date;
 
     public ViewAllRecords() {
         initComponents();
@@ -427,9 +427,17 @@ public class ViewAllRecords extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Assignee", "Product", "PricePerProduct", "QuantityReceived", "ReturnedQuantity", "SoldQuantity", "Total Sales", "Date"
+                "Assignee", "Product", "PricePerProduct", "QuantityReceived", "ReturnedQuantity", "SoldQuantity", "Total Sales", "total_profit", "Date"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tbl_viewRecords.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbl_viewRecordsMouseClicked(evt);
@@ -437,7 +445,7 @@ public class ViewAllRecords extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tbl_viewRecords);
 
-        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 1070, 500));
+        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 1100, 500));
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         jLabel3.setText("No. Sold Goods");
@@ -471,7 +479,7 @@ public class ViewAllRecords extends javax.swing.JFrame {
             today_date = txtDate.getText();
 
             // Query to fetch data from the return_goods table
-        String sql = "SELECT employee_name, product_name, price_per_product, received_qty, qty_returned, qty_sold, total_price, date FROM return_goods";
+        String sql = "SELECT employee_name, product_name, price_per_product, received_qty, qty_returned, qty_sold, total_price, total_profit, date FROM return_goods";
         
 //            String sql = "SELECT * FROM return_goods WHERE date = ?";
             PreparedStatement st = con.prepareStatement(sql);
@@ -489,10 +497,11 @@ public class ViewAllRecords extends javax.swing.JFrame {
                 String qty = rs.getString("qty_returned");
                 String soldProducts = rs.getString("qty_sold");
                 String total = rs.getString("total_price");
+                String total_profit = rs.getString("total_profit");
                 String t_date = rs.getString("date");
 
                 // Add a row to the table
-                Object[] obj = {employeeName, productName, pricePerProduct, todayInventory, qty, soldProducts, total, t_date};
+                Object[] obj = {employeeName, productName, pricePerProduct, todayInventory, qty, soldProducts, total, total_profit, t_date};
                 model = (DefaultTableModel) tbl_viewRecords.getModel();
                 //adds a row array
                 model.addRow(obj);

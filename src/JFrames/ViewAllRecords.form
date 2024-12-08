@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="undecorated" type="boolean" value="true"/>
@@ -760,7 +760,7 @@
               </AuxValues>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="30" y="100" width="1070" height="500"/>
+                  <AbsoluteConstraints x="10" y="100" width="1100" height="500"/>
                 </Constraint>
               </Constraints>
 
@@ -769,19 +769,25 @@
                 <Component class="rojerusan.RSTableMetro" name="tbl_viewRecords">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="8" rowCount="0">
-                        <Column editable="true" title="Assignee" type="java.lang.Object"/>
-                        <Column editable="true" title="Product" type="java.lang.Object"/>
-                        <Column editable="true" title="PricePerProduct" type="java.lang.Object"/>
-                        <Column editable="true" title="QuantityReceived" type="java.lang.Object"/>
-                        <Column editable="true" title="ReturnedQuantity" type="java.lang.Object"/>
-                        <Column editable="true" title="SoldQuantity" type="java.lang.Object"/>
-                        <Column editable="true" title="Total Sales" type="java.lang.Object"/>
-                        <Column editable="true" title="Date" type="java.lang.Object"/>
+                      <Table columnCount="9" rowCount="0">
+                        <Column editable="false" title="Assignee" type="java.lang.Object"/>
+                        <Column editable="false" title="Product" type="java.lang.Object"/>
+                        <Column editable="false" title="PricePerProduct" type="java.lang.Object"/>
+                        <Column editable="false" title="QuantityReceived" type="java.lang.Object"/>
+                        <Column editable="false" title="ReturnedQuantity" type="java.lang.Object"/>
+                        <Column editable="false" title="SoldQuantity" type="java.lang.Object"/>
+                        <Column editable="false" title="Total Sales" type="java.lang.Object"/>
+                        <Column editable="false" title="total_profit" type="java.lang.Object"/>
+                        <Column editable="false" title="Date" type="java.lang.Object"/>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
                         <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                           <Title/>
                           <Editor/>

@@ -10,9 +10,7 @@ import default_package.DBConnection;
 import default_package.Select;
 import default_package.Time;
 import java.awt.Color;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -36,6 +34,8 @@ public class ReturnGood extends javax.swing.JFrame {
     DefaultTableModel model;
 
     String employeeName, productName, pricePerProduct, todayInventory, qty, soldProducts, total, today_date;
+
+    int totalProfit;
 
     public ReturnGood() {
         initComponents();
@@ -450,8 +450,8 @@ public class ReturnGood extends javax.swing.JFrame {
         panel_display.add(txtprice, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 160, 30));
 
         jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel9.setText("Quantity To Return:");
-        panel_display.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 20, 170, 30));
+        jLabel9.setText("Quantity To Return/ FOC:");
+        panel_display.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 20, 210, 30));
 
         txtQty.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         txtQty.setText("0");
@@ -479,9 +479,17 @@ public class ReturnGood extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Assignee", "Product", "PricePerProduct", "Received Quantity", "Returned Quantity", "Sold Quantity", "Total Sales", "Date"
+                "Assignee", "Product", "PricePerProduct", "Received Quantity", "Returned Quantity", "Sold Quantity", "Total Sales", "Profit", "Date"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, true, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tbl_return_goods.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbl_return_goodsMouseClicked(evt);
@@ -489,7 +497,7 @@ public class ReturnGood extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tbl_return_goods);
 
-        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 1090, 380));
+        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 1100, 380));
 
         btnSave.setBackground(new java.awt.Color(102, 255, 102));
         btnSave.setFont(new java.awt.Font("Yu Gothic Medium", 0, 14)); // NOI18N
@@ -508,14 +516,6 @@ public class ReturnGood extends javax.swing.JFrame {
         txtTodayInventory.setEditable(false);
         txtTodayInventory.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         txtTodayInventory.setText("0");
-        txtTodayInventory.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtTodayInventoryKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtTodayInventoryKeyTyped(evt);
-            }
-        });
         panel_display.add(txtTodayInventory, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 160, 30));
 
         jLabel8.setFont(new java.awt.Font("Algerian", 1, 24)); // NOI18N
@@ -619,7 +619,7 @@ public class ReturnGood extends javax.swing.JFrame {
         }
     }
 
-     //    To calculate the sold of Inventory
+    //    To calculate the sold of Inventory
     private void total_sold() {
 
         Integer a = Integer.parseInt(txtTodayInventory.getText());
@@ -631,7 +631,7 @@ public class ReturnGood extends javax.swing.JFrame {
 
         sold_qty.setText(String.valueOf(difference));
     }
-    
+
     //    To calculate the product of Inventory
     private void pro_total() {
 
@@ -643,6 +643,48 @@ public class ReturnGood extends javax.swing.JFrame {
         tot = a * b;
 
         tot_price.setText(String.valueOf(tot));
+    }
+
+    // pulls profit value from products table and calculates total profit
+    private void calculateAndSaveProfit() {
+        try {
+            // Step 1: Get the selected product name
+            String productName = (String) cbo_products.getSelectedItem();
+
+            // Step 2: Fetch the profit value from the database
+            int profit = 0;
+            Connection con = DBConnection.getConnection();
+            String fetchProfitSql = "SELECT profit FROM products WHERE product_name = ?";
+            PreparedStatement pst = con.prepareStatement(fetchProfitSql);
+            pst.setString(1, productName);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                profit = rs.getInt("profit");
+            } else {
+                JOptionPane.showMessageDialog(null, "Profit for the selected product not found.");
+                return;
+            }
+
+            // Step 3: Get the sold quantity from the text field
+            int soldQty = Integer.parseInt(sold_qty.getText());
+
+            // Step 4: Calculate the total profit
+            int totalProfit = profit * soldQty;
+
+            // Store the total profit as a global variable
+            this.totalProfit = totalProfit;
+
+            JOptionPane.showMessageDialog(null, "Total profit calculated: " + totalProfit);
+
+            // Close resources
+            rs.close();
+            pst.close();
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error while calculating profit: " + e.getMessage());
+        }
     }
 
     // Checks the value entered at 'txtQty' should not exceed value at 'txtTodayInventory'
@@ -693,9 +735,10 @@ public class ReturnGood extends javax.swing.JFrame {
                 String qty = rs.getString("qty_returned");
                 String soldProducts = rs.getString("qty_sold");
                 String total = rs.getString("total_price");
+                String total_profit = rs.getString("total_profit");
                 String t_date = rs.getString("date");
 
-                Object[] obj = {employeeName, productName, pricePerProduct, todayInventory, qty, soldProducts, total, t_date};
+                Object[] obj = {employeeName, productName, pricePerProduct, todayInventory, qty, soldProducts, total, total_profit, t_date};
                 model = (DefaultTableModel) tbl_return_goods.getModel();
                 //adds a row array
                 model.addRow(obj);
@@ -755,7 +798,7 @@ public class ReturnGood extends javax.swing.JFrame {
     }
 
     //to add products to the database in issued_goods table
-    public boolean returnProduct() {
+    public boolean returnProductWithProfit() {
 
         boolean isAdded = false;
 
@@ -773,8 +816,6 @@ public class ReturnGood extends javax.swing.JFrame {
             int qtyReturned = Integer.parseInt(qty);
             int qtySold = Integer.parseInt(soldProducts);
 
-            //checks for duplicate entry using product name and today's date
-//            checkduplicate();
             Connection con = DBConnection.getConnection();
 
             // Check for duplicates
@@ -794,7 +835,7 @@ public class ReturnGood extends javax.swing.JFrame {
             }
 
             String sql = "insert into return_goods (employee_name, product_name, price_per_product, received_qty,"
-                    + " qty_returned, qty_sold, total_price, date) values(?,?,?,?,?,?,?,?)";
+                    + " qty_returned, qty_sold, total_price, total_profit, date) values(?,?,?,?,?,?,?,?,?)";
             PreparedStatement pst = con.prepareStatement(sql);
 
             //sets the values from the textfield to the colums in the db
@@ -805,23 +846,23 @@ public class ReturnGood extends javax.swing.JFrame {
             pst.setInt(5, qtyReturned);
             pst.setInt(6, qtySold);
             pst.setString(7, total);
-            pst.setString(8, today_date);
+            pst.setInt(8, this.totalProfit); // Add totalProfit
+            pst.setString(9, today_date);
 
             //If a database row is added to output a success message
             int rowCount = pst.executeUpdate();
 
-            if (rowCount > 0) {
-                isAdded = true;
-            } else {
-                isAdded = false;
-            }
+            isAdded = rowCount > 0;
+
+            pst.close();
+            con.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         //returns the 'isAdded' variable value
         return isAdded;
-
+    
     }
 
 //clear the interface components
@@ -1052,24 +1093,20 @@ public class ReturnGood extends javax.swing.JFrame {
         if (txtQty.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please enter the quantity to Return field");
 
-        } else if (returnProduct() == true && update_store_stock() == true) {
-            JOptionPane.showMessageDialog(this, "Product Returned Successfully...");
-
-            clearTable();
-            setPoductDetailsToTable();
-            clearComponents();
         } else {
-            JOptionPane.showMessageDialog(this, "Product Return failed, Please check your Database Connection...");
+            calculateAndSaveProfit(); // Calculate the total profit before saving
+
+            if (returnProductWithProfit() == true && update_store_stock() == true) {
+                JOptionPane.showMessageDialog(this, "Product Returned Successfully...");
+
+                clearTable();
+                setPoductDetailsToTable();
+                clearComponents();
+            } else {
+                JOptionPane.showMessageDialog(this, "Product Return failed, Please check your Database Connection...");
+            }
         }
     }//GEN-LAST:event_btnSaveActionPerformed
-
-    private void txtTodayInventoryKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTodayInventoryKeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTodayInventoryKeyReleased
-
-    private void txtTodayInventoryKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTodayInventoryKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTodayInventoryKeyTyped
 
     private void cbo_assigneeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_assigneeActionPerformed
         // TODO add your handling code here:
