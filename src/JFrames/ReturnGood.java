@@ -479,7 +479,7 @@ public class ReturnGood extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Assignee", "Product", "PricePerProduct", "Received Quantity", "Returned Quantity", "Sold Quantity", "Total Sales", "Profit", "Date"
+                "Assignee", "Product", "PricePerProduct", "Received Quantity", "Returned Quantity", "Sold Quantity", "Total Sales", "Profit Made", "Date"
             }
         ) {
             boolean[] canEdit = new boolean [] {

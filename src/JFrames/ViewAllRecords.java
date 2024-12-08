@@ -7,11 +7,11 @@ package JFrames;
 
 //import MiniFrames.*;
 import default_package.DBConnection;
+import default_package.Select;
 import default_package.Time;
 import java.awt.Color;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
+import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -92,6 +92,10 @@ public class ViewAllRecords extends javax.swing.JFrame {
         tbl_viewRecords = new rojerusan.RSTableMetro();
         jLabel3 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jDate_From = new com.toedter.calendar.JDateChooser();
+        jDate_To = new com.toedter.calendar.JDateChooser();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -406,9 +410,9 @@ public class ViewAllRecords extends javax.swing.JFrame {
         panel_display.add(cbo_assignee, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 280, -1));
 
         jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel6.setText("Product:");
+        jLabel6.setText("To Date:");
         jLabel6.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        panel_display.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, 120, 30));
+        panel_display.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 20, 120, 30));
 
         cbo_products.setForeground(new java.awt.Color(0, 0, 0));
         cbo_products.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select" }));
@@ -455,6 +459,34 @@ public class ViewAllRecords extends javax.swing.JFrame {
         jLabel7.setText("Total Sales");
         panel_display.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 600, -1, -1));
 
+        jDate_From.setDateFormatString("EEEE, dd/MM/yyyy");
+        jDate_From.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        jDate_From.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDate_FromPropertyChange(evt);
+            }
+        });
+        panel_display.add(jDate_From, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 50, 200, 30));
+
+        jDate_To.setDateFormatString("EEEE, dd/MM/yyyy");
+        jDate_To.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        jDate_To.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDate_ToPropertyChange(evt);
+            }
+        });
+        panel_display.add(jDate_To, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 50, 190, 30));
+
+        jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel8.setText("Product:");
+        jLabel8.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        panel_display.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, 120, 30));
+
+        jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel9.setText("From Date:");
+        jLabel9.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        panel_display.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 20, 120, 30));
+
         parentPanel.add(panel_display);
         panel_display.setBounds(250, 0, 1120, 700);
 
@@ -467,6 +499,8 @@ public class ViewAllRecords extends javax.swing.JFrame {
     public void init() {
         Time.setTime(txtTime, txtDate);  // Calling the setTime method from the Time class
 
+        loadEmployeeName();
+//        loadProducts();
     }
 
     //to pull the inventory details from the db to the table
@@ -479,32 +513,28 @@ public class ViewAllRecords extends javax.swing.JFrame {
             today_date = txtDate.getText();
 
             // Query to fetch data from the return_goods table
-        String sql = "SELECT employee_name, product_name, price_per_product, received_qty, qty_returned, qty_sold, total_price, total_profit, date FROM return_goods";
-        
+            String sql = "SELECT employee_name, product_name, price_per_product, received_qty, qty_returned, qty_sold, total_price, total_profit, date FROM return_goods";
+
 //            String sql = "SELECT * FROM return_goods WHERE date = ?";
             PreparedStatement st = con.prepareStatement(sql);
-//            st.setString(1, today_date);
-
             ResultSet rs = st.executeQuery();
-//            st.setString(1, today_date);
+
+            model = (DefaultTableModel) tbl_viewRecords.getModel();
+            model.setRowCount(0); // Clear existing rows
 
             while (rs.next()) {
-//                String productName, pricePerProduct, qty, qtyBal, total, today_date;
-                String employeeName = rs.getString("employee_name");
-                String productName = rs.getString("product_name");
-                String pricePerProduct = rs.getString("price_per_product");
-                String todayInventory = rs.getString("received_qty");
-                String qty = rs.getString("qty_returned");
-                String soldProducts = rs.getString("qty_sold");
-                String total = rs.getString("total_price");
-                String total_profit = rs.getString("total_profit");
-                String t_date = rs.getString("date");
-
-                // Add a row to the table
-                Object[] obj = {employeeName, productName, pricePerProduct, todayInventory, qty, soldProducts, total, total_profit, t_date};
-                model = (DefaultTableModel) tbl_viewRecords.getModel();
-                //adds a row array
-                model.addRow(obj);
+                Object[] row = {
+                    rs.getString("employee_name"),
+                    rs.getString("product_name"),
+                    rs.getString("price_per_product"),
+                    rs.getString("received_qty"),
+                    rs.getString("qty_returned"),
+                    rs.getString("qty_sold"),
+                    rs.getString("total_price"),
+                    rs.getString("total_profit"),
+                    rs.getString("date")
+                };
+                model.addRow(row);
             }
 
             // Close resources
@@ -513,10 +543,129 @@ public class ViewAllRecords extends javax.swing.JFrame {
             con.close();
         } catch (Exception e) {
             e.printStackTrace();
-             JOptionPane.showMessageDialog(this, "Error retrieving data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error retrieving data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+//Load Product name into cbo_products combobox
+    private void loadProducts() {
+        cbo_products.removeAllItems();
+
+        today_date = txtDate.getText();
+        employeeName = (String) cbo_assignee.getSelectedItem();
+
+        try {
+            ResultSet rs = Select.getData("select product_name from issued_goods where employee_name='" + employeeName + "' ");
+            while (rs.next()) {
+                cbo_products.addItem(rs.getString(1));
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+    }
+
+    //Load employee name into cbo_assignee combobox
+    private void loadEmployeeName() {
+        try {
+            Connection con = DBConnection.getConnection();
+            String sql = "SELECT name FROM employee_details";
+            PreparedStatement pst = con.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+
+             cbo_assignee.removeAllItems();
+            while (rs.next()) {
+                cbo_assignee.addItem(rs.getString("name"));
+            }
+            
+ rs.close();
+            pst.close();
+            con.close();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error loading employee names: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        
+        }
+    }
+
+    private void searchReturnGoods() {
+        // Get selected values from comboboxes
+        String assignee = (String) cbo_assignee.getSelectedItem();
+        String product = (String) cbo_products.getSelectedItem();
+        java.util.Date dateFrom = jDate_From.getDate();
+        java.util.Date dateTo = jDate_To.getDate();
+
+         // Date formatting
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd/MM/yyyy");
+        String formattedDateFrom = (dateFrom != null) ? sdf.format(dateFrom) : null;
+        String formattedDateTo = (dateTo != null) ? sdf.format(dateTo) : null;
+
+        // Build the base SQL query
+        StringBuilder query = new StringBuilder("SELECT * FROM return_goods WHERE 1=1");
+
+        // Append conditions dynamically
+        if (assignee != null && !assignee.isEmpty()) {
+            query.append(" AND employee_name = ?");
+        }
+        if (product != null && !product.isEmpty()) {
+            query.append(" AND product_name = ?");
+        }
+        if (formattedDateFrom != null) {
+            query.append(" AND date <= ?");
+        }
+        if (formattedDateTo != null) {
+            query.append(" AND date >= ?");
+        }
+
+        try {
+            Connection con = DBConnection.getConnection();
+            PreparedStatement pst = con.prepareStatement(query.toString());
+
+            // Set parameters dynamically
+            int index = 1;
+            if (assignee != null && !assignee.isEmpty()) {
+                pst.setString(index++, assignee);
+            }
+            if (product != null && !product.isEmpty()) {
+                pst.setString(index++, product);
+            }
+            if (formattedDateFrom != null) {
+                pst.setString(index++, formattedDateFrom);
+            }
+            if (formattedDateTo != null) {
+                pst.setString(index++, formattedDateTo);
+            }
+
+            // Execute the query
+            ResultSet rs = pst.executeQuery();
+
+            // Clear existing table data
+            DefaultTableModel model = (DefaultTableModel) tbl_viewRecords.getModel();
+            model.setRowCount(0);
+
+            // Populate the table with the result set
+            while (rs.next()) {
+                Object[] row = {
+                    rs.getString("employee_name"),
+                    rs.getString("product_name"),
+                    rs.getString("price_per_product"),
+                    rs.getString("received_qty"),
+                    rs.getString("qty_returned"),
+                    rs.getString("qty_sold"),
+                    rs.getString("total_price"),
+                    rs.getString("total_profit"),
+                    rs.getString("date")
+                };
+                model.addRow(row);
+            }
+
+            rs.close();
+            pst.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private void lbl_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMouseClicked
         int a = JOptionPane.showConfirmDialog(null, "Do you really want to Close Application?", "Select", JOptionPane.YES_NO_OPTION);
@@ -671,13 +820,14 @@ public class ViewAllRecords extends javax.swing.JFrame {
 
     private void cbo_assigneeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_assigneeActionPerformed
         // TODO add your handling code here:
-//        loadProducts();
+        loadProducts();
     }//GEN-LAST:event_cbo_assigneeActionPerformed
 
     private void cbo_productsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_productsActionPerformed
-        String selectedProduct = (String) cbo_products.getSelectedItem();
-        if (selectedProduct != null) {
+       
+        if (cbo_products.getSelectedItem() != null) {
 //            fetchProductPrice(selectedProduct);
+            searchReturnGoods();
         }
     }//GEN-LAST:event_cbo_productsActionPerformed
 
@@ -691,6 +841,20 @@ public class ViewAllRecords extends javax.swing.JFrame {
 //        txtQty.setText(model.getValueAt(rowNo, 3).toString());
 //        tot_price.setText(model.getValueAt(rowNo, 4).toString());
     }//GEN-LAST:event_tbl_viewRecordsMouseClicked
+
+    private void jDate_FromPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDate_FromPropertyChange
+        // TODO add your handling code here:
+        if ("date".equals(evt.getPropertyName())) {
+            searchReturnGoods();
+        }
+    }//GEN-LAST:event_jDate_FromPropertyChange
+
+    private void jDate_ToPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDate_ToPropertyChange
+        // TODO add your handling code here:
+        if ("date".equals(evt.getPropertyName())) {
+            searchReturnGoods();
+        }
+    }//GEN-LAST:event_jDate_ToPropertyChange
 
     /**
      * @param args the command line arguments
@@ -731,6 +895,8 @@ public class ViewAllRecords extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private rojerusan.RSComboMetro cbo_assignee;
     private rojerusan.RSComboMetro cbo_products;
+    private com.toedter.calendar.JDateChooser jDate_From;
+    private com.toedter.calendar.JDateChooser jDate_To;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -739,6 +905,8 @@ public class ViewAllRecords extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
