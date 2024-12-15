@@ -11,7 +11,7 @@ import default_package.Select;
 import default_package.Time;
 import java.awt.Color;
 import java.sql.*;
-import java.text.SimpleDateFormat;
+import java.text.NumberFormat;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -39,6 +39,11 @@ public class ViewAllRecords extends javax.swing.JFrame {
         initComponents();
         init();
         setPoductDetailsToTable();
+        
+        calculateAndDisplayTotalQuantityReceived();
+        calculateAndDisplayTotalQuantitySold();
+        calculateAndDisplayTotalSales();
+        calculateAndDisplayTotalProfit();
     }
 
     /**
@@ -55,10 +60,10 @@ public class ViewAllRecords extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         lbl_close = new javax.swing.JLabel();
         txtTime = new javax.swing.JLabel();
-        txtDate = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         lbl_menu = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        txtDate = new javax.swing.JLabel();
         parentPanel = new javax.swing.JPanel();
         panel_menu = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -92,10 +97,17 @@ public class ViewAllRecords extends javax.swing.JFrame {
         tbl_viewRecords = new rojerusan.RSTableMetro();
         jLabel3 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jDate_From = new com.toedter.calendar.JDateChooser();
-        jDate_To = new com.toedter.calendar.JDateChooser();
+        j_date_From = new com.toedter.calendar.JDateChooser();
+        j_date_To = new com.toedter.calendar.JDateChooser();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        lbl_sold_goods = new javax.swing.JLabel();
+        lbl_received_qty = new javax.swing.JLabel();
+        lbl_tot_sales = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        lbl_tot_profit = new javax.swing.JLabel();
+        btn_refresh = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -135,10 +147,6 @@ public class ViewAllRecords extends javax.swing.JFrame {
         txtTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jPanel2.add(txtTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 10, 180, 30));
 
-        txtDate.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        txtDate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jPanel2.add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 40, 210, 30));
-
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -167,6 +175,10 @@ public class ViewAllRecords extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/male_user_50px.png"))); // NOI18N
         jLabel2.setText("Welcome, Admin");
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 10, -1, -1));
+
+        txtDate.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        txtDate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel2.add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 40, 180, 30));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1370, 70));
 
@@ -217,6 +229,9 @@ public class ViewAllRecords extends javax.swing.JFrame {
         lbl_dashboard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/icons8_Library_32px.png"))); // NOI18N
         lbl_dashboard.setText("  Dashboard");
         lbl_dashboard.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_dashboardMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 lbl_dashboardMouseEntered(evt);
             }
@@ -412,7 +427,7 @@ public class ViewAllRecords extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel6.setText("To Date:");
         jLabel6.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        panel_display.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 20, 120, 30));
+        panel_display.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 20, 120, 30));
 
         cbo_products.setForeground(new java.awt.Color(0, 0, 0));
         cbo_products.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select" }));
@@ -449,33 +464,33 @@ public class ViewAllRecords extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tbl_viewRecords);
 
-        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 1100, 500));
+        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 1100, 520));
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        jLabel3.setText("No. Sold Goods");
-        panel_display.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 600, -1, -1));
+        jLabel3.setText("Quantity Received:");
+        panel_display.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 620, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        jLabel7.setText("Total Sales");
-        panel_display.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 600, -1, -1));
+        jLabel7.setText("Total Sales:");
+        panel_display.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 620, -1, -1));
 
-        jDate_From.setDateFormatString("EEEE, dd/MM/yyyy");
-        jDate_From.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        jDate_From.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+        j_date_From.setDateFormatString("yyyy-MM-dd");
+        j_date_From.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        j_date_From.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jDate_FromPropertyChange(evt);
+                j_date_FromPropertyChange(evt);
             }
         });
-        panel_display.add(jDate_From, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 50, 200, 30));
+        panel_display.add(j_date_From, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 50, 230, 30));
 
-        jDate_To.setDateFormatString("EEEE, dd/MM/yyyy");
-        jDate_To.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        jDate_To.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+        j_date_To.setDateFormatString("yyyy-MM-dd");
+        j_date_To.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        j_date_To.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jDate_ToPropertyChange(evt);
+                j_date_ToPropertyChange(evt);
             }
         });
-        panel_display.add(jDate_To, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 50, 190, 30));
+        panel_display.add(j_date_To, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 50, 220, 30));
 
         jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel8.setText("Product:");
@@ -485,7 +500,41 @@ public class ViewAllRecords extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel9.setText("From Date:");
         jLabel9.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        panel_display.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 20, 120, 30));
+        panel_display.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 20, 120, 30));
+
+        jLabel11.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jLabel11.setText("No. Sold Goods:");
+        panel_display.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 620, -1, -1));
+
+        lbl_sold_goods.setFont(new java.awt.Font("Times New Roman", 1, 23)); // NOI18N
+        lbl_sold_goods.setForeground(new java.awt.Color(0, 153, 153));
+        panel_display.add(lbl_sold_goods, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 650, 90, 40));
+
+        lbl_received_qty.setFont(new java.awt.Font("Times New Roman", 1, 23)); // NOI18N
+        lbl_received_qty.setForeground(new java.awt.Color(0, 153, 153));
+        panel_display.add(lbl_received_qty, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 650, 110, 40));
+
+        lbl_tot_sales.setFont(new java.awt.Font("Times New Roman", 1, 23)); // NOI18N
+        lbl_tot_sales.setForeground(new java.awt.Color(0, 153, 153));
+        panel_display.add(lbl_tot_sales, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 650, 90, 40));
+
+        jLabel12.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jLabel12.setText("Total Profit:");
+        panel_display.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 620, -1, -1));
+
+        lbl_tot_profit.setFont(new java.awt.Font("Times New Roman", 1, 23)); // NOI18N
+        lbl_tot_profit.setForeground(new java.awt.Color(0, 153, 153));
+        panel_display.add(lbl_tot_profit, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 650, 80, 40));
+
+        btn_refresh.setBackground(new java.awt.Color(102, 255, 102));
+        btn_refresh.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        btn_refresh.setText("Refresh");
+        btn_refresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_refreshActionPerformed(evt);
+            }
+        });
+        panel_display.add(btn_refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 0, 120, 30));
 
         parentPanel.add(panel_display);
         panel_display.setBounds(250, 0, 1120, 700);
@@ -573,19 +622,19 @@ public class ViewAllRecords extends javax.swing.JFrame {
             PreparedStatement pst = con.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
 
-             cbo_assignee.removeAllItems();
+            cbo_assignee.removeAllItems();
             while (rs.next()) {
                 cbo_assignee.addItem(rs.getString("name"));
             }
-            
- rs.close();
+
+            rs.close();
             pst.close();
             con.close();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error loading employee names: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        
+
         }
     }
 
@@ -593,14 +642,18 @@ public class ViewAllRecords extends javax.swing.JFrame {
         // Get selected values from comboboxes
         String assignee = (String) cbo_assignee.getSelectedItem();
         String product = (String) cbo_products.getSelectedItem();
-        java.util.Date dateFrom = jDate_From.getDate();
-        java.util.Date dateTo = jDate_To.getDate();
+        java.util.Date dateFrom = j_date_From.getDate();
+        java.util.Date dateTo = j_date_To.getDate();
 
-         // Date formatting
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd/MM/yyyy");
-        String formattedDateFrom = (dateFrom != null) ? sdf.format(dateFrom) : null;
-        String formattedDateTo = (dateTo != null) ? sdf.format(dateTo) : null;
+        // Date formatting
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy, EEEE");
+//        String formattedDateFrom = (dateFrom != null) ? sdf.format(dateFrom) : null;
+//        String formattedDateTo = (dateTo != null) ? sdf.format(dateTo) : null;
 
+  // Convert java.util.Date to java.sql.Date
+    java.sql.Date sqlDateFrom = (dateFrom != null) ? new java.sql.Date(dateFrom.getTime()) : null;
+    java.sql.Date sqlDateTo = (dateTo != null) ? new java.sql.Date(dateTo.getTime()) : null;
+    
         // Build the base SQL query
         StringBuilder query = new StringBuilder("SELECT * FROM return_goods WHERE 1=1");
 
@@ -611,11 +664,11 @@ public class ViewAllRecords extends javax.swing.JFrame {
         if (product != null && !product.isEmpty()) {
             query.append(" AND product_name = ?");
         }
-        if (formattedDateFrom != null) {
-            query.append(" AND date <= ?");
-        }
-        if (formattedDateTo != null) {
+        if (sqlDateFrom != null) {
             query.append(" AND date >= ?");
+        }
+        if (sqlDateTo != null) {
+            query.append(" AND date <= ?");
         }
 
         try {
@@ -630,11 +683,11 @@ public class ViewAllRecords extends javax.swing.JFrame {
             if (product != null && !product.isEmpty()) {
                 pst.setString(index++, product);
             }
-            if (formattedDateFrom != null) {
-                pst.setString(index++, formattedDateFrom);
+            if (sqlDateFrom != null) {
+                pst.setDate(index++, sqlDateFrom);
             }
-            if (formattedDateTo != null) {
-                pst.setString(index++, formattedDateTo);
+            if (sqlDateTo != null) {
+                pst.setDate(index++, sqlDateTo);
             }
 
             // Execute the query
@@ -662,9 +715,129 @@ public class ViewAllRecords extends javax.swing.JFrame {
 
             rs.close();
             pst.close();
+
+            calculateAndDisplayTotalQuantityReceived();
+            calculateAndDisplayTotalQuantitySold();
+            calculateAndDisplayTotalSales();
+            calculateAndDisplayTotalProfit();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    // Display the jTable to the jLabel
+    private void calculateAndDisplayTotalQuantityReceived() {
+        // Initialize the sum
+        int totalQuantityReceived = 0;
+
+        // Get the table model
+        DefaultTableModel model = (DefaultTableModel) tbl_viewRecords.getModel();
+
+        // Iterate through the rows to sum up the values in column 4 (index 3, zero-based indexing)
+        for (int i = 0; i < model.getRowCount(); i++) {
+            Object value = model.getValueAt(i, 3); // Column index for QuantityReceived is 3
+
+            // Ensure the value is not null and can be converted to an integer
+            if (value != null) {
+                try {
+                    totalQuantityReceived += Integer.parseInt(value.toString());
+                } catch (NumberFormatException e) {
+                    System.err.println("Error parsing quantity: " + value);
+                }
+            }
+        }
+
+        // Display the total on the label with formatting
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        lbl_received_qty.setText(numberFormat.format(totalQuantityReceived));
+    }
+
+    // Display the jTable to the jLabel
+    private void calculateAndDisplayTotalQuantitySold() {
+        // Initialize the sum
+        int totalQuantitySold = 0;
+
+        // Get the table model
+        DefaultTableModel model = (DefaultTableModel) tbl_viewRecords.getModel();
+
+        // Iterate through the rows to sum up the values in column 4 (index 3, zero-based indexing)
+        for (int i = 0; i < model.getRowCount(); i++) {
+            Object value = model.getValueAt(i, 5); // Column index for QuantityReceived is 3
+
+            // Ensure the value is not null and can be converted to an integer
+            if (value != null) {
+                try {
+                    totalQuantitySold += Integer.parseInt(value.toString());
+                } catch (NumberFormatException e) {
+                    System.err.println("Error parsing quantity: " + value);
+                }
+            }
+        }
+
+        // Display the total on the label with formatting
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        lbl_sold_goods.setText(numberFormat.format(totalQuantitySold));
+    }
+
+    // Display the jTable to the jLabel
+    private void calculateAndDisplayTotalSales() {
+        // Initialize the sum
+        int totalSales = 0;
+
+        // Get the table model
+        DefaultTableModel model = (DefaultTableModel) tbl_viewRecords.getModel();
+
+        // Iterate through the rows to sum up the values in column 4 (index 3, zero-based indexing)
+        for (int i = 0; i < model.getRowCount(); i++) {
+            Object value = model.getValueAt(i, 6); // Column index for QuantityReceived is 3
+
+            // Ensure the value is not null and can be converted to an integer
+            if (value != null) {
+                try {
+                    totalSales += Integer.parseInt(value.toString());
+                } catch (NumberFormatException e) {
+                    System.err.println("Error parsing quantity: " + value);
+                }
+            }
+        }
+        // Display the total on the label with formatting
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        lbl_tot_sales.setText(numberFormat.format(totalSales));
+    }
+
+    // Display the jTable to the jLabel
+    private void calculateAndDisplayTotalProfit() {
+        // Initialize the sum
+        int totalProfit = 0;
+
+        // Get the table model
+        DefaultTableModel model = (DefaultTableModel) tbl_viewRecords.getModel();
+
+        // Iterate through the rows to sum up the values in column 4 (index 3, zero-based indexing)
+        for (int i = 0; i < model.getRowCount(); i++) {
+            Object value = model.getValueAt(i, 7); // Column index for QuantityReceived is 3
+
+            // Ensure the value is not null and can be converted to an integer
+            if (value != null) {
+                try {
+                    totalProfit += Integer.parseInt(value.toString());
+                } catch (NumberFormatException e) {
+                    System.err.println("Error parsing quantity: " + value);
+                }
+            }
+        }
+        // Display the total on the label with formatting
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        lbl_tot_profit.setText(numberFormat.format(totalProfit));
+    }
+
+    //clear the interface components
+    private void clearComponents() {
+        cbo_assignee.setSelectedIndex(0);
+        cbo_products.setSelectedIndex(0);
+        j_date_From.setDate(null);
+        j_date_To.setDate(null);
     }
 
     private void lbl_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMouseClicked
@@ -824,7 +997,7 @@ public class ViewAllRecords extends javax.swing.JFrame {
     }//GEN-LAST:event_cbo_assigneeActionPerformed
 
     private void cbo_productsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_productsActionPerformed
-       
+
         if (cbo_products.getSelectedItem() != null) {
 //            fetchProductPrice(selectedProduct);
             searchReturnGoods();
@@ -842,19 +1015,37 @@ public class ViewAllRecords extends javax.swing.JFrame {
 //        tot_price.setText(model.getValueAt(rowNo, 4).toString());
     }//GEN-LAST:event_tbl_viewRecordsMouseClicked
 
-    private void jDate_FromPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDate_FromPropertyChange
+    private void j_date_FromPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_j_date_FromPropertyChange
         // TODO add your handling code here:
         if ("date".equals(evt.getPropertyName())) {
             searchReturnGoods();
         }
-    }//GEN-LAST:event_jDate_FromPropertyChange
+    }//GEN-LAST:event_j_date_FromPropertyChange
 
-    private void jDate_ToPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDate_ToPropertyChange
+    private void j_date_ToPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_j_date_ToPropertyChange
         // TODO add your handling code here:
         if ("date".equals(evt.getPropertyName())) {
             searchReturnGoods();
         }
-    }//GEN-LAST:event_jDate_ToPropertyChange
+    }//GEN-LAST:event_j_date_ToPropertyChange
+
+    private void btn_refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_refreshActionPerformed
+        // TODO add your handling code here:
+        clearComponents();
+        setPoductDetailsToTable();
+
+        calculateAndDisplayTotalQuantityReceived();
+        calculateAndDisplayTotalQuantitySold();
+        calculateAndDisplayTotalSales();
+        calculateAndDisplayTotalProfit();
+    }//GEN-LAST:event_btn_refreshActionPerformed
+
+    private void lbl_dashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_dashboardMouseClicked
+        // TODO add your handling code here:
+        Dashboard dash = new Dashboard();
+        dash.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_lbl_dashboardMouseClicked
 
     /**
      * @param args the command line arguments
@@ -893,12 +1084,13 @@ public class ViewAllRecords extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_refresh;
     private rojerusan.RSComboMetro cbo_assignee;
     private rojerusan.RSComboMetro cbo_products;
-    private com.toedter.calendar.JDateChooser jDate_From;
-    private com.toedter.calendar.JDateChooser jDate_To;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -922,6 +1114,8 @@ public class ViewAllRecords extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private com.toedter.calendar.JDateChooser j_date_From;
+    private com.toedter.calendar.JDateChooser j_date_To;
     private javax.swing.JLabel lbl_close;
     private javax.swing.JLabel lbl_dashboard;
     private javax.swing.JLabel lbl_defaulterList;
@@ -930,7 +1124,11 @@ public class ViewAllRecords extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_manageInventory;
     private javax.swing.JLabel lbl_manageUsers;
     private javax.swing.JLabel lbl_menu;
+    private javax.swing.JLabel lbl_received_qty;
     private javax.swing.JLabel lbl_returnGood;
+    private javax.swing.JLabel lbl_sold_goods;
+    private javax.swing.JLabel lbl_tot_profit;
+    private javax.swing.JLabel lbl_tot_sales;
     private javax.swing.JLabel lbl_viewIssuedGood;
     private javax.swing.JLabel lbl_viewRecords;
     private javax.swing.JPanel panel_display;

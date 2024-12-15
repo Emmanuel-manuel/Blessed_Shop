@@ -169,13 +169,13 @@ public class ManageInventory extends javax.swing.JFrame {
 
         txtTime.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         txtTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jPanel15.add(txtTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 180, 30));
+        jPanel15.add(txtTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 10, 170, 30));
 
         txtDate.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         txtDate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jPanel15.add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 190, 30));
+        jPanel15.add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 40, 170, 30));
 
-        jPanel2.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 0, 240, 70));
+        jPanel2.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 0, 310, 70));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1370, 70));
 
@@ -226,6 +226,9 @@ public class ManageInventory extends javax.swing.JFrame {
         lbl_dashboard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/icons8_Library_32px.png"))); // NOI18N
         lbl_dashboard.setText("  Dashboard");
         lbl_dashboard.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_dashboardMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 lbl_dashboardMouseEntered(evt);
             }
@@ -1096,6 +1099,13 @@ public class ManageInventory extends javax.swing.JFrame {
         timer.setRepeats(false); // Only execute once
         timer.start();
     }//GEN-LAST:event_formWindowActivated
+
+    private void lbl_dashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_dashboardMouseClicked
+        // TODO add your handling code here:
+        Dashboard dash = new Dashboard();
+        dash.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_lbl_dashboardMouseClicked
 
     /**
      * @param args the command line arguments

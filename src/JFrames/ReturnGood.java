@@ -144,7 +144,7 @@ public class ReturnGood extends javax.swing.JFrame {
 
         txtDate.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         txtDate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jPanel2.add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 40, 210, 30));
+        jPanel2.add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 40, 180, 30));
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -224,6 +224,9 @@ public class ReturnGood extends javax.swing.JFrame {
         lbl_dashboard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/icons8_Library_32px.png"))); // NOI18N
         lbl_dashboard.setText("  Dashboard");
         lbl_dashboard.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_dashboardMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 lbl_dashboardMouseEntered(evt);
             }
@@ -1112,6 +1115,13 @@ public class ReturnGood extends javax.swing.JFrame {
         // TODO add your handling code here:
         loadProducts();
     }//GEN-LAST:event_cbo_assigneeActionPerformed
+
+    private void lbl_dashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_dashboardMouseClicked
+        // TODO add your handling code here:
+        Dashboard dash = new Dashboard();
+        dash.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_lbl_dashboardMouseClicked
 
     /**
      * @param args the command line arguments

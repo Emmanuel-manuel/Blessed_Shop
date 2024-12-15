@@ -228,6 +228,9 @@ public class IssueGoods extends javax.swing.JFrame {
         lbl_dashboard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/icons8_Library_32px.png"))); // NOI18N
         lbl_dashboard.setText("  Dashboard");
         lbl_dashboard.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_dashboardMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 lbl_dashboardMouseEntered(evt);
             }
@@ -1278,6 +1281,13 @@ public class IssueGoods extends javax.swing.JFrame {
         
         checkAssignee();
     }//GEN-LAST:event_cbo_assigneeActionPerformed
+
+    private void lbl_dashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_dashboardMouseClicked
+        // TODO add your handling code here:
+        Dashboard dash = new Dashboard();
+        dash.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_lbl_dashboardMouseClicked
 
     /**
      * @param args the command line arguments

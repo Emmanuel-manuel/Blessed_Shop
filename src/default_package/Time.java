@@ -30,7 +30,9 @@ public class Time {
 
                     Date date = new Date();
                     SimpleDateFormat tf = new SimpleDateFormat("h:mm:ss aa");
-                    SimpleDateFormat dd = new SimpleDateFormat("EEEE, dd/MM/yyyy");
+                    SimpleDateFormat dd = new SimpleDateFormat("yyyy-MM-dd");
+                   
+//                    SimpleDateFormat dd = new SimpleDateFormat("EEEE, dd/MM/yyyy");
 
                     String time = tf.format(date);
                     txtTime.setText(time.split(" ")[0] + " " + time.split(" ")[1]);
