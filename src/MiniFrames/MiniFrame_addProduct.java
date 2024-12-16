@@ -17,7 +17,7 @@ import javax.swing.JPopupMenu;
  */
 public class MiniFrame_addProduct extends javax.swing.JFrame {
 
-    String productName, product_B_Price, product_S_Price;
+    String productName, product_B_Price, product_S_Price, perc_comm;
     int profit;
     double perc_profit;
     private JPopupMenu suggestionMenu;
@@ -54,6 +54,8 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
         txt_product_S_Price = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         lblMessage = new javax.swing.JLabel();
+        txt_commission = new rojerusan.RSMetroTextPlaceHolder();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -109,7 +111,7 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
                 btnSubmitActionPerformed(evt);
             }
         });
-        jPanel1.add(btnSubmit, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 290, 120, 30));
+        jPanel1.add(btnSubmit, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 370, 120, 30));
 
         btnUpdate.setBackground(new java.awt.Color(255, 153, 51));
         btnUpdate.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
@@ -119,7 +121,7 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
                 btnUpdateActionPerformed(evt);
             }
         });
-        jPanel1.add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 290, 120, 30));
+        jPanel1.add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 370, 120, 30));
 
         jLabel3.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         jLabel3.setText("Buying Price of the Product: ");
@@ -143,7 +145,7 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
                 btnDelActionPerformed(evt);
             }
         });
-        jPanel1.add(btnDel, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 290, 120, 30));
+        jPanel1.add(btnDel, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 370, 120, 30));
 
         txt_product_S_Price.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         txt_product_S_Price.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -157,17 +159,34 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
         jPanel1.add(txt_product_S_Price, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 200, 290, 40));
 
         jLabel4.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
-        jLabel4.setText("Selling Price of the Product: ");
+        jLabel4.setText("Percentage Commission:");
         jLabel4.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel4.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 260, 30));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 260, 30));
 
         lblMessage.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        jPanel1.add(lblMessage, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 250, 240, 30));
+        jPanel1.add(lblMessage, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 310, 240, 30));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 330));
+        txt_commission.setForeground(new java.awt.Color(0, 0, 0));
+        txt_commission.setBorderColor(new java.awt.Color(204, 204, 204));
+        txt_commission.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        txt_commission.setPlaceholder("%tage commission on the product");
+        txt_commission.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_commissionKeyTyped(evt);
+            }
+        });
+        jPanel1.add(txt_commission, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 250, 290, -1));
 
-        setSize(new java.awt.Dimension(596, 335));
+        jLabel5.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
+        jLabel5.setText("Selling Price of the Product: ");
+        jLabel5.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel5.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 260, 30));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 420));
+
+        setSize(new java.awt.Dimension(596, 417));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -245,15 +264,17 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
         productName = txt_productName.getText();
         product_B_Price = txt_product_B_Price.getText();
         product_S_Price = txt_product_S_Price.getText();
+        perc_comm = txt_commission.getText();
 //
         // Convert prices to integers
         int bPrice = Integer.parseInt(product_B_Price);
         int sPrice = Integer.parseInt(product_S_Price);
+        int commission = Integer.parseInt(perc_comm);
 
         try {
 
             Connection con = DBConnection.getConnection();
-            String sql = "insert into products (product_name, b_price, s_price, profit, perc_profit) VALUES (?, ?, ?, ?, ?)";
+            String sql = "insert into products (product_name, b_price, s_price, profit, perc_profit, perc_commission) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement pst = con.prepareStatement(sql);
 
             //sets the values from the textfield to the colums in the db
@@ -262,6 +283,7 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
             pst.setInt(3, sPrice);
             pst.setInt(4, profit);
             pst.setDouble(5, perc_profit);
+            pst.setInt(6, commission);
 
             //If a database row is added to output a success message
             int rowCount = pst.executeUpdate();
@@ -335,11 +357,13 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
         productName = txt_productName.getText();
         product_B_Price = txt_product_B_Price.getText();
         product_S_Price = txt_product_S_Price.getText();
+        perc_comm = txt_commission.getText();
 
         try {
             // Parse prices to integers
             int bPrice = Integer.parseInt(product_B_Price);
             int sPrice = Integer.parseInt(product_S_Price);
+            int commission = Integer.parseInt(perc_comm);
 
             // Calculate profit and percentage profit
             profit = sPrice - bPrice;
@@ -347,7 +371,7 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
 
             // Update database
             Connection con = DBConnection.getConnection();
-            String sql = "update products set product_name = ?, b_price = ?, s_price = ?, profit = ?, perc_profit = ? where product_name = ?";
+            String sql = "update products set product_name = ?, b_price = ?, s_price = ?, profit = ?, perc_profit = ?, perc_commission = ? where product_name = ?";
             PreparedStatement pst = con.prepareStatement(sql);
 
             //sets the values from the textfield to the colums in the db
@@ -356,7 +380,8 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
             pst.setInt(3, sPrice);
             pst.setInt(4, profit);
             pst.setDouble(5, perc_profit);
-            pst.setString(6, productName);
+            pst.setInt(6, commission);
+            pst.setString(7, productName);
 
             //If a database row is added to output a success message
             int rowCount = pst.executeUpdate();
@@ -411,6 +436,7 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
         txt_productName.setText("");
         txt_product_B_Price.setText("");
         txt_product_S_Price.setText("");
+        txt_commission.setText("");
     }
 
     private void lbl_backMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_backMouseClicked
@@ -419,7 +445,7 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
 
-        if (txt_productName.getText().isEmpty() || txt_product_B_Price.getText().isEmpty() || txt_product_S_Price.getText().isEmpty()) {
+        if (txt_productName.getText().isEmpty() || txt_product_B_Price.getText().isEmpty() || txt_product_S_Price.getText().isEmpty() || txt_commission.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please fill all the fields");
 
         } else if (addProduct() == true) {
@@ -435,7 +461,7 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         //updateProduct()
-        if (txt_productName.getText().isEmpty() || txt_product_B_Price.getText().isEmpty() || txt_product_S_Price.getText().isEmpty()) {
+        if (txt_productName.getText().isEmpty() || txt_product_B_Price.getText().isEmpty() || txt_product_S_Price.getText().isEmpty() || txt_commission.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please fill all the fields");
 
         } else if (updateProduct() == true) {
@@ -495,6 +521,12 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
         calculateProfit();
     }//GEN-LAST:event_txt_product_S_PriceKeyReleased
 
+    private void txt_commissionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_commissionKeyTyped
+        if (!Character.isDigit(evt.getKeyChar())) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_commissionKeyTyped
+
     /**
      * @param args the command line arguments
      */
@@ -539,10 +571,12 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblMessage;
     private javax.swing.JLabel lbl_back;
+    private rojerusan.RSMetroTextPlaceHolder txt_commission;
     private javax.swing.JTextField txt_productName;
     private javax.swing.JTextField txt_product_B_Price;
     private javax.swing.JTextField txt_product_S_Price;

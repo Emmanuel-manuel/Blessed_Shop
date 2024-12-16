@@ -6,8 +6,13 @@
 package JFrames;
 
 //import MiniFrames.*;
+import default_package.DBConnection;
+import default_package.Select;
 import default_package.Time;
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
 /**
@@ -23,6 +28,8 @@ public class Dashboard extends javax.swing.JFrame {
     //Global variable for Hover Effect
     Color mouseEnterColor = new Color(255, 153, 0);
     Color mouseExitColor = new Color(51, 51, 51);
+    
+    String employeeName, today_date;
     
     
     public Dashboard() {
@@ -93,6 +100,7 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         txt_commission = new app.bolivia.swing.JCTextField();
+        jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -517,18 +525,23 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel8.setText("Assignee:");
         panel_display.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
 
-        jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jLabel9.setText("Product Name:");
-        panel_display.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, -1, -1));
+        jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel9.setText("Commission:");
+        panel_display.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 100, -1, -1));
 
         jLabel10.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel10.setText("From Date:");
         panel_display.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, -1, -1));
 
+        txt_commission.setEditable(false);
         txt_commission.setText("\n");
         txt_commission.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         txt_commission.setPlaceholder("Please enter Percentage Commision");
-        panel_display.add(txt_commission, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 362, 230, 40));
+        panel_display.add(txt_commission, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 128, 60, -1));
+
+        jLabel13.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel13.setText("Product Name:");
+        panel_display.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, -1, -1));
 
         parentPanel.add(panel_display);
         panel_display.setBounds(250, 0, 1120, 700);
@@ -542,10 +555,96 @@ public class Dashboard extends javax.swing.JFrame {
     public void init() {
         Time.setTime(txtTime, txtDate);  // Calling the setTime method from the Time class
         
+        loadEmployeeName();
     }
-    
 
+    //Load employee name into cbo_assignee combobox
+    private void loadEmployeeName() {
+        try {
+            Connection con = DBConnection.getConnection();
+            String sql = "SELECT name FROM employee_details";
+            PreparedStatement pst = con.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
 
+            cbo_assignee.removeAllItems();
+            while (rs.next()) {
+                cbo_assignee.addItem(rs.getString("name"));
+            }
+
+            rs.close();
+            pst.close();
+            con.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error loading employee names: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
+        }
+    }    
+
+//Load Product name into cbo_products combobox
+    private void loadProducts() {
+        cbo_products.removeAllItems();
+
+        today_date = txtDate.getText();
+        employeeName = (String) cbo_assignee.getSelectedItem();
+
+        try {
+            ResultSet rs = Select.getData("select product_name from issued_goods where employee_name='" + employeeName + "' ");
+            while (rs.next()) {
+                cbo_products.addItem(rs.getString(1));
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+    }
+
+    private void retrieveCommission() {
+    String selectedProduct = (String) cbo_products.getSelectedItem();
+
+    if (selectedProduct == null || selectedProduct.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please select a product.", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    try {
+        // Establish connection to the database
+        Connection con = DBConnection.getConnection();
+
+        // Query to retrieve perc_commission for the selected product
+        String sql = "SELECT perc_commission FROM products WHERE product_name = ?";
+        PreparedStatement pst = con.prepareStatement(sql);
+        pst.setString(1, selectedProduct);
+
+        // Execute the query
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+            // Retrieve the commission percentage
+            String percCommission = rs.getString("perc_commission");
+
+            // Display the commission percentage or assign it to a relevant JLabel or JTextField
+            txt_commission.setText(percCommission + "%");
+            
+
+            // Optionally, set the value to a MessageDialog instead
+//            JOptionPane.showMessageDialog(this, "Commission Percentage: " + percCommission + "%", "Commission Info", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            // Handle case where no matching product is found
+            JOptionPane.showMessageDialog(this, "No commission data found for the selected product.", "No Data", JOptionPane.WARNING_MESSAGE);
+        }
+
+        // Close resources
+        rs.close();
+        pst.close();
+        con.close();
+    } catch (Exception e) {
+        // Handle exceptions
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error retrieving commission: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
 
     
     
@@ -744,7 +843,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void cbo_assigneeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_assigneeActionPerformed
         // TODO add your handling code here:
-//        loadProducts();
+        loadProducts();
     }//GEN-LAST:event_cbo_assigneeActionPerformed
 
     private void tbl_viewRecordsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_viewRecordsMouseClicked
@@ -761,7 +860,7 @@ public class Dashboard extends javax.swing.JFrame {
     private void cbo_productsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_productsActionPerformed
 
         if (cbo_products.getSelectedItem() != null) {
-            //            fetchProductPrice(selectedProduct);
+            retrieveCommission();
 //            searchReturnGoods();
         }
     }//GEN-LAST:event_cbo_productsActionPerformed
@@ -769,26 +868,26 @@ public class Dashboard extends javax.swing.JFrame {
     private void jDate_FromPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDate_FromPropertyChange
         // TODO add your handling code here:
         if ("date".equals(evt.getPropertyName())) {
-//            searchReturnGoods();
+            searchReturnGoods();
         }
     }//GEN-LAST:event_jDate_FromPropertyChange
 
     private void jDate_ToPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDate_ToPropertyChange
         // TODO add your handling code here:
         if ("date".equals(evt.getPropertyName())) {
-//            searchReturnGoods();
+            searchReturnGoods();
         }
     }//GEN-LAST:event_jDate_ToPropertyChange
 
     private void btn_refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_refreshActionPerformed
         // TODO add your handling code here:
-//        clearComponents();
+        clearComponents();
 //        setPoductDetailsToTable();
 //
-//        calculateAndDisplayTotalQuantityReceived();
-//        calculateAndDisplayTotalQuantitySold();
-//        calculateAndDisplayTotalSales();
-//        calculateAndDisplayTotalProfit();
+        calculateAndDisplayTotalQuantityReceived();
+        calculateAndDisplayTotalQuantitySold();
+        calculateAndDisplayTotalSales();
+        calculateAndDisplayTotalProfit();
     }//GEN-LAST:event_btn_refreshActionPerformed
 
     /**
@@ -839,6 +938,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
