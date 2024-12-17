@@ -567,7 +567,7 @@ public class ReturnGood extends javax.swing.JFrame {
         employeeName = (String) cbo_assignee.getSelectedItem();
 
         try {
-            ResultSet rs = Select.getData("select product_name from issued_goods where employee_name='" + employeeName + "' and date = '" + today_date + "' ");
+            ResultSet rs = Select.getData("select DISTINCT product_name from issued_goods where employee_name='" + employeeName + "' and date = '" + today_date + "' ");
             while (rs.next()) {
                 cbo_products.addItem(rs.getString(1));
             }
@@ -581,7 +581,7 @@ public class ReturnGood extends javax.swing.JFrame {
     private void loadEmployeeName() {
         try {
             Connection con = DBConnection.getConnection();
-            String sql = "SELECT name FROM employee_details";
+            String sql = "SELECT DISTINCT name FROM employee_details";
             PreparedStatement pst = con.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
 

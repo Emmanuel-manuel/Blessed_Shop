@@ -7,7 +7,6 @@ package JFrames;
 
 //import MiniFrames.*;
 import default_package.DBConnection;
-import default_package.Select;
 import default_package.Time;
 import java.awt.Color;
 import java.sql.Connection;
@@ -29,11 +28,11 @@ public class Dashboard extends javax.swing.JFrame {
     //Global variable for Hover Effect
     Color mouseEnterColor = new Color(255, 153, 0);
     Color mouseExitColor = new Color(51, 51, 51);
-    
+
     DefaultTableModel model;
-    
+
     String employeeName, today_date;
-    
+
     public Dashboard() {
         initComponents();
         init();
@@ -100,9 +99,6 @@ public class Dashboard extends javax.swing.JFrame {
         cbo_products = new rojerusan.RSComboMetro();
         jLabel9 = new javax.swing.JLabel();
         txt_commission = new app.bolivia.swing.JCTextField();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        lbl_Cart = new javax.swing.JTextArea();
-        lbl_clr_receipt = new javax.swing.JLabel();
         panel_load = new javax.swing.JPanel();
         jPanel16 = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
@@ -118,9 +114,14 @@ public class Dashboard extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         btnprint = new javax.swing.JButton();
+        jPanel18 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         j_date_To = new com.toedter.calendar.JDateChooser();
         btn_populate = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        lbl_Cart = new javax.swing.JTextArea();
+        lbl_clr_receipt = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -450,7 +451,7 @@ public class Dashboard extends javax.swing.JFrame {
         tbl_viewRecords.setRowHeight(14);
         jScrollPane1.setViewportView(tbl_viewRecords);
 
-        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 60, 660, 540));
+        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 60, 360, 540));
 
         j_date_From.setDateFormatString("EEEE, dd/MM/yyyy");
         j_date_From.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
@@ -519,7 +520,7 @@ public class Dashboard extends javax.swing.JFrame {
 
         jLabel13.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel13.setText("Product Name:");
-        jPanel15.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 120, -1));
+        jPanel15.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 10, 120, -1));
 
         cbo_products.setForeground(new java.awt.Color(0, 0, 0));
         cbo_products.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select" }));
@@ -531,35 +532,17 @@ public class Dashboard extends javax.swing.JFrame {
                 cbo_productsActionPerformed(evt);
             }
         });
-        jPanel15.add(cbo_products, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 220, -1));
+        jPanel15.add(cbo_products, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 30, 210, -1));
 
         jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel9.setText("Commission:");
-        jPanel15.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, -1, -1));
+        jPanel15.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 10, -1, -1));
 
         txt_commission.setEditable(false);
         txt_commission.setText("\n");
         txt_commission.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         txt_commission.setPlaceholder("Please enter Percentage Commision");
-        jPanel15.add(txt_commission, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 60, -1));
-
-        lbl_Cart.setColumns(20);
-        lbl_Cart.setFont(new java.awt.Font("Monospaced", 0, 10)); // NOI18N
-        lbl_Cart.setRows(20);
-        jScrollPane3.setViewportView(lbl_Cart);
-
-        jPanel15.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 10, 230, 310));
-
-        lbl_clr_receipt.setBackground(new java.awt.Color(153, 153, 0));
-        lbl_clr_receipt.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        lbl_clr_receipt.setForeground(new java.awt.Color(0, 153, 0));
-        lbl_clr_receipt.setText("CLEAR PREVIEW");
-        lbl_clr_receipt.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lbl_clr_receiptMouseClicked(evt);
-            }
-        });
-        jPanel15.add(lbl_clr_receipt, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 320, 156, -1));
+        jPanel15.add(txt_commission, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 30, 60, -1));
 
         panel_load.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         panel_load.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -669,7 +652,35 @@ public class Dashboard extends javax.swing.JFrame {
         });
         panel_load.add(btnprint, new org.netbeans.lib.awtextra.AbsoluteConstraints(249, 270, -1, -1));
 
-        jPanel15.add(panel_load, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 470, 320));
+        jPanel15.add(panel_load, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 470, 590));
+
+        jPanel18.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel18.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel3.setBackground(new java.awt.Color(51, 51, 51));
+        jLabel3.setFont(new java.awt.Font("Yu Gothic", 1, 16)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(153, 255, 0));
+        jLabel3.setText("CLICK!! ADD TO TABLE");
+        jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel3.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jLabel3FocusGained(evt);
+            }
+        });
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel3MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel3MouseExited(evt);
+            }
+        });
+        jPanel18.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 210, 20));
+
+        jPanel15.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 240, 30));
 
         panel_display.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 480, 690));
 
@@ -696,6 +707,24 @@ public class Dashboard extends javax.swing.JFrame {
         });
         panel_display.add(btn_populate, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 30, 150, 25));
 
+        lbl_Cart.setColumns(20);
+        lbl_Cart.setFont(new java.awt.Font("Monospaced", 0, 10)); // NOI18N
+        lbl_Cart.setRows(20);
+        jScrollPane3.setViewportView(lbl_Cart);
+
+        panel_display.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 80, 240, 340));
+
+        lbl_clr_receipt.setBackground(new java.awt.Color(153, 153, 0));
+        lbl_clr_receipt.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lbl_clr_receipt.setForeground(new java.awt.Color(0, 153, 0));
+        lbl_clr_receipt.setText("CLEAR PREVIEW");
+        lbl_clr_receipt.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_clr_receiptMouseClicked(evt);
+            }
+        });
+        panel_display.add(lbl_clr_receipt, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 420, 170, -1));
+
         parentPanel.add(panel_display);
         panel_display.setBounds(230, 0, 1140, 700);
 
@@ -707,60 +736,75 @@ public class Dashboard extends javax.swing.JFrame {
 
     public void init() {
         Time.setTime(txtTime, txtDate);  // Calling the setTime method from the Time class
-        
+
         loadEmployeeName();
     }
 
     //Load employee name into cbo_assignee combobox
     private void loadEmployeeName() {
         try {
+            // Use DISTINCT to get unique employee names
+            String query = "SELECT DISTINCT name FROM employee_details";
             Connection con = DBConnection.getConnection();
-            String sql = "SELECT name FROM employee_details";
-            PreparedStatement pst = con.prepareStatement(sql);
+            PreparedStatement pst = con.prepareStatement(query);
+
             ResultSet rs = pst.executeQuery();
-            
+
             cbo_assignee.removeAllItems();
             while (rs.next()) {
                 cbo_assignee.addItem(rs.getString("name"));
             }
-            
+
             rs.close();
             pst.close();
             con.close();
-            
         } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error loading employee names: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            
+            JOptionPane.showMessageDialog(null, "Error loading employee names: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+       
     }
 
 //Load Product name into cbo_products combobox
     private void loadProducts() {
         cbo_products.removeAllItems();
-        
+
         today_date = txtDate.getText();
         employeeName = (String) cbo_assignee.getSelectedItem();
-        
+
+//        This block of code first checks if employeeName in the combobox is empty
+//        if (employeeName == null || employeeName.isEmpty()) {
+//            JOptionPane.showMessageDialog(null, "Please select an employee.", "Warning", JOptionPane.WARNING_MESSAGE);
+//            return;
+//        }
         try {
-            ResultSet rs = Select.getData("select product_name from issued_goods where employee_name='" + employeeName + "' ");
+            // Use DISTINCT to get unique product names
+            String query = "SELECT DISTINCT product_name FROM issued_goods WHERE employee_name = ?";
+            Connection con = DBConnection.getConnection();
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setString(1, employeeName);
+
+            ResultSet rs = pst.executeQuery();
+
             while (rs.next()) {
-                cbo_products.addItem(rs.getString(1));
+                cbo_products.addItem(rs.getString("product_name"));
             }
+
+            rs.close();
+            pst.close();
+            con.close();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+            JOptionPane.showMessageDialog(null, "Error loading products: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
     }
-    
+
     private void retrieveCommission() {
         String selectedProduct = (String) cbo_products.getSelectedItem();
-        
+
         if (selectedProduct == null || selectedProduct.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please select a product.", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         try {
             // Establish connection to the database
             Connection con = DBConnection.getConnection();
@@ -772,7 +816,7 @@ public class Dashboard extends javax.swing.JFrame {
 
             // Execute the query
             ResultSet rs = pst.executeQuery();
-            
+
             if (rs.next()) {
                 // Retrieve the commission percentage
                 String percCommission = rs.getString("perc_commission");
@@ -800,7 +844,7 @@ public class Dashboard extends javax.swing.JFrame {
 
 //to pull the inventory details from the db to the table
     public void setPoductDetailsToTable() {
-        
+
         try {
             Connection con = DBConnection.getConnection();
 
@@ -813,7 +857,7 @@ public class Dashboard extends javax.swing.JFrame {
 //            String sql = "SELECT * FROM return_goods WHERE date = ?";
             PreparedStatement st = con.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
-            
+
             model = (DefaultTableModel) tbl_viewRecords.getModel();
             model.setRowCount(0); // Clear existing rows
 
@@ -839,7 +883,6 @@ public class Dashboard extends javax.swing.JFrame {
         }
     }
 
-    
     private void searchReturnGoods() {
         // Get selected values from comboboxes
         String assignee = (String) cbo_assignee.getSelectedItem();
@@ -851,11 +894,10 @@ public class Dashboard extends javax.swing.JFrame {
 //        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy, EEEE");
 //        String formattedDateFrom = (dateFrom != null) ? sdf.format(dateFrom) : null;
 //        String formattedDateTo = (dateTo != null) ? sdf.format(dateTo) : null;
+        // Convert java.util.Date to java.sql.Date
+        java.sql.Date sqlDateFrom = (dateFrom != null) ? new java.sql.Date(dateFrom.getTime()) : null;
+        java.sql.Date sqlDateTo = (dateTo != null) ? new java.sql.Date(dateTo.getTime()) : null;
 
-  // Convert java.util.Date to java.sql.Date
-    java.sql.Date sqlDateFrom = (dateFrom != null) ? new java.sql.Date(dateFrom.getTime()) : null;
-    java.sql.Date sqlDateTo = (dateTo != null) ? new java.sql.Date(dateTo.getTime()) : null;
-    
         // Build the base SQL query
         StringBuilder query = new StringBuilder("SELECT * FROM return_goods WHERE 1=1");
 
@@ -1011,7 +1053,7 @@ public class Dashboard extends javax.swing.JFrame {
         j_date_From.setDate(null);
         j_date_To.setDate(null);
     }
-    
+
 
     private void lbl_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMouseClicked
         int a = JOptionPane.showConfirmDialog(null, "Do you really want to Close Application?", "Select", JOptionPane.YES_NO_OPTION);
@@ -1021,20 +1063,20 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_lbl_closeMouseClicked
 
     private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
-        
+
         xx = evt.getX();
         xy = evt.getY();
     }//GEN-LAST:event_jPanel2MouseClicked
 
     private void jPanel2MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseDragged
-        
+
         int x = evt.getXOnScreen();
         int y = evt.getYOnScreen();
         this.setLocation(x - xx, y - xy);
     }//GEN-LAST:event_jPanel2MouseDragged
 
     private void lbl_manageInventoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_manageInventoryMouseClicked
-        
+
         ManageInventory inventory = new ManageInventory();
         inventory.setVisible(true);
         dispose();
@@ -1150,17 +1192,17 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_lbl_defaulterListMouseExited
 
     private void lbl_menuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_menuMouseClicked
-        
+
         if (panel_menu.isVisible()) {
             panel_menu.setVisible(false);
             // Adjust panel_display when panel_menu disappears
             panel_display.setBounds(0, 0, parentPanel.getWidth(), parentPanel.getHeight());
-            
+
         } else {
             panel_menu.setVisible(true);
             // Adjust panel_display when panel_menu reappears
             panel_display.setBounds(panel_menu.getWidth(), 0, parentPanel.getWidth() - panel_menu.getWidth(), 700);
-            
+
         }
         // Force panel_display to re-layout its components
         parentPanel.repaint();
@@ -1211,7 +1253,7 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_cbo_assigneeActionPerformed
 
     private void cbo_productsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_productsActionPerformed
-        
+
         if (cbo_products.getSelectedItem() != null) {
             retrieveCommission();
             setPoductDetailsToTable();
@@ -1236,9 +1278,9 @@ public class Dashboard extends javax.swing.JFrame {
     private void btn_refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_refreshActionPerformed
         // TODO add your handling code here:
         clearComponents();
-        
+
         setPoductDetailsToTable();
-        
+
         calculateAndDisplayTotalQuantitySold();
         calculateAndDisplayTotalSales();
         calculateAndDisplayTotalProfit();
@@ -1250,18 +1292,18 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_lbl_clr_receiptMouseClicked
 
     private void txtpayKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpayKeyReleased
-        
+
         Integer paid = Integer.valueOf(txtpay.getText());
         Integer tot = Integer.valueOf(lbltotal.getText());
         Integer bal;
-        
+
         bal = paid - tot;
-        
+
         lblbal.setText(String.valueOf(bal));
     }//GEN-LAST:event_txtpayKeyReleased
 
     private void btnsubmitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnsubmitMouseClicked
-        
+
         sales_pay();
     }//GEN-LAST:event_btnsubmitMouseClicked
 
@@ -1277,13 +1319,13 @@ public class Dashboard extends javax.swing.JFrame {
             d.setRowCount(0);
             //  d.removeRow(row);
         } catch (Exception e) {
-            
+
         }
         new_data();
         pro_total();
         lbl_Cart.setText("");
         txtpay.setText("");
-        
+
         table_update_prepare_foods();
     }//GEN-LAST:event_btnremoveMouseClicked
 
@@ -1303,12 +1345,12 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_btnremoveActionPerformed
 
     private void genreceiptMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genreceiptMouseClicked
-        
+
         my_cart();
     }//GEN-LAST:event_genreceiptMouseClicked
 
     private void btnprintMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnprintMouseClicked
-        
+
         try {
             lbl_Cart.print();
         } catch (Exception e) {
@@ -1316,13 +1358,29 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_btnprintMouseClicked
 
     private void btn_populateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_populateActionPerformed
-        
+
         setPoductDetailsToTable();
-        
+
         calculateAndDisplayTotalQuantitySold();
         calculateAndDisplayTotalSales();
         calculateAndDisplayTotalProfit();
     }//GEN-LAST:event_btn_populateActionPerformed
+
+    private void jLabel3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseEntered
+        jPanel18.setBackground(mouseEnterColor);
+    }//GEN-LAST:event_jLabel3MouseEntered
+
+    private void jLabel3FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jLabel3FocusGained
+        jPanel18.setBackground(mouseEnterColor);
+    }//GEN-LAST:event_jLabel3FocusGained
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void jLabel3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseExited
+        jPanel18.setBackground(mouseExitColor);        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel3MouseExited
 
     /**
      * @param args the command line arguments
@@ -1380,6 +1438,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1395,6 +1454,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

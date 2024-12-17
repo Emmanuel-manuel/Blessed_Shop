@@ -7,7 +7,6 @@ package JFrames;
 
 //import MiniFrames.*;
 import default_package.DBConnection;
-import default_package.Select;
 import default_package.Time;
 import java.awt.Color;
 import java.sql.*;
@@ -603,23 +602,40 @@ public class ViewAllRecords extends javax.swing.JFrame {
         today_date = txtDate.getText();
         employeeName = (String) cbo_assignee.getSelectedItem();
 
+//        This block of code first checks if employeeName in the combobox is empty
+//        if (employeeName == null || employeeName.isEmpty()) {
+//            JOptionPane.showMessageDialog(null, "Please select an employee.", "Warning", JOptionPane.WARNING_MESSAGE);
+//            return;
+//        }
         try {
-            ResultSet rs = Select.getData("select product_name from issued_goods where employee_name='" + employeeName + "' ");
-            while (rs.next()) {
-                cbo_products.addItem(rs.getString(1));
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
+            // Use DISTINCT to get unique product names
+            String query = "SELECT DISTINCT product_name FROM issued_goods WHERE employee_name = ?";
+            Connection con = DBConnection.getConnection();
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setString(1, employeeName);
 
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                cbo_products.addItem(rs.getString("product_name"));
+            }
+
+            rs.close();
+            pst.close();
+            con.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error loading products: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     //Load employee name into cbo_assignee combobox
     private void loadEmployeeName() {
         try {
+            // Use DISTINCT to get unique employee names
+            String query = "SELECT DISTINCT name FROM employee_details";
             Connection con = DBConnection.getConnection();
-            String sql = "SELECT name FROM employee_details";
-            PreparedStatement pst = con.prepareStatement(sql);
+            PreparedStatement pst = con.prepareStatement(query);
+
             ResultSet rs = pst.executeQuery();
 
             cbo_assignee.removeAllItems();
@@ -630,12 +646,10 @@ public class ViewAllRecords extends javax.swing.JFrame {
             rs.close();
             pst.close();
             con.close();
-
         } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error loading employee names: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-
+            JOptionPane.showMessageDialog(null, "Error loading employee names: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+       
     }
 
     private void searchReturnGoods() {
