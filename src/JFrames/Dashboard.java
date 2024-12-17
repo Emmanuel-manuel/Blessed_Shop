@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -28,6 +29,9 @@ public class Dashboard extends javax.swing.JFrame {
     //Global variable for Hover Effect
     Color mouseEnterColor = new Color(255, 153, 0);
     Color mouseExitColor = new Color(51, 51, 51);
+    
+    
+    DefaultTableModel model;
     
     String employeeName, today_date;
     
@@ -80,12 +84,9 @@ public class Dashboard extends javax.swing.JFrame {
         jPanel13 = new javax.swing.JPanel();
         lbl_defaulterList = new javax.swing.JLabel();
         panel_display = new javax.swing.JPanel();
-        cbo_assignee = new rojerusan.RSComboMetro();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_viewRecords = new rojerusan.RSTableMetro();
-        cbo_products = new rojerusan.RSComboMetro();
         jDate_From = new com.toedter.calendar.JDateChooser();
-        jDate_To = new com.toedter.calendar.JDateChooser();
         btn_refresh = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         lbl_tot_profit = new javax.swing.JLabel();
@@ -95,12 +96,35 @@ public class Dashboard extends javax.swing.JFrame {
         lbl_sold_goods = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         lbl_received_qty = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        txt_commission = new app.bolivia.swing.JCTextField();
+        jPanel15 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        cbo_assignee = new rojerusan.RSComboMetro();
         jLabel13 = new javax.swing.JLabel();
+        cbo_products = new rojerusan.RSComboMetro();
+        jLabel9 = new javax.swing.JLabel();
+        txt_commission = new app.bolivia.swing.JCTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        lbl_Cart = new javax.swing.JTextArea();
+        lbl_clr_receipt = new javax.swing.JLabel();
+        panel_load = new javax.swing.JPanel();
+        jPanel16 = new javax.swing.JPanel();
+        jPanel17 = new javax.swing.JPanel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        lbltotal = new javax.swing.JLabel();
+        lblbal = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        txtpay = new javax.swing.JTextField();
+        btnsubmit = new javax.swing.JButton();
+        btnremove = new javax.swing.JButton();
+        genreceipt = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        btnprint = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jDate_To = new com.toedter.calendar.JDateChooser();
+        btn_populate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -142,7 +166,7 @@ public class Dashboard extends javax.swing.JFrame {
 
         txtDate.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         txtDate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jPanel2.add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 40, 210, 30));
+        jPanel2.add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 40, 190, 30));
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -190,7 +214,7 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel4.setText("Features");
         jPanel4.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 16, 230, 30));
 
-        panel_menu.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 220, 60));
+        panel_menu.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 200, 60));
 
         jPanel5.setBackground(new java.awt.Color(51, 51, 51));
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -212,7 +236,7 @@ public class Dashboard extends javax.swing.JFrame {
         });
         jPanel5.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 16, 190, 30));
 
-        panel_menu.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 250, 60));
+        panel_menu.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 230, 60));
 
         jPanel6.setBackground(new java.awt.Color(255, 153, 0));
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -229,14 +253,14 @@ public class Dashboard extends javax.swing.JFrame {
                 lbl_dashboardMouseExited(evt);
             }
         });
-        jPanel6.add(lbl_dashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 16, 230, 30));
+        jPanel6.add(lbl_dashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 16, 210, 30));
 
-        panel_menu.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 250, 60));
+        panel_menu.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 230, 60));
 
         jPanel7.setBackground(new java.awt.Color(51, 51, 51));
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lbl_viewIssuedGood.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
+        lbl_viewIssuedGood.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 16)); // NOI18N
         lbl_viewIssuedGood.setForeground(new java.awt.Color(153, 153, 153));
         lbl_viewIssuedGood.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/icons8_List_of_Thumbnails_50px.png"))); // NOI18N
         lbl_viewIssuedGood.setText("View Issued Goods");
@@ -253,12 +277,12 @@ public class Dashboard extends javax.swing.JFrame {
         });
         jPanel7.add(lbl_viewIssuedGood, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 6, 240, 40));
 
-        panel_menu.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 490, 250, 60));
+        panel_menu.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 490, 230, 60));
 
         jPanel8.setBackground(new java.awt.Color(51, 51, 51));
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lbl_manageInventory.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
+        lbl_manageInventory.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 16)); // NOI18N
         lbl_manageInventory.setForeground(new java.awt.Color(153, 153, 153));
         lbl_manageInventory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/icons8_List_of_Thumbnails_50px.png"))); // NOI18N
         lbl_manageInventory.setText("Manage Inventory");
@@ -273,9 +297,9 @@ public class Dashboard extends javax.swing.JFrame {
                 lbl_manageInventoryMouseExited(evt);
             }
         });
-        jPanel8.add(lbl_manageInventory, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 6, 240, 40));
+        jPanel8.add(lbl_manageInventory, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 6, 220, 40));
 
-        panel_menu.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 190, 250, 60));
+        panel_menu.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 190, 230, 60));
 
         jPanel9.setBackground(new java.awt.Color(51, 51, 51));
         jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -295,9 +319,9 @@ public class Dashboard extends javax.swing.JFrame {
                 lbl_manageUsersMouseExited(evt);
             }
         });
-        jPanel9.add(lbl_manageUsers, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 16, 230, 30));
+        jPanel9.add(lbl_manageUsers, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 220, 30));
 
-        panel_menu.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 250, 60));
+        panel_menu.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 230, 60));
 
         jPanel10.setBackground(new java.awt.Color(51, 51, 51));
         jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -317,9 +341,9 @@ public class Dashboard extends javax.swing.JFrame {
                 lbl_issueGoodMouseExited(evt);
             }
         });
-        jPanel10.add(lbl_issueGood, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 16, 230, 30));
+        jPanel10.add(lbl_issueGood, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 220, 30));
 
-        panel_menu.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 250, 60));
+        panel_menu.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 230, 60));
 
         jPanel11.setBackground(new java.awt.Color(51, 51, 51));
         jPanel11.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -339,9 +363,9 @@ public class Dashboard extends javax.swing.JFrame {
                 lbl_returnGoodMouseExited(evt);
             }
         });
-        jPanel11.add(lbl_returnGood, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 16, 230, 30));
+        jPanel11.add(lbl_returnGood, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 220, 30));
 
-        panel_menu.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 370, 250, 60));
+        panel_menu.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 370, 230, 60));
 
         jPanel12.setBackground(new java.awt.Color(51, 51, 51));
         jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -361,9 +385,9 @@ public class Dashboard extends javax.swing.JFrame {
                 lbl_viewRecordsMouseExited(evt);
             }
         });
-        jPanel12.add(lbl_viewRecords, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 16, 230, 30));
+        jPanel12.add(lbl_viewRecords, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 220, 30));
 
-        panel_menu.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 430, 250, 60));
+        panel_menu.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 430, 230, 60));
 
         jPanel14.setBackground(new java.awt.Color(153, 51, 0));
         jPanel14.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -377,9 +401,9 @@ public class Dashboard extends javax.swing.JFrame {
                 lbl_logoutMouseClicked(evt);
             }
         });
-        jPanel14.add(lbl_logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 16, 230, 30));
+        jPanel14.add(lbl_logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 220, 30));
 
-        panel_menu.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 610, 250, 60));
+        panel_menu.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 610, 230, 60));
 
         jPanel13.setBackground(new java.awt.Color(51, 51, 51));
         jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -399,26 +423,14 @@ public class Dashboard extends javax.swing.JFrame {
                 lbl_defaulterListMouseExited(evt);
             }
         });
-        jPanel13.add(lbl_defaulterList, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 16, 230, 30));
+        jPanel13.add(lbl_defaulterList, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 220, 30));
 
-        panel_menu.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 550, 250, 60));
+        panel_menu.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 550, 230, 60));
 
         parentPanel.add(panel_menu);
-        panel_menu.setBounds(0, 0, 250, 700);
+        panel_menu.setBounds(0, 0, 230, 700);
 
         panel_display.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        cbo_assignee.setForeground(new java.awt.Color(0, 0, 0));
-        cbo_assignee.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Route" }));
-        cbo_assignee.setColorBorde(new java.awt.Color(102, 102, 102));
-        cbo_assignee.setColorFondo(new java.awt.Color(255, 153, 0));
-        cbo_assignee.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        cbo_assignee.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbo_assigneeActionPerformed(evt);
-            }
-        });
-        panel_display.add(cbo_assignee, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 280, -1));
 
         tbl_viewRecords.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -436,6 +448,10 @@ public class Dashboard extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tbl_viewRecords.setFuenteFilas(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        tbl_viewRecords.setFuenteFilasSelect(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        tbl_viewRecords.setFuenteHead(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        tbl_viewRecords.setRowHeight(14);
         tbl_viewRecords.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbl_viewRecordsMouseClicked(evt);
@@ -443,37 +459,16 @@ public class Dashboard extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tbl_viewRecords);
 
-        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 100, 760, 520));
-
-        cbo_products.setForeground(new java.awt.Color(0, 0, 0));
-        cbo_products.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select" }));
-        cbo_products.setColorBorde(new java.awt.Color(102, 102, 102));
-        cbo_products.setColorFondo(new java.awt.Color(255, 153, 0));
-        cbo_products.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        cbo_products.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbo_productsActionPerformed(evt);
-            }
-        });
-        panel_display.add(cbo_products, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 280, -1));
+        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 60, 660, 540));
 
         jDate_From.setDateFormatString("EEEE, dd/MM/yyyy");
-        jDate_From.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        jDate_From.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jDate_From.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 jDate_FromPropertyChange(evt);
             }
         });
-        panel_display.add(jDate_From, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 230, 30));
-
-        jDate_To.setDateFormatString("EEEE, dd/MM/yyyy");
-        jDate_To.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        jDate_To.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jDate_ToPropertyChange(evt);
-            }
-        });
-        panel_display.add(jDate_To, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 230, 30));
+        panel_display.add(jDate_From, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 20, 210, 30));
 
         btn_refresh.setBackground(new java.awt.Color(102, 255, 102));
         btn_refresh.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
@@ -483,68 +478,243 @@ public class Dashboard extends javax.swing.JFrame {
                 btn_refreshActionPerformed(evt);
             }
         });
-        panel_display.add(btn_refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 0, 120, 30));
+        panel_display.add(btn_refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 0, 120, 25));
 
-        jLabel12.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jLabel12.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel12.setText("Total Profit:");
-        panel_display.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 620, -1, -1));
+        panel_display.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 620, -1, -1));
 
-        lbl_tot_profit.setFont(new java.awt.Font("Times New Roman", 1, 23)); // NOI18N
+        lbl_tot_profit.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lbl_tot_profit.setForeground(new java.awt.Color(0, 153, 153));
-        panel_display.add(lbl_tot_profit, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 650, 80, 40));
+        panel_display.add(lbl_tot_profit, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 640, 80, 40));
 
-        jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel7.setText("Total Sales:");
-        panel_display.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 620, -1, -1));
+        panel_display.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 620, -1, -1));
 
-        lbl_tot_sales.setFont(new java.awt.Font("Times New Roman", 1, 23)); // NOI18N
+        lbl_tot_sales.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lbl_tot_sales.setForeground(new java.awt.Color(0, 153, 153));
-        panel_display.add(lbl_tot_sales, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 650, 90, 40));
+        panel_display.add(lbl_tot_sales, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 640, 80, 40));
 
-        jLabel11.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jLabel11.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel11.setText("No. Sold Goods:");
-        panel_display.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 620, -1, -1));
+        panel_display.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 620, 110, -1));
 
-        lbl_sold_goods.setFont(new java.awt.Font("Times New Roman", 1, 23)); // NOI18N
+        lbl_sold_goods.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lbl_sold_goods.setForeground(new java.awt.Color(0, 153, 153));
-        panel_display.add(lbl_sold_goods, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 650, 90, 40));
+        panel_display.add(lbl_sold_goods, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 640, 80, 40));
 
-        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel3.setText("Quantity Received:");
-        panel_display.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 620, -1, -1));
+        panel_display.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 620, -1, -1));
 
-        lbl_received_qty.setFont(new java.awt.Font("Times New Roman", 1, 23)); // NOI18N
+        lbl_received_qty.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lbl_received_qty.setForeground(new java.awt.Color(0, 153, 153));
-        panel_display.add(lbl_received_qty, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 650, 110, 40));
+        panel_display.add(lbl_received_qty, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 640, 90, 40));
 
-        jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jLabel6.setText("To Date:");
-        panel_display.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, -1, -1));
-
-        jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jLabel8.setText("Assignee:");
-        panel_display.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
-
-        jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel9.setText("Commission:");
-        panel_display.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 100, -1, -1));
-
-        jLabel10.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel10.setText("From Date:");
-        panel_display.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, -1, -1));
+        panel_display.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 0, -1, -1));
+
+        jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jLabel8.setText("Assignee:");
+        jPanel15.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
+        cbo_assignee.setForeground(new java.awt.Color(0, 0, 0));
+        cbo_assignee.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Route" }));
+        cbo_assignee.setColorBorde(new java.awt.Color(102, 102, 102));
+        cbo_assignee.setColorFondo(new java.awt.Color(255, 153, 0));
+        cbo_assignee.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        cbo_assignee.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_assigneeActionPerformed(evt);
+            }
+        });
+        jPanel15.add(cbo_assignee, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 180, -1));
+
+        jLabel13.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jLabel13.setText("Product Name:");
+        jPanel15.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 120, -1));
+
+        cbo_products.setForeground(new java.awt.Color(0, 0, 0));
+        cbo_products.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select" }));
+        cbo_products.setColorBorde(new java.awt.Color(102, 102, 102));
+        cbo_products.setColorFondo(new java.awt.Color(255, 153, 0));
+        cbo_products.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        cbo_products.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_productsActionPerformed(evt);
+            }
+        });
+        jPanel15.add(cbo_products, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 220, -1));
+
+        jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jLabel9.setText("Commission:");
+        jPanel15.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, -1, -1));
 
         txt_commission.setEditable(false);
         txt_commission.setText("\n");
-        txt_commission.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        txt_commission.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         txt_commission.setPlaceholder("Please enter Percentage Commision");
-        panel_display.add(txt_commission, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 128, 60, -1));
+        jPanel15.add(txt_commission, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 60, -1));
 
-        jLabel13.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jLabel13.setText("Product Name:");
-        panel_display.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, -1, -1));
+        lbl_Cart.setColumns(20);
+        lbl_Cart.setFont(new java.awt.Font("Monospaced", 0, 10)); // NOI18N
+        lbl_Cart.setRows(20);
+        jScrollPane3.setViewportView(lbl_Cart);
+
+        jPanel15.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 10, 230, 310));
+
+        lbl_clr_receipt.setBackground(new java.awt.Color(153, 153, 0));
+        lbl_clr_receipt.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lbl_clr_receipt.setForeground(new java.awt.Color(0, 153, 0));
+        lbl_clr_receipt.setText("CLEAR PREVIEW");
+        lbl_clr_receipt.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_clr_receiptMouseClicked(evt);
+            }
+        });
+        jPanel15.add(lbl_clr_receipt, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 320, 156, -1));
+
+        panel_load.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        panel_load.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel16.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel16.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel17.setBackground(new java.awt.Color(204, 255, 255));
+        jPanel17.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 102, 102), new java.awt.Color(255, 255, 255)));
+        jPanel17.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel14.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        jLabel14.setText("Total Amount:");
+        jPanel17.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 18, -1, -1));
+
+        jLabel15.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        jLabel15.setText("Balance/Due:");
+        jPanel17.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 52, -1, -1));
+
+        lbltotal.setBackground(new java.awt.Color(255, 255, 255));
+        lbltotal.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        lbltotal.setText("00.00");
+        jPanel17.add(lbltotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 13, 77, 23));
+
+        lblbal.setBackground(new java.awt.Color(255, 255, 255));
+        lblbal.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        lblbal.setText("00.00");
+        jPanel17.add(lblbal, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 47, 77, 23));
+
+        jPanel16.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 0, -1, 74));
+
+        jLabel16.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        jLabel16.setText("Paid Amount :");
+        jPanel16.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 13, -1, 35));
+
+        txtpay.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtpayKeyReleased(evt);
+            }
+        });
+        jPanel16.add(txtpay, new org.netbeans.lib.awtextra.AbsoluteConstraints(88, 13, 78, 35));
+
+        panel_load.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 186, 450, -1));
+
+        btnsubmit.setBackground(new java.awt.Color(204, 204, 0));
+        btnsubmit.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        btnsubmit.setText("SUBMIT");
+        btnsubmit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnsubmitMouseClicked(evt);
+            }
+        });
+        btnsubmit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnsubmitActionPerformed(evt);
+            }
+        });
+        panel_load.add(btnsubmit, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 274, -1, -1));
+
+        btnremove.setText("Remove");
+        btnremove.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnremoveMouseClicked(evt);
+            }
+        });
+        btnremove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnremoveActionPerformed(evt);
+            }
+        });
+        panel_load.add(btnremove, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 276, -1, -1));
+
+        genreceipt.setText("Preview Payslip");
+        genreceipt.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                genreceiptMouseClicked(evt);
+            }
+        });
+        panel_load.add(genreceipt, new org.netbeans.lib.awtextra.AbsoluteConstraints(103, 276, 136, -1));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Product Name", "Qty Sold", "Total Profit", "Commission"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(jTable1);
+
+        panel_load.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 2, 460, 179));
+
+        btnprint.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        btnprint.setText("Print");
+        btnprint.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnprintMouseClicked(evt);
+            }
+        });
+        panel_load.add(btnprint, new org.netbeans.lib.awtextra.AbsoluteConstraints(249, 270, -1, -1));
+
+        jPanel15.add(panel_load, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 470, 320));
+
+        panel_display.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 480, 690));
+
+        jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jLabel6.setText("To Date:");
+        panel_display.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 0, -1, -1));
+
+        jDate_To.setDateFormatString("EEEE, dd/MM/yyyy");
+        jDate_To.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jDate_To.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDate_ToPropertyChange(evt);
+            }
+        });
+        panel_display.add(jDate_To, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 20, 200, 30));
+
+        btn_populate.setBackground(new java.awt.Color(0, 255, 153));
+        btn_populate.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        btn_populate.setText("Populate Table");
+        btn_populate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_populateActionPerformed(evt);
+            }
+        });
+        panel_display.add(btn_populate, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 30, 150, 25));
 
         parentPanel.add(panel_display);
-        panel_display.setBounds(250, 0, 1120, 700);
+        panel_display.setBounds(230, 0, 1140, 700);
 
         getContentPane().add(parentPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1370, 700));
 
@@ -645,6 +815,47 @@ public class Dashboard extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Error retrieving commission: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
+
+//to pull the inventory details from the db to the table
+    public void setPoductDetailsToTable() {
+
+        try {
+            Connection con = DBConnection.getConnection();
+
+            // Get the current date from the JLabel in the desired format
+            today_date = txtDate.getText();
+
+            // Query to fetch data from the return_goods table
+            String sql = "SELECT employee_name, product_name, qty_sold, total_price, total_profit, date FROM return_goods";
+
+//            String sql = "SELECT * FROM return_goods WHERE date = ?";
+            PreparedStatement st = con.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+
+            model = (DefaultTableModel) tbl_viewRecords.getModel();
+            model.setRowCount(0); // Clear existing rows
+
+            while (rs.next()) {
+                Object[] row = {
+                    rs.getString("employee_name"),
+                    rs.getString("product_name"),
+                    rs.getString("qty_sold"),
+                    rs.getString("total_price"),
+                    rs.getString("total_profit"),
+                    rs.getString("date")
+                };
+                model.addRow(row);
+            }
+
+            // Close resources
+            rs.close();
+            st.close();
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error retrieving data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     
     
@@ -890,6 +1101,82 @@ public class Dashboard extends javax.swing.JFrame {
         calculateAndDisplayTotalProfit();
     }//GEN-LAST:event_btn_refreshActionPerformed
 
+    private void lbl_clr_receiptMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_clr_receiptMouseClicked
+        // TODO add your handling code here:
+        lbl_Cart.setText("");
+    }//GEN-LAST:event_lbl_clr_receiptMouseClicked
+
+    private void txtpayKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpayKeyReleased
+
+        Integer paid = Integer.valueOf(txtpay.getText());
+        Integer tot = Integer.valueOf(lbltotal.getText());
+        Integer bal;
+
+        bal = paid -tot;
+
+        lblbal.setText(String.valueOf(bal));
+    }//GEN-LAST:event_txtpayKeyReleased
+
+    private void btnsubmitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnsubmitMouseClicked
+
+        sales_pay();
+    }//GEN-LAST:event_btnsubmitMouseClicked
+
+    private void btnsubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsubmitActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnsubmitActionPerformed
+
+    private void btnremoveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnremoveMouseClicked
+        // TODO add your handling code here:
+        try{
+            DefaultTableModel d =(DefaultTableModel) jTable1.getModel();
+            //           int row = jTable1.getSelectedRow();
+            d.setRowCount(0);
+            //  d.removeRow(row);
+        }catch (Exception e) {
+
+        }
+        new_data();
+        pro_total();
+        lbl_Cart.setText("");
+        txtpay.setText("");
+
+        table_update_prepare_foods();
+    }//GEN-LAST:event_btnremoveMouseClicked
+
+    private void btnremoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnremoveActionPerformed
+        //     try{
+            //           DefaultTableModel d =(DefaultTableModel) jTable1.getModel();
+            //           int row = jTable1.getSelectedRow();
+            //
+            //           d.removeRow(row);
+            //       }catch (Exception e) {
+            //
+            //       }
+        //       new_data();
+        //       pro_total();
+        //
+        //       table_update();
+    }//GEN-LAST:event_btnremoveActionPerformed
+
+    private void genreceiptMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genreceiptMouseClicked
+
+        my_cart();
+    }//GEN-LAST:event_genreceiptMouseClicked
+
+    private void btnprintMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnprintMouseClicked
+
+        try {
+            lbl_Cart.print();
+        }catch (Exception e){
+        }
+    }//GEN-LAST:event_btnprintMouseClicked
+
+    private void btn_populateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_populateActionPerformed
+        
+        setPoductDetailsToTable();
+    }//GEN-LAST:event_btn_populateActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -929,9 +1216,14 @@ public class Dashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_populate;
     private javax.swing.JButton btn_refresh;
+    private javax.swing.JButton btnprint;
+    private javax.swing.JButton btnremove;
+    private javax.swing.JButton btnsubmit;
     private rojerusan.RSComboMetro cbo_assignee;
     private rojerusan.RSComboMetro cbo_products;
+    private javax.swing.JButton genreceipt;
     private com.toedter.calendar.JDateChooser jDate_From;
     private com.toedter.calendar.JDateChooser jDate_To;
     private javax.swing.JLabel jLabel1;
@@ -939,6 +1231,9 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -953,6 +1248,9 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -962,7 +1260,12 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextArea lbl_Cart;
     private javax.swing.JLabel lbl_close;
+    private javax.swing.JLabel lbl_clr_receipt;
     private javax.swing.JLabel lbl_dashboard;
     private javax.swing.JLabel lbl_defaulterList;
     private javax.swing.JLabel lbl_issueGood;
@@ -977,12 +1280,16 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_tot_sales;
     private javax.swing.JLabel lbl_viewIssuedGood;
     private javax.swing.JLabel lbl_viewRecords;
+    private javax.swing.JLabel lblbal;
+    private javax.swing.JLabel lbltotal;
     private javax.swing.JPanel panel_display;
+    private javax.swing.JPanel panel_load;
     private javax.swing.JPanel panel_menu;
     private javax.swing.JPanel parentPanel;
     private rojerusan.RSTableMetro tbl_viewRecords;
     private javax.swing.JLabel txtDate;
     private javax.swing.JLabel txtTime;
     private app.bolivia.swing.JCTextField txt_commission;
+    private javax.swing.JTextField txtpay;
     // End of variables declaration//GEN-END:variables
 }
