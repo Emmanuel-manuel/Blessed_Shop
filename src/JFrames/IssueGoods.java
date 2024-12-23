@@ -102,6 +102,9 @@ public class IssueGoods extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_issued_goods = new rojerusan.RSTableMetro();
         txt_message = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbl_inventory = new rojerusan.RSTableMetro();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -543,10 +546,32 @@ public class IssueGoods extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tbl_issued_goods);
 
-        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 2, 790, 430));
+        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 350, 790, 340));
 
         txt_message.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         panel_display.add(txt_message, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 480, 250, 30));
+
+        tbl_inventory.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Product", "Price/ Item", "Today's Inventory", "Today_Rem", "Date"
+            }
+        ));
+        tbl_inventory.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_inventoryMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tbl_inventory);
+
+        panel_display.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 20, 780, 270));
+
+        jLabel5.setBackground(new java.awt.Color(255, 204, 0));
+        jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel5.setText("Today's Inventory");
+        panel_display.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 0, 230, 20));
 
         parentPanel.add(panel_display);
         panel_display.setBounds(250, 0, 1120, 700);
@@ -736,7 +761,7 @@ public class IssueGoods extends javax.swing.JFrame {
                 // Display the updated inventory in txtTodayInventory
                 txtTodayInventory.setText(String.valueOf(updatedInventory));
             } else {
-                txt_message.setText("Product data not found for the selected date.");
+//                txt_message.setText("Product data not found for the selected date.");
                 txtTodayInventory.setText("0");
             }
 
@@ -756,6 +781,9 @@ public class IssueGoods extends javax.swing.JFrame {
     public void clearTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_issued_goods.getModel();
         model.setRowCount(0);
+        
+        DefaultTableModel mod = (DefaultTableModel) tbl_inventory.getModel();
+        mod.setRowCount(0);
     }
 
     //to pull the inventory details from the db to the table
@@ -785,6 +813,44 @@ public class IssueGoods extends javax.swing.JFrame {
 
                 Object[] obj = {employeeName, productName, pricePerProduct, qty, total, t_date};
                 model = (DefaultTableModel) tbl_issued_goods.getModel();
+                //adds a row array
+                model.addRow(obj);
+            }
+
+            rs.close();
+            st.close();
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //to pull the inventory details from the db to the Today's Inventory table
+    public void setTodayInventoryDetailsToTable() {
+
+        try {
+            Connection con = DBConnection.getConnection();
+
+            // Get the current date from the JLabel in the desired format
+            String today_date = txtDate.getText();
+
+            String sql = "SELECT * FROM inventory WHERE date = ?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, today_date);
+
+            ResultSet rs = st.executeQuery();
+//            st.setString(1, today_date);
+
+            while (rs.next()) {
+//                String productName, pricePerProduct, qty, qtyBal, total, today_date;
+                String productName = rs.getString("product_name");
+                String pricePerProduct = rs.getString("price_per_product");
+                String total_qty = rs.getString("total_qty");
+                String todayRem = rs.getString("today_rem");
+                String t_date = rs.getString("date");
+
+                Object[] obj = {productName, pricePerProduct, total_qty, todayRem, t_date};
+                model = (DefaultTableModel) tbl_inventory.getModel();
                 //adds a row array
                 model.addRow(obj);
             }
@@ -1259,6 +1325,7 @@ public class IssueGoods extends javax.swing.JFrame {
         javax.swing.Timer timer = new javax.swing.Timer(1000, new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
+                setTodayInventoryDetailsToTable();
                 setPoductDetailsToTable();
             }
         });
@@ -1288,6 +1355,17 @@ public class IssueGoods extends javax.swing.JFrame {
         dash.setVisible(true);
         dispose();
     }//GEN-LAST:event_lbl_dashboardMouseClicked
+
+    private void tbl_inventoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_inventoryMouseClicked
+        int rowNo = tbl_inventory.getSelectedRow();
+        TableModel model = tbl_inventory.getModel();
+
+        cbo_products.setSelectedItem(model.getValueAt(rowNo, 0).toString());
+        txtprice.setText(model.getValueAt(rowNo, 1).toString());
+//        txtQty.setText(model.getValueAt(rowNo, 2).toString());
+        txtTodayInventory.setText(model.getValueAt(rowNo, 3).toString());
+        tot_price.setText(model.getValueAt(rowNo, 5).toString());
+    }//GEN-LAST:event_tbl_inventoryMouseClicked
 
     /**
      * @param args the command line arguments
@@ -1337,6 +1415,7 @@ public class IssueGoods extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
@@ -1355,6 +1434,7 @@ public class IssueGoods extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lbl_close;
     private javax.swing.JLabel lbl_dashboard;
     private javax.swing.JLabel lbl_defaulterList;
@@ -1370,6 +1450,7 @@ public class IssueGoods extends javax.swing.JFrame {
     private javax.swing.JPanel panel_display;
     private javax.swing.JPanel panel_menu;
     private javax.swing.JPanel parentPanel;
+    private rojerusan.RSTableMetro tbl_inventory;
     private rojerusan.RSTableMetro tbl_issued_goods;
     private javax.swing.JTextField tot_price;
     private javax.swing.JLabel txtDate;

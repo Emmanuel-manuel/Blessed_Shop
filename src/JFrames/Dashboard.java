@@ -1111,6 +1111,66 @@ public class Dashboard extends javax.swing.JFrame {
         cbo_products.requestFocus();
 
     }
+    
+    private void my_cart(){
+        lbl_Cart.setText(lbl_Cart.getText()+"======================================================================\n");
+        lbl_Cart.setText(lbl_Cart.getText()+ "\t" +  "\t" + " \t BLESSING SHOP ENTERPRISE \n");
+        lbl_Cart.setText(lbl_Cart.getText()+"  Payslip For:  " + employeeName +" \n");
+        lbl_Cart.setText(lbl_Cart.getText()+"======================================================================\n");
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel(); 
+        lbl_Cart.setText(lbl_Cart.getText()
+                +"Product Name       "+" | "+" Qty Sold "+"| "+" Percentage Commission "+"| "+" Commission "+"\n");
+        lbl_Cart.setText(lbl_Cart.getText()+"\n");
+        for(int i = 0; i < jTable1.getRowCount(); i++){
+            String productName = jTable1.getValueAt(i, 0).toString();
+            String qtySold = jTable1.getValueAt(i, 1).toString();
+            String perc_comm = jTable1.getValueAt(i, 2).toString();
+            String total_comm = jTable1.getValueAt(i, 4).toString();
+            
+            lbl_Cart.setText(lbl_Cart.getText()
+                    +  productName  +   "\t" + "\t"   +  qtySold  +     "\t"  +  perc_comm  +    "\t"    +  total_comm +         "\n");
+            
+            lbl_Cart.setText(lbl_Cart.getText()+"\n"+"\n");
+           
+        }
+        
+        String grand_tot = lbl_totCommission.getText();
+        
+        //this gets Time & Date value
+            String time_value = txtTime.getText(); // gets the current time
+            String date_value = txtDate.getText(); // gets the current date
+            
+//        This gets the assignee name
+        employeeName = (String) cbo_assignee.getSelectedItem();
+        
+        //        This gets the employer name
+        String employerName = jLabel1.getText();
+
+        
+        
+        lbl_Cart.setText(lbl_Cart.getText()+"\n");
+        
+        lbl_Cart.setText(lbl_Cart.getText()+"======================================================================\n");
+         lbl_Cart.setText(lbl_Cart.getText()     + "Grand Total Commission   :  "   +   grand_tot  +     "\n"+"\n");
+         
+         
+        lbl_Cart.setText(lbl_Cart.getText()+"======================================================================\n"+"\n");
+        
+        
+        lbl_Cart.setText(lbl_Cart.getText()     + "Employer Name   :  "   +   employerName  +     "\n");
+        
+        lbl_Cart.setText(lbl_Cart.getText()     + "Assignee Name   :  "   +   employeeName  +     "\n"  +     "\n");
+        
+        
+        lbl_Cart.setText(lbl_Cart.getText()+"======================================================================\n");
+        lbl_Cart.setText(lbl_Cart.getText()     + "Generated at :  "      +   time_value  +     "\n"   + "\n" );
+        lbl_Cart.setText(lbl_Cart.getText()     + "On DATE :   :  "   +   date_value  +     "\n");
+        
+        lbl_Cart.setText(lbl_Cart.getText()+"======================================================================\n");
+        lbl_Cart.setText(lbl_Cart.getText()+" emmanuelsystems5@gmail.com   " + "\t" + "\t" +  "\t" + "  Copyright(c) 2024"+ "\n");
+        lbl_Cart.setText(lbl_Cart.getText()+"======================================================================\n");
+        
+    }
 
     //clear the interface components
     private void clearComponents() {
@@ -1119,6 +1179,7 @@ public class Dashboard extends javax.swing.JFrame {
         txt_commission.setText("");
         lbltotalProfit.setText("");
         lbl_totCommission.setText("");
+        lbl_Cart.setText("");
         j_date_From.setDate(null);
         j_date_To.setDate(null);
     }
@@ -1371,7 +1432,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void btnsubmitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnsubmitMouseClicked
 
-        sales_pay();
+//        sales_pay();
     }//GEN-LAST:event_btnsubmitMouseClicked
 
     private void btnsubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsubmitActionPerformed
@@ -1389,26 +1450,20 @@ public class Dashboard extends javax.swing.JFrame {
 
         }
         new_data();
-        pro_total();
         lbl_Cart.setText("");
-        txtpay.setText("");
 
-        table_update_prepare_foods();
     }//GEN-LAST:event_btnremoveMouseClicked
 
     private void btnremoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnremoveActionPerformed
-        //     try{
-        //           DefaultTableModel d =(DefaultTableModel) jTable1.getModel();
-        //           int row = jTable1.getSelectedRow();
-        //
-        //           d.removeRow(row);
-        //       }catch (Exception e) {
-        //
-        //       }
-        //       new_data();
-        //       pro_total();
-        //
-        //       table_update();
+        try {
+            DefaultTableModel d = (DefaultTableModel) jTable1.getModel();
+            //           int row = jTable1.getSelectedRow();
+            d.setRowCount(0);
+            //  d.removeRow(row);
+        } catch (Exception e) {
+
+        }
+        lbl_Cart.setText("");
     }//GEN-LAST:event_btnremoveActionPerformed
 
     private void genreceiptMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genreceiptMouseClicked
