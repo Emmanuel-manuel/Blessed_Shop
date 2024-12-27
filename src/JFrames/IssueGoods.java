@@ -37,8 +37,7 @@ public class IssueGoods extends javax.swing.JFrame {
     public IssueGoods() {
         initComponents();
         init();
-        
-        
+
     }
 
     /**
@@ -601,31 +600,31 @@ public class IssueGoods extends javax.swing.JFrame {
 
     private void checkAssignee() {
 
-    // Get the selected item from cbo_assignee
-    String assignee = (String) cbo_assignee.getSelectedItem();
+        // Get the selected item from cbo_assignee
+        String assignee = (String) cbo_assignee.getSelectedItem();
 
-    // Check if the selected assignee is "Route"
-    if ("Route".equalsIgnoreCase(assignee)) {
-        // Get the value from txtTodayInventory
-        String todayInventory = txtTodayInventory.getText();
+        // Check if the selected assignee is "Route"
+        if ("Route".equalsIgnoreCase(assignee)) {
+            // Get the value from txtTodayInventory
+            String todayInventory = txtTodayInventory.getText();
 
-        // Set the value in txtQty
-        txtQty.setText(todayInventory);
+            // Set the value in txtQty
+            txtQty.setText(todayInventory);
 
-        // Make txtQty non-editable
-        txtQty.setEditable(false);
-        
-        //  Then later To calculate the product of Inventory and unit price to get the Total quantity
-        pro_total();
-        
-        // Performs arithmetic operation (Today's Remaining Inventory - Quantity Given)
-        subtract();
-    } else {
-        // If not "Route", do nothing and make txtQty editable
-        txtQty.setEditable(true);
+            // Make txtQty non-editable
+            txtQty.setEditable(false);
+
+            //  Then later To calculate the product of Inventory and unit price to get the Total quantity
+            pro_total();
+
+            // Performs arithmetic operation (Today's Remaining Inventory - Quantity Given)
+            subtract();
+        } else {
+            // If not "Route", do nothing and make txtQty editable
+            txtQty.setEditable(true);
+        }
     }
-}
-    
+
     //Load Product name into cbo_products combobox
     private void loadProducts() {
         try {
@@ -781,7 +780,7 @@ public class IssueGoods extends javax.swing.JFrame {
     public void clearTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_issued_goods.getModel();
         model.setRowCount(0);
-        
+
         DefaultTableModel mod = (DefaultTableModel) tbl_inventory.getModel();
         mod.setRowCount(0);
     }
@@ -863,6 +862,7 @@ public class IssueGoods extends javax.swing.JFrame {
         }
     }
 
+    // Method that deducts the value of 'txtQty' from 'total_qty' column in 'inventory' table and inserts the remainder in 'today_rem' column
     public boolean update_today_stock() {
         boolean isUpdated = false;
 
@@ -970,8 +970,7 @@ public class IssueGoods extends javax.swing.JFrame {
     public boolean updateProduct() {
 
         // Get the current date from the JLabel in the desired format
-        String today = txtDate.getText();
-
+//        String today = txtDate.getText();
         boolean isUpdated = false;
 
         employeeName = (String) cbo_assignee.getSelectedItem();
@@ -979,7 +978,7 @@ public class IssueGoods extends javax.swing.JFrame {
         pricePerProduct = txtprice.getText();
         qty = txtQty.getText();
         total = tot_price.getText();
-//        today_date = txtDate.getText();
+        today_date = txtDate.getText();
 
         try {
             // Parse quantity fields to integers
@@ -997,26 +996,31 @@ public class IssueGoods extends javax.swing.JFrame {
             pst.setString(3, pricePerProduct);
             pst.setInt(4, qtyVal);
             pst.setInt(5, totalPrice);
-
             pst.setString(6, employeeName);
             pst.setString(7, productName);
-            pst.setString(8, today);
+            pst.setString(8, today_date);
 
             //If a database row is added to output a success message
             int rowCount = pst.executeUpdate();
 
-            if (rowCount > 0) {
-                isUpdated = true;
-            } else {
-                isUpdated = false;
-            }
+            isUpdated = rowCount > 0;
 
+            // Update inventory's today_rem column
+            if (isUpdated) {
+                String inventorySql = "UPDATE inventory SET today_rem = total_qty - (SELECT SUM(qty_given) FROM issued_goods WHERE product_name = ? AND date = ?) WHERE product_name = ? AND date = ?";
+                PreparedStatement inventoryPst = con.prepareStatement(inventorySql);
+
+                inventoryPst.setString(1, productName);
+                inventoryPst.setString(2, today_date);
+                inventoryPst.setString(3, productName);
+                inventoryPst.setString(4, today_date);
+
+                inventoryPst.executeUpdate();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //returns the 'isAdded' variable value
         return isUpdated;
-
     }
 
     //method to delete products details
@@ -1026,16 +1030,19 @@ public class IssueGoods extends javax.swing.JFrame {
 
         productName = (String) cbo_products.getSelectedItem();
         employeeName = (String) cbo_assignee.getSelectedItem();
+        today_date = txtDate.getText();
 
         try {
             Connection con = DBConnection.getConnection();
-            String sql = "delete from issued_goods where employee_name = ? AND product_name = ?";
+            String sql = "delete from issued_goods where employee_name = ? AND product_name = ? AND date = ?";
             PreparedStatement pst = con.prepareStatement(sql);
 
             //sets the values from the textfield to the colums in the db
-            // Set both parameters
+            // Set all parameters
             pst.setString(1, employeeName);
             pst.setString(2, productName);
+        pst.setString(3, today_date);
+
 
             //If a database row is added to output a success message
             int rowCount = pst.executeUpdate();
@@ -1218,13 +1225,12 @@ public class IssueGoods extends javax.swing.JFrame {
     }//GEN-LAST:event_lbl_homePageMouseClicked
 
     private void cbo_productsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_productsActionPerformed
-        
-        
+
         String selectedProduct = (String) cbo_products.getSelectedItem();
         if (selectedProduct != null) {
             fetchProductPrice(selectedProduct);
         }
-        
+
         checkAssignee();
     }//GEN-LAST:event_cbo_productsActionPerformed
 
@@ -1268,7 +1274,7 @@ public class IssueGoods extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(this, "Product Issued, but Inventory Update Failed. Please check the database.");
             }
-            
+
             clearTable();
             setPoductDetailsToTable();
             clearComponents();
@@ -1345,7 +1351,7 @@ public class IssueGoods extends javax.swing.JFrame {
     }//GEN-LAST:event_tbl_issued_goodsMouseClicked
 
     private void cbo_assigneeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_assigneeActionPerformed
-        
+
         checkAssignee();
     }//GEN-LAST:event_cbo_assigneeActionPerformed
 
