@@ -19,6 +19,40 @@ import javax.swing.table.TableModel;
  * @author Lenovo-x130
  */
 public class IssueGoods extends javax.swing.JFrame {
+    
+    // Get product price from the database
+    public void fetchProductPrice(String productName) {
+        // Get the current date from the JLabel in the desired format
+        String today = txtDate.getText();
+        try {
+            Connection con = DBConnection.getConnection();
+            //String sql = "SELECT price_per_product && (today_rem)quantity FROM inventory WHERE product_name = ?";
+            String sql = "SELECT price_per_product, today_rem FROM inventory WHERE product_name = ? AND date = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, productName);
+            pst.setString(2, today);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                // Set the fetched price and inventory to the respective fields
+                txtprice.setText(rs.getString("price_per_product"));
+                //txtTodayInventory
+                txtTodayInventory.setText(rs.getString("today_rem"));
+            } else {
+                // Clear fields if the product is not found
+                txtprice.setText("");
+                txtTodayInventory.setText("0");
+            }
+
+            rs.close();
+            pst.close();
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+ 
 //    Initialize components
 
     ManageInventory manageInventory = new ManageInventory();
@@ -467,7 +501,7 @@ public class IssueGoods extends javax.swing.JFrame {
         panel_display.add(txtQty, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, 160, 30));
 
         cbo_assignee.setForeground(new java.awt.Color(0, 0, 0));
-        cbo_assignee.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Route" }));
+        cbo_assignee.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select" }));
         cbo_assignee.setColorBorde(new java.awt.Color(102, 102, 102));
         cbo_assignee.setColorFondo(new java.awt.Color(255, 153, 0));
         cbo_assignee.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
@@ -545,7 +579,7 @@ public class IssueGoods extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tbl_issued_goods);
 
-        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 350, 790, 340));
+        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 310, 790, 380));
 
         txt_message.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         panel_display.add(txt_message, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 480, 250, 30));
@@ -565,7 +599,7 @@ public class IssueGoods extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tbl_inventory);
 
-        panel_display.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 20, 780, 270));
+        panel_display.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 20, 780, 260));
 
         jLabel5.setBackground(new java.awt.Color(255, 204, 0));
         jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -585,6 +619,8 @@ public class IssueGoods extends javax.swing.JFrame {
         Time.setTime(txtTime, txtDate);  // Calling the setTime method from the Time class
 //        loadProducts();
         loadEmployeeName();
+        checkAssignee();
+        loadProducts();
 
         // Delay the loading of the PRODUCTS COMBO BOX to ensure txtDate is initialized
         javax.swing.Timer timer = new javax.swing.Timer(1000, new java.awt.event.ActionListener() {
@@ -633,7 +669,7 @@ public class IssueGoods extends javax.swing.JFrame {
             // Get the current date from the JLabel in the desired format
             String today_date = txtDate.getText();
 
-            String sql = "SELECT product_name FROM inventory where date = ?";
+            String sql = "SELECT DISTINCT product_name FROM inventory where date = ?";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, today_date);
 
@@ -654,7 +690,7 @@ public class IssueGoods extends javax.swing.JFrame {
     private void loadEmployeeName() {
         try {
             Connection con = DBConnection.getConnection();
-            String sql = "SELECT name FROM employee_details";
+            String sql = "SELECT DISTINCT name FROM employee_details";
             PreparedStatement pst = con.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
 
@@ -668,39 +704,7 @@ public class IssueGoods extends javax.swing.JFrame {
         }
     }
 
-// Get product price from the database
-    private void fetchProductPrice(String productName) {
-        // Get the current date from the JLabel in the desired format
-        String today = txtDate.getText();
-        try {
-            Connection con = DBConnection.getConnection();
-            //String sql = "SELECT price_per_product && (today_rem)quantity FROM inventory WHERE product_name = ?";
-            String sql = "SELECT price_per_product, today_rem FROM inventory WHERE product_name = ? AND date = ?";
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.setString(1, productName);
-            pst.setString(2, today);
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                // Set the fetched price and inventory to the respective fields
-                txtprice.setText(rs.getString("price_per_product"));
-                //txtTodayInventory
-                txtTodayInventory.setText(rs.getString("today_rem"));
-            } else {
-                // Clear fields if the product is not found
-                txtprice.setText("");
-                txtTodayInventory.setText("0");
-            }
-
-            rs.close();
-            pst.close();
-            con.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    //    To calculate the product of Inventory
+   //    To calculate the product of Inventory
     private void pro_total() {
 
         Integer a = Integer.parseInt(txtprice.getText());

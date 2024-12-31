@@ -566,7 +566,7 @@ public class ManageInventory extends javax.swing.JFrame {
     private void loadProducts() {
         try {
             Connection con = DBConnection.getConnection();
-            String sql = "SELECT product_name FROM products";
+            String sql = "SELECT DISTINCT product_name FROM products";
             PreparedStatement pst = con.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
 

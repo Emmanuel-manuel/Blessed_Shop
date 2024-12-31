@@ -408,7 +408,7 @@ public class ReturnGood extends javax.swing.JFrame {
         panel_display.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 120, 30));
 
         cbo_assignee.setForeground(new java.awt.Color(0, 0, 0));
-        cbo_assignee.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Route" }));
+        cbo_assignee.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select" }));
         cbo_assignee.setColorBorde(new java.awt.Color(102, 102, 102));
         cbo_assignee.setColorFondo(new java.awt.Color(255, 153, 0));
         cbo_assignee.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N

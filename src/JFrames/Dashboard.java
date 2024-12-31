@@ -1025,7 +1025,7 @@ public class Dashboard extends javax.swing.JFrame {
             // Ensure the value is not null and can be converted to an integer
             if (value != null) {
                 try {
-                    totalProfit += Integer.parseInt(value.toString());
+                    totalProfit += Integer.parseInt(value.toString().replace(",", "").trim());
                 } catch (NumberFormatException e) {
                     System.err.println("Error parsing quantity: " + value);
                 }
@@ -1040,13 +1040,18 @@ public class Dashboard extends javax.swing.JFrame {
         try {
             // Retrieve total profit from lbl_tot_profit
             String totalProfitText = lbl_tot_profit.getText();
+// Parse the total profit to a numeric value
+            double totalProfit = Double.parseDouble(lbl_tot_profit.getText().replace(",", "").trim());
+            
             if (totalProfitText == null || totalProfitText.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Total profit is not available.", "Warning", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
             // Parse the total profit to a numeric value
-            double totalProfit = Double.parseDouble(totalProfitText.replace(",", "").trim());
+//            double totalProfit = Double.parseDouble(totalProfitText.replace(",", "").trim());
+            
+//            int totalProfit = Integer.parseInt(totalProfitText.trim());
 
             // Retrieve percentage commission from txt_commission
             String commissionText = txt_commission.getText();
@@ -1060,6 +1065,8 @@ public class Dashboard extends javax.swing.JFrame {
 
             // Calculate the commission
             double commission = (commissionPercentage / 100) * totalProfit;
+            
+//            double commission = (commissionPercentage / 100) * totalProfitText;
 
             // Display the calculated commission
 //        lbl_calculated_commission.setText(String.format("Ksh %.2f", commission));
@@ -1100,8 +1107,12 @@ public class Dashboard extends javax.swing.JFrame {
         double sumComm = 0;
 
         for (int i = 0; i < jTable1.getRowCount(); i++) {
-            sum = sum + Integer.parseInt(jTable1.getValueAt(i, 3).toString());
-            sumComm = sumComm + Double.parseDouble(jTable1.getValueAt(i, 4).toString());
+            
+            sum += Integer.parseInt(jTable1.getValueAt(i, 3).toString().replace(",", "").trim());
+            sumComm += Double.parseDouble(jTable1.getValueAt(i, 4).toString().replace(",", "").trim());
+            
+//            sum = sum + Integer.parseInt(jTable1.getValueAt(i, 3).toString());
+//            sumComm = sumComm + Double.parseDouble(jTable1.getValueAt(i, 4).toString());
         }
 
         lbltotalProfit.setText(Integer.toString(sum));
@@ -1468,6 +1479,8 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void genreceiptMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genreceiptMouseClicked
 
+        lbl_Cart.setText("");
+        
         my_cart();
     }//GEN-LAST:event_genreceiptMouseClicked
 
