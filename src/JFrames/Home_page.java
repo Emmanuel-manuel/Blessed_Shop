@@ -74,6 +74,21 @@ public class Home_page extends javax.swing.JFrame {
         jPanel13 = new javax.swing.JPanel();
         lbl_defaulterList = new javax.swing.JLabel();
         panel_display = new javax.swing.JPanel();
+        jPanel15 = new javax.swing.JPanel();
+        panelPieChart = new javax.swing.JPanel();
+        jPanel16 = new javax.swing.JPanel();
+        lbl_noOfBooks = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jPanel18 = new javax.swing.JPanel();
+        lbl_issuedBooks = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jPanel20 = new javax.swing.JPanel();
+        lbl_totalIssuedBooks = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jPanel17 = new javax.swing.JPanel();
+        lbl_noOfStudents = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -373,6 +388,157 @@ public class Home_page extends javax.swing.JFrame {
         panel_menu.setBounds(0, 0, 250, 700);
 
         panel_display.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        panelPieChart.setLayout(new java.awt.BorderLayout());
+        jPanel15.add(panelPieChart, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, 300, 300));
+
+        jPanel16.setBorder(javax.swing.BorderFactory.createMatteBorder(15, 0, 0, 0, new java.awt.Color(102, 153, 255)));
+
+        lbl_noOfBooks.setFont(new java.awt.Font("Sitka Text", 0, 50)); // NOI18N
+        lbl_noOfBooks.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/icons8_Book_Shelf_50px.png"))); // NOI18N
+        lbl_noOfBooks.setText(" 12");
+        lbl_noOfBooks.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_noOfBooksMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
+        jPanel16.setLayout(jPanel16Layout);
+        jPanel16Layout.setHorizontalGroup(
+            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel16Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbl_noOfBooks, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35))
+        );
+        jPanel16Layout.setVerticalGroup(
+            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel16Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_noOfBooks, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanel15.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 60, 150, 110));
+
+        jLabel16.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(0, 51, 51));
+        jLabel16.setText("Total Inventory: ");
+        jPanel15.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 30, -1, -1));
+
+        jPanel18.setBorder(javax.swing.BorderFactory.createMatteBorder(15, 0, 0, 0, new java.awt.Color(102, 153, 255)));
+
+        lbl_issuedBooks.setFont(new java.awt.Font("Sitka Text", 0, 50)); // NOI18N
+        lbl_issuedBooks.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/icons8_Sell_50px.png"))); // NOI18N
+        lbl_issuedBooks.setText(" 12");
+        lbl_issuedBooks.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_issuedBooksMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
+        jPanel18.setLayout(jPanel18Layout);
+        jPanel18Layout.setHorizontalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel18Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbl_issuedBooks, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
+        );
+        jPanel18Layout.setVerticalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel18Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_issuedBooks, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanel15.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 60, 160, 110));
+
+        jLabel20.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(0, 51, 51));
+        jLabel20.setText("Pending Payments: ");
+        jPanel15.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 30, -1, 20));
+
+        jPanel20.setBorder(javax.swing.BorderFactory.createMatteBorder(15, 0, 0, 0, new java.awt.Color(255, 153, 0)));
+
+        lbl_totalIssuedBooks.setFont(new java.awt.Font("Sitka Text", 0, 50)); // NOI18N
+        lbl_totalIssuedBooks.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/icons8_Sell_50px.png"))); // NOI18N
+        lbl_totalIssuedBooks.setText(" 12");
+        lbl_totalIssuedBooks.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_totalIssuedBooksMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel20Layout = new javax.swing.GroupLayout(jPanel20);
+        jPanel20.setLayout(jPanel20Layout);
+        jPanel20Layout.setHorizontalGroup(
+            jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel20Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbl_totalIssuedBooks, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39))
+        );
+        jPanel20Layout.setVerticalGroup(
+            jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel20Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_totalIssuedBooks, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanel15.add(jPanel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 60, 160, 110));
+
+        jLabel21.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jLabel21.setForeground(new java.awt.Color(0, 51, 51));
+        jLabel21.setText("Total Issued Goods: ");
+        jPanel15.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 30, -1, 20));
+
+        jPanel17.setBorder(javax.swing.BorderFactory.createMatteBorder(15, 0, 0, 0, new java.awt.Color(255, 153, 0)));
+
+        lbl_noOfStudents.setFont(new java.awt.Font("Sitka Text", 0, 50)); // NOI18N
+        lbl_noOfStudents.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/adminIcons/icons8_People_50px.png"))); // NOI18N
+        lbl_noOfStudents.setText(" 12");
+        lbl_noOfStudents.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_noOfStudentsMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
+        jPanel17.setLayout(jPanel17Layout);
+        jPanel17Layout.setHorizontalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel17Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbl_noOfStudents, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40))
+        );
+        jPanel17Layout.setVerticalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel17Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_noOfStudents, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanel15.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 150, 110));
+
+        jLabel18.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(0, 51, 51));
+        jLabel18.setText("No Of Employees: ");
+        jPanel15.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
+
+        jLabel3.setForeground(new java.awt.Color(204, 204, 0));
+        jPanel15.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1010, 430));
+
+        panel_display.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1010, 500));
+
         parentPanel.add(panel_display);
         panel_display.setBounds(250, 0, 1120, 700);
 
@@ -575,6 +741,26 @@ public class Home_page extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_lbl_dashboardMouseClicked
 
+    private void lbl_issuedBooksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_issuedBooksMouseClicked
+//        Mini_Frame_Pending pending = new Mini_Frame_Pending();
+//        pending.setVisible(true);
+    }//GEN-LAST:event_lbl_issuedBooksMouseClicked
+
+    private void lbl_totalIssuedBooksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_totalIssuedBooksMouseClicked
+//        Mini_Frame_Issued issue = new Mini_Frame_Issued();
+//        issue.setVisible(true);
+    }//GEN-LAST:event_lbl_totalIssuedBooksMouseClicked
+
+    private void lbl_noOfStudentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_noOfStudentsMouseClicked
+//        Mini_Frame_Students stud = new Mini_Frame_Students();
+//        stud.setVisible(true);
+    }//GEN-LAST:event_lbl_noOfStudentsMouseClicked
+
+    private void lbl_noOfBooksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_noOfBooksMouseClicked
+//        Mini_Frame_Books books = new Mini_Frame_Books();
+//        books.setVisible(true);
+    }//GEN-LAST:event_lbl_noOfBooksMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -612,7 +798,12 @@ public class Home_page extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
@@ -621,7 +812,12 @@ public class Home_page extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -633,13 +829,18 @@ public class Home_page extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_dashboard;
     private javax.swing.JLabel lbl_defaulterList;
     private javax.swing.JLabel lbl_issueGood;
+    private javax.swing.JLabel lbl_issuedBooks;
     private javax.swing.JLabel lbl_logout;
     private javax.swing.JLabel lbl_manageInventory;
     private javax.swing.JLabel lbl_manageUsers;
     private javax.swing.JLabel lbl_menu;
+    private javax.swing.JLabel lbl_noOfBooks;
+    private javax.swing.JLabel lbl_noOfStudents;
     private javax.swing.JLabel lbl_returnGood;
+    private javax.swing.JLabel lbl_totalIssuedBooks;
     private javax.swing.JLabel lbl_viewIssuedGood;
     private javax.swing.JLabel lbl_viewRecords;
+    private javax.swing.JPanel panelPieChart;
     private javax.swing.JPanel panel_display;
     private javax.swing.JPanel panel_menu;
     private javax.swing.JPanel parentPanel;

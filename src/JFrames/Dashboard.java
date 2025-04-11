@@ -82,9 +82,6 @@ public class Dashboard extends javax.swing.JFrame {
         jPanel13 = new javax.swing.JPanel();
         lbl_defaulterList = new javax.swing.JLabel();
         panel_display = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tbl_viewRecords = new rojerusan.RSTableMetro();
-        j_date_From = new com.toedter.calendar.JDateChooser();
         btn_refresh = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         lbl_tot_profit = new javax.swing.JLabel();
@@ -95,11 +92,8 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jPanel15 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        cbo_assignee = new rojerusan.RSComboMetro();
         jLabel13 = new javax.swing.JLabel();
-        cbo_products = new rojerusan.RSComboMetro();
         jLabel9 = new javax.swing.JLabel();
-        txt_commission = new app.bolivia.swing.JCTextField();
         panel_load = new javax.swing.JPanel();
         jPanel16 = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
@@ -120,7 +114,6 @@ public class Dashboard extends javax.swing.JFrame {
         lbl_populateTable = new javax.swing.JLabel();
         lbl_calculated_commission = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        j_date_To = new com.toedter.calendar.JDateChooser();
         btn_populate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -429,39 +422,6 @@ public class Dashboard extends javax.swing.JFrame {
 
         panel_display.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tbl_viewRecords.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Assignee", "Product", "SoldQuantity", "Total Sales", "total_profit", "Date"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tbl_viewRecords.setFuenteFilas(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        tbl_viewRecords.setFuenteFilasSelect(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        tbl_viewRecords.setFuenteHead(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        tbl_viewRecords.setRowHeight(14);
-        jScrollPane1.setViewportView(tbl_viewRecords);
-
-        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 60, 560, 540));
-
-        j_date_From.setDateFormatString("EEEE, dd/MM/yyyy");
-        j_date_From.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        j_date_From.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                j_date_FromPropertyChange(evt);
-            }
-        });
-        panel_display.add(j_date_From, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 20, 210, 30));
-
         btn_refresh.setBackground(new java.awt.Color(102, 255, 102));
         btn_refresh.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
         btn_refresh.setText("Refresh");
@@ -506,43 +466,13 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel8.setText("Assignee:");
         jPanel15.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
 
-        cbo_assignee.setForeground(new java.awt.Color(0, 0, 0));
-        cbo_assignee.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Route" }));
-        cbo_assignee.setColorBorde(new java.awt.Color(102, 102, 102));
-        cbo_assignee.setColorFondo(new java.awt.Color(255, 153, 0));
-        cbo_assignee.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        cbo_assignee.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbo_assigneeActionPerformed(evt);
-            }
-        });
-        jPanel15.add(cbo_assignee, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 180, -1));
-
         jLabel13.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel13.setText("Product Name:");
         jPanel15.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 120, -1));
 
-        cbo_products.setForeground(new java.awt.Color(0, 0, 0));
-        cbo_products.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select" }));
-        cbo_products.setColorBorde(new java.awt.Color(102, 102, 102));
-        cbo_products.setColorFondo(new java.awt.Color(255, 153, 0));
-        cbo_products.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        cbo_products.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbo_productsActionPerformed(evt);
-            }
-        });
-        jPanel15.add(cbo_products, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, 210, -1));
-
         jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel9.setText("Commission:");
         jPanel15.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 0, -1, -1));
-
-        txt_commission.setEditable(false);
-        txt_commission.setText("\n");
-        txt_commission.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        txt_commission.setPlaceholder("Please enter Percentage Commision");
-        jPanel15.add(txt_commission, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 20, 60, -1));
 
         panel_load.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         panel_load.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -696,15 +626,6 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel6.setText("To Date:");
         panel_display.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 0, -1, -1));
-
-        j_date_To.setDateFormatString("EEEE, dd/MM/yyyy");
-        j_date_To.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        j_date_To.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                j_date_ToPropertyChange(evt);
-            }
-        });
-        panel_display.add(j_date_To, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 20, 200, 30));
 
         btn_populate.setBackground(new java.awt.Color(0, 255, 153));
         btn_populate.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
@@ -1048,11 +969,6 @@ public class Dashboard extends javax.swing.JFrame {
                 return;
             }
 
-            // Parse the total profit to a numeric value
-//            double totalProfit = Double.parseDouble(totalProfitText.replace(",", "").trim());
-            
-//            int totalProfit = Integer.parseInt(totalProfitText.trim());
-
             // Retrieve percentage commission from txt_commission
             String commissionText = txt_commission.getText();
             if (commissionText == null || commissionText.isEmpty()) {
@@ -1065,8 +981,6 @@ public class Dashboard extends javax.swing.JFrame {
 
             // Calculate the commission
             double commission = (commissionPercentage / 100) * totalProfit;
-            
-//            double commission = (commissionPercentage / 100) * totalProfitText;
 
             // Display the calculated commission
 //        lbl_calculated_commission.setText(String.format("Ksh %.2f", commission));
@@ -1111,8 +1025,6 @@ public class Dashboard extends javax.swing.JFrame {
             sum += Integer.parseInt(jTable1.getValueAt(i, 3).toString().replace(",", "").trim());
             sumComm += Double.parseDouble(jTable1.getValueAt(i, 4).toString().replace(",", "").trim());
             
-//            sum = sum + Integer.parseInt(jTable1.getValueAt(i, 3).toString());
-//            sumComm = sumComm + Double.parseDouble(jTable1.getValueAt(i, 4).toString());
         }
 
         lbltotalProfit.setText(Integer.toString(sum));
@@ -1564,8 +1476,6 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JButton btnprint;
     private javax.swing.JButton btnremove;
     private javax.swing.JButton btnsubmit;
-    private rojerusan.RSComboMetro cbo_assignee;
-    private rojerusan.RSComboMetro cbo_products;
     private javax.swing.JButton genreceipt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1599,12 +1509,9 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
-    private com.toedter.calendar.JDateChooser j_date_From;
-    private com.toedter.calendar.JDateChooser j_date_To;
     private javax.swing.JTextArea lbl_Cart;
     private javax.swing.JLabel lbl_calculated_commission;
     private javax.swing.JLabel lbl_close;
@@ -1629,9 +1536,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel panel_load;
     private javax.swing.JPanel panel_menu;
     private javax.swing.JPanel parentPanel;
-    private rojerusan.RSTableMetro tbl_viewRecords;
     private javax.swing.JLabel txtDate;
     private javax.swing.JLabel txtTime;
-    private app.bolivia.swing.JCTextField txt_commission;
     // End of variables declaration//GEN-END:variables
 }
