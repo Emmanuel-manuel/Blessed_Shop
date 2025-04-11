@@ -303,52 +303,6 @@ public class MiniFrame_addProduct extends javax.swing.JFrame {
 
     }
 
-//    private void addProduct() {
-//        String productName = txt_productName.getText().trim();
-//        String productBPrice = txt_product_B_Price.getText().trim();
-//        String productSPrice = txt_product_S_Price.getText().trim();
-//
-//        // Validate inputs
-//        if (productName.isEmpty() || productBPrice.isEmpty() || productSPrice.isEmpty()) {
-//            lblMessage.setText("Please fill all fields.");
-//            return;
-//        }
-//
-//        if (!productBPrice.matches("\\d+") || !productSPrice.matches("\\d+")) {
-//            lblMessage.setText("Prices must be numeric.");
-//            return;
-//        }
-//
-//        // Convert prices to integers
-//        int bPrice = Integer.parseInt(productBPrice);
-//        int sPrice = Integer.parseInt(productSPrice);
-//
-//        // Insert product into the database
-//        Connection con = DBConnection.getConnection();
-//        if (con == null) {
-//            lblMessage.setText("Database connection failed.");
-//            return;
-//        }
-//
-//        String sql = "INSERT INTO products (product_name, b_price, s_price) VALUES (?, ?, ?)";
-//
-//        try (PreparedStatement pst = con.prepareStatement(sql)) {
-//            pst.setString(1, productName);
-//            pst.setInt(2, bPrice);
-//            pst.setInt(3, sPrice);
-//
-//            int rowCount = pst.executeUpdate();
-//            if (rowCount > 0) {
-//                lblMessage.setText("Product added successfully!");
-//                clearComponents();
-//            } else {
-//                lblMessage.setText("Failed to add product.");
-//            }
-//        } catch (Exception e) {
-//            lblMessage.setText("Error: " + e.getMessage());
-//            e.printStackTrace();
-//        }
-//    }
     //method to Update the product details
     public boolean updateProduct() {
 
