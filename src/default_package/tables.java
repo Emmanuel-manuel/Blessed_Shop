@@ -31,7 +31,7 @@ public class tables {
 
 //            st.executeUpdate("create table issued_goods (id int(11) AUTO_INCREMENT PRIMARY KEY,employee_name varchar(200),product_name varchar(200), price_per_product int(20),qty_given int(20),total_price int(20), date varchar(100) )");
             
-//            st.executeUpdate("create table return_goods (id int(11) AUTO_INCREMENT PRIMARY KEY,employee_name varchar(200),product_name varchar(200), price_per_product int(20),qty_returned int(20),total_price int(20), date varchar(100) )");
+//            st.executeUpdate("create table return_goods (id int(11) AUTO_INCREMENT PRIMARY KEY,employee_name varchar(200),product_name varchar(200), price_per_product int(20),received_qty int(20),qty_returned int(20),qty_sold int(20),total_price int(20),total_profit DOUBLE, date varchar(100) )");
 
             JOptionPane.showMessageDialog(null, "Table Created Successfully");
         } catch (Exception e) {
