@@ -201,7 +201,7 @@ public class SignupPage extends javax.swing.JFrame {
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/icons8_Account_50px.png"))); // NOI18N
         jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 130, 60, 50));
 
-        lbl_close.setFont(new java.awt.Font("Calibri Light", 1, 55)); // NOI18N
+        lbl_close.setFont(new java.awt.Font("Calibri Light", 1, 35)); // NOI18N
         lbl_close.setForeground(new java.awt.Color(255, 255, 255));
         lbl_close.setText("X");
         lbl_close.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -209,7 +209,7 @@ public class SignupPage extends javax.swing.JFrame {
                 lbl_closeMouseClicked(evt);
             }
         });
-        jPanel2.add(lbl_close, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 20, 50, 50));
+        jPanel2.add(lbl_close, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 6, 40, 30));
 
         jLabel8.setFont(new java.awt.Font("Verdana", 0, 20)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));

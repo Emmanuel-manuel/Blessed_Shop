@@ -1,7 +1,6 @@
 package JFrames;
 
 import default_package.*;
-import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,25 +16,8 @@ public class LoginPage extends javax.swing.JFrame {
      * Creates new form SignupPage
      */
     public LoginPage() {
-        // Get the screen dimensions
-//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//        int width = (int) (screenSize.getWidth() * 1); // 80% of screen width
-//        int height = (int) (screenSize.getHeight() * 1); // 80% of screen height
-//
-//        // Set JFrame size
-//        setSize(width, height);
-//        
-//        // Center the JFrame on the screen
-//        setLocationRelativeTo(null);
-        
-// Use the utility class to get scaled dimensions
-        Dimension frameSize = ScreenUtils.getScaledDimension(1, 1);
-        setSize(frameSize);
-        
-        // Center the JFrame
-        setLocationRelativeTo(null);
-        
         initComponents();
+//        String text_password;
     
 // Add KeyListener to txt_pass for "Enter" key press to trigger login
     txt_pass.addKeyListener(new java.awt.event.KeyAdapter() {

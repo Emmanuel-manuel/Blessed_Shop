@@ -95,8 +95,11 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jPanel15 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
+        cbo_assignee = new rojerusan.RSComboMetro();
         jLabel13 = new javax.swing.JLabel();
+        cbo_products = new rojerusan.RSComboMetro();
         jLabel9 = new javax.swing.JLabel();
+        txt_commission = new app.bolivia.swing.JCTextField();
         panel_load = new javax.swing.JPanel();
         jPanel16 = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
@@ -116,12 +119,9 @@ public class Dashboard extends javax.swing.JFrame {
         jPanel18 = new javax.swing.JPanel();
         lbl_populateTable = new javax.swing.JLabel();
         lbl_calculated_commission = new javax.swing.JLabel();
-        cbo_assignee = new rojerusan.RSComboMetro();
-        cbo_products = new rojerusan.RSComboMetro();
-        txt_commission = new app.bolivia.swing.JCTextField();
         jLabel6 = new javax.swing.JLabel();
-        btn_populate = new javax.swing.JButton();
         j_date_To = new com.toedter.calendar.JDateChooser();
+        btn_populate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -438,23 +438,29 @@ public class Dashboard extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        tbl_viewRecords.setFuenteFilas(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        tbl_viewRecords.setFuenteFilasSelect(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        tbl_viewRecords.setFuenteHead(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        tbl_viewRecords.setRowHeight(14);
         jScrollPane1.setViewportView(tbl_viewRecords);
 
-        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 60, 540, 550));
+        panel_display.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 60, 560, 540));
 
+        j_date_From.setDateFormatString("EEEE, dd/MM/yyyy");
+        j_date_From.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         j_date_From.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 j_date_FromPropertyChange(evt);
             }
         });
-        panel_display.add(j_date_From, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 20, 190, 30));
+        panel_display.add(j_date_From, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 20, 210, 30));
 
         btn_refresh.setBackground(new java.awt.Color(102, 255, 102));
         btn_refresh.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
@@ -500,13 +506,43 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel8.setText("Assignee:");
         jPanel15.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
 
+        cbo_assignee.setForeground(new java.awt.Color(0, 0, 0));
+        cbo_assignee.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Route" }));
+        cbo_assignee.setColorBorde(new java.awt.Color(102, 102, 102));
+        cbo_assignee.setColorFondo(new java.awt.Color(255, 153, 0));
+        cbo_assignee.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        cbo_assignee.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_assigneeActionPerformed(evt);
+            }
+        });
+        jPanel15.add(cbo_assignee, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 180, -1));
+
         jLabel13.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel13.setText("Product Name:");
-        jPanel15.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 120, -1));
+        jPanel15.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 120, -1));
+
+        cbo_products.setForeground(new java.awt.Color(0, 0, 0));
+        cbo_products.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select" }));
+        cbo_products.setColorBorde(new java.awt.Color(102, 102, 102));
+        cbo_products.setColorFondo(new java.awt.Color(255, 153, 0));
+        cbo_products.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        cbo_products.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_productsActionPerformed(evt);
+            }
+        });
+        jPanel15.add(cbo_products, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, 210, -1));
 
         jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel9.setText("Commission:");
         jPanel15.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 0, -1, -1));
+
+        txt_commission.setEditable(false);
+        txt_commission.setText("\n");
+        txt_commission.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        txt_commission.setPlaceholder("Please enter Percentage Commision");
+        jPanel15.add(txt_commission, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 20, 60, -1));
 
         panel_load.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         panel_load.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -655,39 +691,20 @@ public class Dashboard extends javax.swing.JFrame {
         lbl_calculated_commission.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jPanel15.add(lbl_calculated_commission, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 60, 120, 30));
 
-        cbo_assignee.setForeground(new java.awt.Color(0, 0, 0));
-        cbo_assignee.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Route" }));
-        cbo_assignee.setColorBorde(new java.awt.Color(102, 102, 102));
-        cbo_assignee.setColorFondo(new java.awt.Color(255, 153, 0));
-        cbo_assignee.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        cbo_assignee.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbo_assigneeActionPerformed(evt);
-            }
-        });
-        jPanel15.add(cbo_assignee, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 140, -1));
-
-        cbo_products.setForeground(new java.awt.Color(0, 0, 0));
-        cbo_products.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select" }));
-        cbo_products.setColorBorde(new java.awt.Color(102, 102, 102));
-        cbo_products.setColorFondo(new java.awt.Color(255, 153, 0));
-        cbo_products.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        cbo_products.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbo_productsActionPerformed(evt);
-            }
-        });
-        jPanel15.add(cbo_products, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 20, 220, -1));
-
-        txt_commission.setEditable(false);
-        txt_commission.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jPanel15.add(txt_commission, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 20, 70, -1));
-
         panel_display.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 580, 690));
 
         jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel6.setText("To Date:");
         panel_display.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 0, -1, -1));
+
+        j_date_To.setDateFormatString("EEEE, dd/MM/yyyy");
+        j_date_To.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        j_date_To.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                j_date_ToPropertyChange(evt);
+            }
+        });
+        panel_display.add(j_date_To, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 20, 200, 30));
 
         btn_populate.setBackground(new java.awt.Color(0, 255, 153));
         btn_populate.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
@@ -698,13 +715,6 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
         panel_display.add(btn_populate, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 30, 150, 25));
-
-        j_date_To.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                j_date_ToPropertyChange(evt);
-            }
-        });
-        panel_display.add(j_date_To, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 20, 170, 30));
 
         parentPanel.add(panel_display);
         panel_display.setBounds(230, 0, 1140, 700);
@@ -753,10 +763,10 @@ public class Dashboard extends javax.swing.JFrame {
         employeeName = (String) cbo_assignee.getSelectedItem();
 
 //        This block of code first checks if employeeName in the combobox is empty
-        if (employeeName == null || employeeName.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please select an employee.", "Warning", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+//        if (employeeName == null || employeeName.isEmpty()) {
+//            JOptionPane.showMessageDialog(null, "Please select an employee.", "Warning", JOptionPane.WARNING_MESSAGE);
+//            return;
+//        }
         try {
             // Use DISTINCT to get unique product names
             String query = "SELECT DISTINCT product_name FROM issued_goods WHERE employee_name = ?";
@@ -872,6 +882,9 @@ public class Dashboard extends javax.swing.JFrame {
         java.util.Date dateTo = j_date_To.getDate();
 
         // Date formatting
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy, EEEE");
+//        String formattedDateFrom = (dateFrom != null) ? sdf.format(dateFrom) : null;
+//        String formattedDateTo = (dateTo != null) ? sdf.format(dateTo) : null;
         // Convert java.util.Date to java.sql.Date
         java.sql.Date sqlDateFrom = (dateFrom != null) ? new java.sql.Date(dateFrom.getTime()) : null;
         java.sql.Date sqlDateTo = (dateTo != null) ? new java.sql.Date(dateTo.getTime()) : null;
@@ -915,8 +928,8 @@ public class Dashboard extends javax.swing.JFrame {
             // Execute the query
             ResultSet rs = pst.executeQuery();
 
-//             Clear existing table data
-            model = (DefaultTableModel) tbl_viewRecords.getModel();
+            // Clear existing table data
+            DefaultTableModel model = (DefaultTableModel) tbl_viewRecords.getModel();
             model.setRowCount(0);
 
             // Populate the table with the result set
@@ -950,7 +963,7 @@ public class Dashboard extends javax.swing.JFrame {
         int totalQuantitySold = 0;
 
         // Get the table model
-        model = (DefaultTableModel) tbl_viewRecords.getModel();
+        DefaultTableModel model = (DefaultTableModel) tbl_viewRecords.getModel();
 
         // Iterate through the rows to sum up the values in column 3 (index 2, zero-based indexing)
         for (int i = 0; i < model.getRowCount(); i++) {
@@ -977,7 +990,7 @@ public class Dashboard extends javax.swing.JFrame {
         int totalSales = 0;
 
         // Get the table model
-        model = (DefaultTableModel) tbl_viewRecords.getModel();
+        DefaultTableModel model = (DefaultTableModel) tbl_viewRecords.getModel();
 
         // Iterate through the rows to sum up the values in column 4 (index 3, zero-based indexing)
         for (int i = 0; i < model.getRowCount(); i++) {
@@ -1003,7 +1016,7 @@ public class Dashboard extends javax.swing.JFrame {
         int totalProfit = 0;
 
         // Get the table model
-        model = (DefaultTableModel) tbl_viewRecords.getModel();
+        DefaultTableModel model = (DefaultTableModel) tbl_viewRecords.getModel();
 
         // Iterate through the rows to sum up the values in column 5 (index 4, zero-based indexing)
         for (int i = 0; i < model.getRowCount(); i++) {
@@ -1156,7 +1169,7 @@ public class Dashboard extends javax.swing.JFrame {
         lbl_Cart.setText(lbl_Cart.getText()     + "On DATE :   :  "   +   date_value  +     "\n");
         
         lbl_Cart.setText(lbl_Cart.getText()+"======================================================================\n");
-        lbl_Cart.setText(lbl_Cart.getText()+" emmanuelsystems5@gmail.com   " + "\t" + "\t" +  "\t" + "  Copyright(c) 2025"+ "\n");
+        lbl_Cart.setText(lbl_Cart.getText()+" emmanuelsystems5@gmail.com   " + "\t" + "\t" +  "\t" + "  Copyright(c) 2024"+ "\n");
         lbl_Cart.setText(lbl_Cart.getText()+"======================================================================\n");
         
     }
@@ -1199,6 +1212,30 @@ public class Dashboard extends javax.swing.JFrame {
         ManageInventory inventory = new ManageInventory();
         inventory.setVisible(true);
         dispose();
+
+//        Displaying only JPanels
+//        JPanel panel_manageInventory = manageInventory.getPanel_manageInventory();
+//
+//        if (panel_menu.isVisible()) {
+//
+//            // Ensure panel_manageBooks is added to parentPanel
+//            parentPanel.add(panel_manageInventory);
+//            // Set panel_display to invisible
+//            panel_display.setVisible(false);
+//            // Set panel_manageBooks to visible
+//            panel_manageInventory.setVisible(true);
+//            // Set the bounds of panel_manageBooks to fill the entire parentPanel
+//            panel_manageInventory.setBounds(250, 0, parentPanel.getWidth(), parentPanel.getHeight());
+//
+//        } else {
+//            panel_menu.setVisible(true);
+//            // Adjust panel_display when panel_menu reappears
+//            panel_manageInventory.setBounds(panel_menu.getWidth(), 0, parentPanel.getWidth() - panel_menu.getWidth(), 700);
+//
+//        }
+//
+//        // Force panel_display to re-layout its components
+//        parentPanel.repaint();
 
     }//GEN-LAST:event_lbl_manageInventoryMouseClicked
 

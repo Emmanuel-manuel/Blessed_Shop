@@ -418,7 +418,7 @@ public class Home_page extends javax.swing.JFrame {
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel16Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbl_noOfBooks, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbl_noOfBooks, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -453,7 +453,7 @@ public class Home_page extends javax.swing.JFrame {
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel18Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbl_issuedBooks, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbl_issuedBooks, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -488,7 +488,7 @@ public class Home_page extends javax.swing.JFrame {
             jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel20Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbl_totalIssuedBooks, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbl_totalIssuedBooks, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -523,7 +523,7 @@ public class Home_page extends javax.swing.JFrame {
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel17Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbl_noOfStudents, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbl_noOfStudents, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -742,23 +742,23 @@ public class Home_page extends javax.swing.JFrame {
     }//GEN-LAST:event_lbl_dashboardMouseClicked
 
     private void lbl_issuedBooksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_issuedBooksMouseClicked
-//        Mini_Frame_Pending pending = new Mini_Frame_Pending();
-//        pending.setVisible(true);
+        Mini_Frame_Pending pending = new Mini_Frame_Pending();
+        pending.setVisible(true);
     }//GEN-LAST:event_lbl_issuedBooksMouseClicked
 
     private void lbl_totalIssuedBooksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_totalIssuedBooksMouseClicked
-//        Mini_Frame_Issued issue = new Mini_Frame_Issued();
-//        issue.setVisible(true);
+        Mini_Frame_Issued issue = new Mini_Frame_Issued();
+        issue.setVisible(true);
     }//GEN-LAST:event_lbl_totalIssuedBooksMouseClicked
 
     private void lbl_noOfStudentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_noOfStudentsMouseClicked
-//        Mini_Frame_Students stud = new Mini_Frame_Students();
-//        stud.setVisible(true);
+        Mini_Frame_Students stud = new Mini_Frame_Students();
+        stud.setVisible(true);
     }//GEN-LAST:event_lbl_noOfStudentsMouseClicked
 
     private void lbl_noOfBooksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_noOfBooksMouseClicked
-//        Mini_Frame_Books books = new Mini_Frame_Books();
-//        books.setVisible(true);
+        Mini_Frame_Books books = new Mini_Frame_Books();
+        books.setVisible(true);
     }//GEN-LAST:event_lbl_noOfBooksMouseClicked
 
     /**
